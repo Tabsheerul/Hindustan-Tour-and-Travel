@@ -1,11 +1,12 @@
 import React from 'react';
+import heroBanner from '../assets/hero-banner.png';
 
 const HeroCard = () => {
   return (
     <div className="flex flex-col md:flex-row w-screen h-screen bg-white overflow-hidden relative">
       {/* Left Orange Section */}
-      <div className="w-full md:w-1/2 h-1/2 md:h-full bg-gradient-to-br from-[#FF9933] to-[#FF5E62] rounded-b-[100px] md:rounded-none md:rounded-r-[200px] shadow-[10px_0_20px_rgba(0,0,0,0.05)] z-10">
-        {/* Content for the orange section can go here */}
+      <div className="w-full md:w-1/2 h-1/2 md:h-full bg-gradient-to-br from-[#FF9933] to-[#FF5E62] rounded-b-[100px] md:rounded-none md:rounded-r-[200px] shadow-[10px_0_20px_rgba(0,0,0,0.05)] z-10 overflow-hidden flex items-center justify-center relative">
+        <img src={heroBanner} alt="Tour and Travels Banner" className="w-full h-full object-cover opacity-80 mix-blend-overlay mix-blend-multiply" />
       </div>
 
       {/* Right White Section with Button */}
