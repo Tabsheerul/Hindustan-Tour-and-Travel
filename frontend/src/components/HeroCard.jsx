@@ -1,4 +1,3 @@
-import React from 'react';
 import heroBanner from '../assets/hero-banner.png';
 
 const HeroCard = () => {
