@@ -36,7 +36,7 @@ const HeroCard = () => {
       </div>
 
       {/* Right — Small floating image card, not dominating */}
-      <div className="hidden md:block relative flex-shrink-0">
+      <div className="hidden md:block relative shrink-0">
         {/* Subtle background blob */}
         <div className="absolute -inset-6 bg-orange-50 rounded-[3rem] -z-10"></div>
 
