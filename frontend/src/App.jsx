@@ -1,13 +1,13 @@
 import HeroCard from './components/HeroCard';
 import Navbar from './components/Navbar';
-import BookingSection from './components/BookingSection';
+import TripPlannerSection from './components/TripPlannerSection';
 
 function App() {
   return (
     <div className="relative">
       <Navbar />
       <HeroCard />
-      <BookingSection />
+      <TripPlannerSection />
     </div>
   )
 }
