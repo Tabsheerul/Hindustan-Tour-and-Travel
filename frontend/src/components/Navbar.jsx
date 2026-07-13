@@ -1,6 +1,6 @@
 const Navbar = () => {
   return (
-    <nav className="absolute top-8 w-full max-w-6xl left-1/2 -translate-x-1/2 z-50 px-10 flex justify-between items-center">
+    <nav className="absolute top-8 w-full max-w-6xl left-1/2 -translate-x-1/2 z-50 px-16 flex justify-between items-center">
 
       {/* Logo — full brand name */}
       <div className="flex flex-col">
