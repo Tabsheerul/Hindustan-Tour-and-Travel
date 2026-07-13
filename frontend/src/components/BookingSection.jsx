@@ -1,14 +1,15 @@
 import { useState } from 'react';
 
+import AutocompleteInput from './AutocompleteInput';
 
-
-// ─── Component ───────────────────────────────────────────────────────────────
-// Renders only the booking form content (no section wrapper).
-// Layout is managed by TripPlannerSection.jsx
+// ─── Main Component ─────────────────────────────────────────────────────────
 const BookingSection = () => {
   const [pickup, setPickup] = useState('');
   const [destination, setDestination] = useState('');
   const [date, setDate] = useState('');
+
+  // Get API key from environment variables
+  const OLA_API_KEY = import.meta.env.VITE_OLA_MAPS_API_KEY;
 
   const handleSwap = () => {
     setPickup(destination);
@@ -21,22 +22,14 @@ const BookingSection = () => {
       {/* Pickup & Destination Row */}
       <div className="flex flex-col gap-4">
 
-        {/* Pickup Input */}
-        <div className="flex flex-col gap-1.5">
-          <label className="text-[10px] font-bold tracking-[0.2em] text-gray-400 uppercase pl-1">
-            Pickup Point
-          </label>
-          <div className="flex items-center gap-3 border border-gray-200 rounded-2xl px-4 py-3.5 focus-within:border-[#FF5E62] focus-within:shadow-[0_0_0_3px_rgba(255,94,98,0.08)] transition-all">
-            <span className="text-[#FF5E62] text-lg shrink-0">📍</span>
-            <input
-              type="text"
-              placeholder="Enter pickup city or location"
-              value={pickup}
-              onChange={(e) => setPickup(e.target.value)}
-              className="w-full text-sm text-gray-800 placeholder-gray-300 outline-none bg-transparent"
-            />
-          </div>
-        </div>
+        <AutocompleteInput 
+          label="Pickup Point"
+          icon={<span className="text-[#FF5E62] text-lg shrink-0">📍</span>}
+          placeholder="Enter pickup city or location"
+          value={pickup}
+          onChange={setPickup}
+          apiKey={OLA_API_KEY}
+        />
 
         {/* Swap Button */}
         <div className="flex items-center gap-3">
@@ -51,30 +44,22 @@ const BookingSection = () => {
           <div className="flex-1 h-px bg-gray-100" />
         </div>
 
-        {/* Destination Input */}
-        <div className="flex flex-col gap-1.5">
-          <label className="text-[10px] font-bold tracking-[0.2em] text-gray-400 uppercase pl-1">
-            Destination
-          </label>
-          <div className="flex items-center gap-3 border border-gray-200 rounded-2xl px-4 py-3.5 focus-within:border-[#FF5E62] focus-within:shadow-[0_0_0_3px_rgba(255,94,98,0.08)] transition-all">
-            <span className="text-[#FF9933] text-lg shrink-0">🏁</span>
-            <input
-              type="text"
-              placeholder="Enter your destination"
-              value={destination}
-              onChange={(e) => setDestination(e.target.value)}
-              className="w-full text-sm text-gray-800 placeholder-gray-300 outline-none bg-transparent"
-            />
-          </div>
-        </div>
+        <AutocompleteInput 
+          label="Destination"
+          icon={<span className="text-[#FF9933] text-lg shrink-0">🏁</span>}
+          placeholder="Enter your destination"
+          value={destination}
+          onChange={setDestination}
+          apiKey={OLA_API_KEY}
+        />
       </div>
 
       {/* Travel Date */}
-      <div className="flex flex-col gap-1.5">
+      <div className="flex flex-col gap-1.5 relative">
         <label className="text-[10px] font-bold tracking-[0.2em] text-gray-400 uppercase pl-1">
           Travel Date
         </label>
-        <div className="flex items-center gap-3 border border-gray-200 rounded-2xl px-4 py-3.5 focus-within:border-[#FF5E62] focus-within:shadow-[0_0_0_3px_rgba(255,94,98,0.08)] transition-all">
+        <div className="flex items-center gap-3 border border-gray-200 rounded-2xl px-4 py-3.5 focus-within:border-[#FF5E62] focus-within:shadow-[0_0_0_3px_rgba(255,94,98,0.08)] transition-all bg-white">
           <span className="text-gray-400 text-lg shrink-0">📅</span>
           <input
             type="date"
