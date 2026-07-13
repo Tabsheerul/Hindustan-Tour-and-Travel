@@ -8,7 +8,7 @@ const BookingSection = () => {
   const [destination, setDestination] = useState('');
   const [date, setDate] = useState('');
 
-  // Get API key from environment variables
+  // Get API key from environment variables (MUST start with VITE_ in Vite apps)
   const OLA_API_KEY = import.meta.env.VITE_OLA_MAPS_API_KEY;
 
   const handleSwap = () => {
