@@ -1,12 +1,15 @@
 import { useState } from 'react';
 
 import AutocompleteInput from './AutocompleteInput';
-import DatePickerInput from './DatePickerInput';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 // ─── Main Component ─────────────────────────────────────────────────────────
 const BookingSection = () => {
   const [pickup, setPickup] = useState('');
   const [destination, setDestination] = useState('');
   const [date, setDate] = useState(null);
+  const [isLocating, setIsLocating] = useState(false);
 
   // Get API key from environment variables (MUST start with VITE_ in Vite apps)
   const OLA_API_KEY = import.meta.env.VITE_OLA_MAPS_API_KEY;
@@ -14,6 +17,39 @@ const BookingSection = () => {
   const handleSwap = () => {
     setPickup(destination);
     setDestination(pickup);
+  };
+
+  const handleGetCurrentLocation = () => {
+    if (!navigator.geolocation) {
+      alert('Geolocation is not supported by your browser');
+      return;
+    }
+
+    setIsLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+        try {
+          const response = await fetch(`https://api.olamaps.io/places/v1/reverse-geocode?latlng=${latitude},${longitude}&api_key=${OLA_API_KEY}`);
+          const data = await response.json();
+          if (data.results && data.results.length > 0) {
+            setPickup(data.results[0].formatted_address);
+          } else {
+            setPickup(`${latitude.toFixed(4)}, ${longitude.toFixed(4)}`);
+          }
+        } catch (error) {
+          console.error("Error reverse geocoding:", error);
+          setPickup(`${latitude.toFixed(4)}, ${longitude.toFixed(4)}`);
+        } finally {
+          setIsLocating(false);
+        }
+      },
+      (error) => {
+        console.error("Error getting location:", error);
+        alert('Unable to retrieve your location. Please check your permissions.');
+        setIsLocating(false);
+      }
+    );
   };
 
   return (
@@ -29,6 +65,8 @@ const BookingSection = () => {
           value={pickup}
           onChange={setPickup}
           apiKey={OLA_API_KEY}
+          onGetCurrentLocation={handleGetCurrentLocation}
+          isLoading={isLocating}
         />
 
         {/* Swap Button */}
@@ -55,7 +93,35 @@ const BookingSection = () => {
       </div>
 
       {/* Travel Date */}
-      <DatePickerInput date={date} setDate={setDate} />
+      <div className="flex flex-col gap-1.5 w-full">
+        <label className="text-[10px] font-bold tracking-[0.2em] text-gray-400 uppercase pl-1">
+          Travel Date
+        </label>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            value={date}
+            onChange={(newValue) => setDate(newValue)}
+            sx={{
+              width: '100%',
+              '& .MuiOutlinedInput-root': {
+                borderRadius: '1rem',
+                backgroundColor: 'white',
+                '& fieldset': {
+                  borderColor: '#e5e7eb',
+                },
+                '&:hover fieldset': {
+                  borderColor: '#d1d5db',
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: '#FF5E62',
+                  borderWidth: '1px',
+                  boxShadow: '0 0 0 3px rgba(255,94,98,0.08)',
+                },
+              },
+            }}
+          />
+        </LocalizationProvider>
+      </div>
 
       {/* Divider */}
       <div className="w-full h-px bg-gray-100" />
