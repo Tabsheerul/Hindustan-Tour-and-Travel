@@ -1,12 +1,12 @@
 import { useState } from 'react';
 
 import AutocompleteInput from './AutocompleteInput';
-
+import DatePickerInput from './DatePickerInput';
 // ─── Main Component ─────────────────────────────────────────────────────────
 const BookingSection = () => {
   const [pickup, setPickup] = useState('');
   const [destination, setDestination] = useState('');
-  const [date, setDate] = useState('');
+  const [date, setDate] = useState(null);
 
   // Get API key from environment variables (MUST start with VITE_ in Vite apps)
   const OLA_API_KEY = import.meta.env.VITE_OLA_MAPS_API_KEY;
@@ -55,20 +55,7 @@ const BookingSection = () => {
       </div>
 
       {/* Travel Date */}
-      <div className="flex flex-col gap-1.5 relative">
-        <label className="text-[10px] font-bold tracking-[0.2em] text-gray-400 uppercase pl-1">
-          Travel Date
-        </label>
-        <div className="flex items-center gap-3 border border-gray-200 rounded-2xl px-4 py-3.5 focus-within:border-[#FF5E62] focus-within:shadow-[0_0_0_3px_rgba(255,94,98,0.08)] transition-all bg-white">
-          <span className="text-gray-400 text-lg shrink-0">📅</span>
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            className="w-full text-sm text-gray-800 outline-none bg-transparent cursor-pointer uppercase"
-          />
-        </div>
-      </div>
+      <DatePickerInput date={date} setDate={setDate} />
 
       {/* Divider */}
       <div className="w-full h-px bg-gray-100" />
