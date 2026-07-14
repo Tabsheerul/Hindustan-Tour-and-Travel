@@ -70,16 +70,16 @@ const BookingSection = () => {
         />
 
         {/* Swap Button */}
-        <div className="flex items-center gap-3">
-          <div className="flex-1 h-px bg-gray-100" />
+        <div className="flex items-center gap-3 py-1">
+          <div className="flex-1 h-[2px] bg-gray-200" />
           <button
             onClick={handleSwap}
             title="Swap pickup and destination"
-            className="w-8 h-8 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-gray-400 hover:bg-[#FF5E62] hover:text-white hover:border-[#FF5E62] hover:rotate-180 transition-all duration-300 shrink-0 text-sm"
+            className="w-10 h-10 rounded-full bg-white border border-gray-300 shadow-sm flex items-center justify-center text-gray-600 hover:bg-[#FF5E62] hover:text-white hover:border-[#FF5E62] hover:rotate-180 transition-all duration-300 shrink-0 text-base"
           >
             ⇅
           </button>
-          <div className="flex-1 h-px bg-gray-100" />
+          <div className="flex-1 h-[2px] bg-gray-200" />
         </div>
 
         <AutocompleteInput 
@@ -94,7 +94,7 @@ const BookingSection = () => {
 
       {/* Travel Date */}
       <div className="flex flex-col gap-1.5 w-full">
-        <label className="text-[10px] font-bold tracking-[0.2em] text-gray-400 uppercase pl-1">
+        <label className="text-xs font-bold tracking-wider text-gray-600 uppercase pl-1 pb-1">
           Travel Date
         </label>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -106,16 +106,20 @@ const BookingSection = () => {
               '& .MuiOutlinedInput-root': {
                 borderRadius: '1rem',
                 backgroundColor: 'white',
+                fontSize: '1rem',
+                fontWeight: '500',
+                color: '#111827', // gray-900
                 '& fieldset': {
-                  borderColor: '#e5e7eb',
+                  borderColor: '#d1d5db', // gray-300
+                  borderWidth: '1px',
                 },
                 '&:hover fieldset': {
-                  borderColor: '#d1d5db',
+                  borderColor: '#9ca3af', // gray-400
                 },
                 '&.Mui-focused fieldset': {
                   borderColor: '#FF5E62',
                   borderWidth: '1px',
-                  boxShadow: '0 0 0 3px rgba(255,94,98,0.08)',
+                  boxShadow: '0 0 0 3px rgba(255,94,98,0.15)',
                 },
               },
             }}
@@ -124,7 +128,7 @@ const BookingSection = () => {
       </div>
 
       {/* Divider */}
-      <div className="w-full h-px bg-gray-100" />
+      <div className="w-full h-[2px] bg-gray-200 my-1" />
 
       {/* Book Trip CTA */}
       <button className="w-full flex items-center justify-center gap-2 bg-gray-900 text-white text-sm font-semibold px-7 py-3.5 rounded-full hover:bg-[#FF5E62] transition-colors duration-300 mt-2">
