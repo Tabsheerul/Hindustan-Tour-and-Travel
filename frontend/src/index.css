@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-primary: #FF5E62;
-  --color-brand-secondary: #FF9933;
+  --color-brand-primary: #ff5e62;
+  --color-brand-secondary: #ff9933;
 }
 
 :root {
@@ -11,30 +11,48 @@
 
 body {
   background-color: #fafcff;
-  background-image: 
-    radial-gradient(ellipse at bottom, rgba(255, 153, 51, 0.25) 0%, transparent 70%),
+  background-image:
+    radial-gradient(
+      ellipse at bottom,
+      rgba(255, 153, 51, 0.25) 0%,
+      transparent 70%
+    ),
     linear-gradient(to bottom, #fafcff 0%, #fff2e6 50%, #ffe0c2 100%);
   color: #0f172a;
   overflow-x: hidden;
 }
 
 @keyframes drive {
-  0% { offset-distance: 0%; }
-  100% { offset-distance: 100%; }
+  0% {
+    offset-distance: 0%;
+  }
+  100% {
+    offset-distance: 100%;
+  }
 }
 
 @keyframes drift {
-  0% { transform: translateX(-20vw); opacity: 0; }
-  10% { opacity: 0.3; }
-  90% { opacity: 0.3; }
-  100% { transform: translateX(120vw); opacity: 0; }
+  0% {
+    transform: translateX(-20vw);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.3;
+  }
+  90% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateX(120vw);
+    opacity: 0;
+  }
 }
-
-
 
 @layer utilities {
   .animate-drive {
-    offset-path: path("M -100 900 C 400 900 300 500 800 450 C 1300 400 1200 100 1600 0");
+    offset-path: path(
+      "M -100 900 C 400 900 300 500 800 450 C 1300 400 1200 100 1600 0"
+    );
     animation: drive 12s linear infinite;
   }
   .animate-drift {
@@ -66,10 +84,10 @@ body {
   }
 
   .glass {
-    @apply bg-white/60 backdrop-blur-xl border border-white/40 shadow-sm;
+    @apply border border-white/40 bg-white/60 shadow-sm backdrop-blur-xl;
   }
   .glass-dark {
-    @apply bg-gray-900/80 backdrop-blur-xl border border-gray-700/50 shadow-xl;
+    @apply border border-gray-700/50 bg-gray-900/80 shadow-xl backdrop-blur-xl;
   }
   .text-texture-mask {
     background-color: #111827;
@@ -82,4 +100,3 @@ body {
     background-clip: text;
   }
 }
-
