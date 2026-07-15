@@ -2,6 +2,13 @@ import HeroCard from './components/HeroCard';
 import Navbar from './components/Navbar';
 import TripPlannerSection from './components/TripPlannerSection';
 
+// Cartoon 3D Landmarks
+import cartoonTajMahal from './assets/cartoon_taj_mahal.png';
+import cartoonHawaMahal from './assets/cartoon_hawa_mahal.png';
+import cartoonQutubMinar from './assets/cartoon_qutub_minar.png';
+import cartoonGateway from './assets/cartoon_gateway.png';
+import cartoonIndiaGate from './assets/cartoon_india_gate.png';
+
 function App() {
   return (
     <div className="relative w-full min-h-screen">
@@ -53,11 +60,13 @@ function App() {
               <rect x="3" y="-22" width="6" height="2" rx="1" fill="#FF9933" opacity="0.5" />
             </g>
 
-            {/* Professional Map Pin */}
-            <g id="map-pin">
-              <path d="M 0,0 C -8,-10 -16,-20 -16,-28 C -16,-38 -8,-44 0,-44 C 8,-44 16,-38 16,-28 C 16,-20 8,-10 0,0 Z" fill="#FF5E62" />
-              <circle cx="0" cy="-28" r="6" fill="#ffffff" />
-              <ellipse cx="0" cy="4" rx="10" ry="3" fill="rgba(0,0,0,0.15)" filter="blur(2px)" />
+            {/* Intersection Node on Main Route */}
+            <g id="route-exit">
+              <circle cx="0" cy="0" r="6" fill="#ffffff" stroke="#FF5E62" strokeWidth="3" />
+              <circle cx="0" cy="0" r="12" fill="none" stroke="#FF5E62" strokeWidth="1" opacity="0.4">
+                <animate attributeName="r" from="6" to="16" dur="2s" repeatCount="indefinite" />
+                <animate attributeName="opacity" from="0.5" to="0" dur="2s" repeatCount="indefinite" />
+              </circle>
             </g>
           </defs>
 
@@ -78,41 +87,63 @@ function App() {
             <animate attributeName="stroke-dashoffset" from="72" to="0" dur="1.5s" repeatCount="indefinite" />
           </use>
 
-          {/* ── Indian Landmark Pins with Place Names ── */}
+          {/* ── Secondary Connector Paths (Driveways) ── */}
+          <path d="
+            M 450,950 L 390,950 
+            M 1250,1100 L 1250,1040 
+            M 1350,1400 L 1410,1400 
+            M 150,1750 L 210,1750
+          " fill="none" stroke="#94a3b8" strokeWidth="3" strokeDasharray="4 6" strokeLinecap="round" opacity="0.6" />
 
-          {/* Taj Mahal — where route passes behind poster and turns down */}
-          <g transform="translate(850, 500)">
-            <use href="#map-pin" />
-            <text x="-130" y="-28" fill="#334155" fontSize="18" fontWeight="700" fontFamily="Inter, system-ui, sans-serif" opacity="0.5">Taj Mahal</text>
-            <text x="-85" y="-12" fill="#94a3b8" fontSize="12" fontFamily="Inter, system-ui, sans-serif" opacity="0.4">Agra</text>
+          {/* ── Route Exit Nodes ── */}
+          {/* <use href="#route-exit" x="1300" y="450" /> */}
+          <use href="#route-exit" x="450" y="950" />
+          <use href="#route-exit" x="1250" y="1100" />
+          <use href="#route-exit" x="1350" y="1400" />
+          <use href="#route-exit" x="150" y="1750" />
+
+          {/* ── Cartoon 3D Models ── */}
+
+          {/* Taj Mahal — top right, just above the route entry (Hidden for later use) */}
+          {/* 
+          <g transform="translate(1300, 390)">
+            <circle cx="0" cy="0" r="40" fill="rgba(0,0,0,0.1)" filter="blur(6px)" />
+            <image href={cartoonTajMahal} x="-75" y="-85" width="150" height="150" />
+            <text x="0" y="70" textAnchor="middle" fill="#334155" fontSize="16" fontWeight="700" fontFamily="Inter, system-ui, sans-serif" opacity="0.8">Taj Mahal</text>
+            <text x="0" y="86" textAnchor="middle" fill="#94a3b8" fontSize="12" fontFamily="Inter, system-ui, sans-serif" opacity="0.6">Agra</text>
+          </g>
+          */}
+
+          {/* Hawa Mahal — left side, just left of the route dropping down */}
+          <g transform="translate(390, 950)">
+            <circle cx="0" cy="0" r="40" fill="rgba(0,0,0,0.1)" filter="blur(6px)" />
+            <image href={cartoonHawaMahal} x="-75" y="-85" width="150" height="150" />
+            <text x="0" y="70" textAnchor="middle" fill="#334155" fontSize="16" fontWeight="700" fontFamily="Inter, system-ui, sans-serif" opacity="0.8">Hawa Mahal</text>
+            <text x="0" y="86" textAnchor="middle" fill="#94a3b8" fontSize="12" fontFamily="Inter, system-ui, sans-serif" opacity="0.6">Jaipur</text>
           </g>
 
-          {/* Hawa Mahal — midpoint of horizontal sweep, away from text */}
-          <g transform="translate(450, 1000)">
-            <use href="#map-pin" />
-            <text x="24" y="-28" fill="#334155" fontSize="18" fontWeight="700" fontFamily="Inter, system-ui, sans-serif" opacity="0.5">Hawa Mahal</text>
-            <text x="24" y="-12" fill="#94a3b8" fontSize="12" fontFamily="Inter, system-ui, sans-serif" opacity="0.4">Jaipur</text>
+          {/* Qutub Minar — right side, just above the horizontal route sweep */}
+          <g transform="translate(1250, 1040)">
+            <circle cx="0" cy="0" r="40" fill="rgba(0,0,0,0.1)" filter="blur(6px)" />
+            <image href={cartoonQutubMinar} x="-75" y="-85" width="150" height="150" />
+            <text x="0" y="70" textAnchor="middle" fill="#334155" fontSize="16" fontWeight="700" fontFamily="Inter, system-ui, sans-serif" opacity="0.8">Qutub Minar</text>
+            <text x="0" y="86" textAnchor="middle" fill="#94a3b8" fontSize="12" fontFamily="Inter, system-ui, sans-serif" opacity="0.6">New Delhi</text>
           </g>
 
-          {/* Qutub Minar — far right wide sweep */}
-          <g transform="translate(1300, 1100)">
-            <use href="#map-pin" />
-            <text x="-160" y="-28" fill="#334155" fontSize="18" fontWeight="700" fontFamily="Inter, system-ui, sans-serif" opacity="0.5">Qutub Minar</text>
-            <text x="-115" y="-12" fill="#94a3b8" fontSize="12" fontFamily="Inter, system-ui, sans-serif" opacity="0.4">New Delhi</text>
+          {/* Gateway of India — far right, just outside the final drop */}
+          <g transform="translate(1410, 1400)">
+            <circle cx="0" cy="0" r="40" fill="rgba(0,0,0,0.1)" filter="blur(6px)" />
+            <image href={cartoonGateway} x="-75" y="-85" width="150" height="150" />
+            <text x="0" y="70" textAnchor="middle" fill="#334155" fontSize="16" fontWeight="700" fontFamily="Inter, system-ui, sans-serif" opacity="0.8">Gateway of India</text>
+            <text x="0" y="86" textAnchor="middle" fill="#94a3b8" fontSize="12" fontFamily="Inter, system-ui, sans-serif" opacity="0.6">Mumbai</text>
           </g>
 
-          {/* Gateway of India — far right before final sweep left */}
-          <g transform="translate(1350, 1500)">
-            <use href="#map-pin" />
-            <text x="-195" y="-28" fill="#334155" fontSize="18" fontWeight="700" fontFamily="Inter, system-ui, sans-serif" opacity="0.5">Gateway of India</text>
-            <text x="-100" y="-12" fill="#94a3b8" fontSize="12" fontFamily="Inter, system-ui, sans-serif" opacity="0.4">Mumbai</text>
-          </g>
-
-          {/* India Gate — far left at the bottom */}
-          <g transform="translate(200, 1550)">
-            <use href="#map-pin" />
-            <text x="24" y="-28" fill="#334155" fontSize="18" fontWeight="700" fontFamily="Inter, system-ui, sans-serif" opacity="0.5">India Gate</text>
-            <text x="24" y="-12" fill="#94a3b8" fontSize="12" fontFamily="Inter, system-ui, sans-serif" opacity="0.4">New Delhi</text>
+          {/* India Gate — bottom left, just right of the final route exit */}
+          <g transform="translate(210, 1750)">
+            <circle cx="0" cy="0" r="40" fill="rgba(0,0,0,0.1)" filter="blur(6px)" />
+            <image href={cartoonIndiaGate} x="-75" y="-85" width="150" height="150" />
+            <text x="0" y="70" textAnchor="middle" fill="#334155" fontSize="16" fontWeight="700" fontFamily="Inter, system-ui, sans-serif" opacity="0.8">India Gate</text>
+            <text x="0" y="86" textAnchor="middle" fill="#94a3b8" fontSize="12" fontFamily="Inter, system-ui, sans-serif" opacity="0.6">New Delhi</text>
           </g>
 
           {/* Draw Animated Sleek Car */}
