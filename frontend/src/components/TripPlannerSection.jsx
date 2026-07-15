@@ -7,20 +7,24 @@ import VehicleSelector from './VehicleSelector';
 //   Right → VehicleSelector (compact vehicle type pills + 3D model placeholder)
 const TripPlannerSection = () => {
   return (
-    <section className="w-full bg-white py-24 px-16 max-w-6xl mx-auto">
+    <section className="w-full py-24 px-16 max-w-7xl mx-auto relative">
+
+      {/* Decorative background blurs */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-primary/5 rounded-full blur-[100px] -z-10 mix-blend-multiply"></div>
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-brand-secondary/5 rounded-full blur-[80px] -z-10 mix-blend-multiply"></div>
 
       {/* Section Label */}
-      <span className="text-xs font-semibold tracking-[0.2em] text-[#FF5E62] uppercase">
+      <span className="text-xs font-semibold tracking-[0.25em] text-brand-primary uppercase">
         Plan Your Journey
       </span>
 
       {/* Heading */}
-      <h2 className="text-4xl font-bold text-gray-900 tracking-tight mt-3 mb-12">
+      <h2 className="text-5xl font-bold tracking-tight mt-4 mb-16 text-texture-mask">
         Where would you like to go?
       </h2>
 
       {/* Two-column card */}
-      <div className="flex flex-col md:flex-row gap-8 border border-gray-100 rounded-3xl shadow-[0_8px_40px_rgba(0,0,0,0.06)] p-8">
+      <div className="glass flex flex-col md:flex-row gap-10 rounded-[2.5rem] p-10">
 
         {/* Left column — Booking form (takes more space) */}
         <div className="flex-1">
@@ -28,11 +32,11 @@ const TripPlannerSection = () => {
         </div>
 
         {/* Vertical divider (desktop only) */}
-        <div className="hidden md:block w-px bg-gray-100 self-stretch" />
+        <div className="hidden md:block w-px bg-gray-200/50 self-stretch" />
 
         {/* Right column — Compact vehicle selector */}
-        <div className="w-full md:w-72 shrink-0 flex flex-col gap-3">
-          <p className="text-[10px] font-bold tracking-[0.2em] text-gray-400 uppercase">
+        <div className="w-full md:w-80 shrink-0 flex flex-col gap-4">
+          <p className="text-xs font-bold tracking-[0.2em] text-gray-500 uppercase">
             Vehicle Type
           </p>
           <VehicleSelector />
