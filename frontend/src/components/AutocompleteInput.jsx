@@ -53,7 +53,7 @@ const AutocompleteInput = ({
           </span>
         )}
       </div>
-      <div className="group flex items-center gap-3 rounded-2xl border border-gray-300 bg-white px-4 py-3.5 shadow-sm transition-all focus-within:!border-[#FF5E62] focus-within:shadow-[0_0_0_3px_rgba(255,94,98,0.15)] hover:border-gray-400">
+      <div className="group flex items-center gap-3 rounded-2xl border border-gray-300 bg-white px-4 py-3.5 shadow-sm transition-all focus-within:border-[#FF5E62]! focus-within:shadow-[0_0_0_3px_rgba(255,94,98,0.15)] hover:border-gray-400">
         {icon}
         <input
           type="text"

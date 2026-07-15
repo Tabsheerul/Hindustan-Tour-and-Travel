@@ -11,8 +11,8 @@ export default function MapBackground() {
   return (
     <div className="pointer-events-none absolute inset-0 -z-20 overflow-hidden">
       {/* Soft glowing ambient light */}
-      <div className="absolute top-[30vh] left-0 h-[40vh] w-full bg-gradient-to-t from-[#FF9933]/10 to-transparent mix-blend-multiply blur-3xl"></div>
-      <div className="absolute top-[35vh] left-1/2 h-[30vh] w-[70vw] -translate-x-1/2 bg-gradient-to-t from-[#FF5E62]/5 to-transparent mix-blend-multiply blur-3xl"></div>
+      <div className="absolute top-[30vh] left-0 h-[40vh] w-full bg-linear-to-t from-[#FF9933]/10 to-transparent mix-blend-multiply blur-3xl"></div>
+      <div className="absolute top-[35vh] left-1/2 h-[30vh] w-[70vw] -translate-x-1/2 bg-linear-to-t from-[#FF5E62]/5 to-transparent mix-blend-multiply blur-3xl"></div>
 
       {/* GPS Map Interface Layer */}
       <svg

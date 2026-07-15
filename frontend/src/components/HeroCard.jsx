@@ -46,11 +46,11 @@ const HeroCard = () => {
         {/* Image Card wrapped in glass */}
         <div className="glass relative rounded-[2.5rem] bg-white/70 p-4 shadow-2xl">
           {/* Subtle gradient overlay to blend perfectly */}
-          <div className="pointer-events-none absolute inset-4 z-10 rounded-[2rem] bg-gradient-to-tr from-black/20 to-transparent mix-blend-overlay"></div>
+          <div className="pointer-events-none absolute inset-4 z-10 rounded-4xl bg-linear-to-tr from-black/20 to-transparent mix-blend-overlay"></div>
           <img
             src={premiumTajMahal}
             alt="Taj Mahal Premium Travel Photography"
-            className="relative z-0 h-[520px] w-auto max-w-[480px] rounded-[2rem] object-cover"
+            className="relative z-0 h-[520px] w-auto max-w-[480px] rounded-4xl object-cover"
           />
         </div>
 
