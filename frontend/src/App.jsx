@@ -24,21 +24,21 @@ function App() {
               </g>
             </pattern>
 
-            {/* Route: starts right → sweeps behind hero poster → descends with wide zigzags */}
+            {/* Route: enters from right → behind poster → only goes down into next sections */}
             <path id="gps-route" d="
-              M 1600,100 
-              L 1100,100 Q 1050,100 1050,150 
-              L 1050,400 Q 1050,450 1000,450 
-              L 300,450 Q 250,450 250,500 
-              L 250,900 Q 250,950 300,950 
-              L 1200,950 Q 1250,950 1250,1000 
-              L 1250,1400 Q 1250,1450 1200,1450 
-              L 200,1450 Q 150,1450 150,1500 
+              M 1600,450 
+              L 900,450 Q 850,450 850,500 
+              L 850,700 Q 850,750 800,750 
+              L 500,750 Q 450,750 450,800 
+              L 450,1050 Q 450,1100 500,1100 
+              L 1300,1100 Q 1350,1100 1350,1150 
+              L 1350,1500 Q 1350,1550 1300,1550 
+              L 200,1550 Q 150,1550 150,1600 
               L 150,2100
             " />
             
-            {/* Sleek Professional Top-Down Car */}
-            <g id="sleek-car">
+            {/* Sleek Professional Top-Down Car (rotated -90° for correct orientation) */}
+            <g id="sleek-car" transform="rotate(-90)">
               {/* Soft Drop shadow for depth */}
               <rect x="-12" y="-22" width="24" height="44" rx="12" fill="rgba(0,0,0,0.2)" transform="translate(6, 6)" filter="blur(4px)"/>
               {/* Car Body */}
@@ -80,36 +80,36 @@ function App() {
 
           {/* ── Indian Landmark Pins with Place Names ── */}
 
-          {/* Taj Mahal — where route enters from right and turns down */}
-          <g transform="translate(1050, 100)">
+          {/* Taj Mahal — where route passes behind poster and turns down */}
+          <g transform="translate(850, 500)">
             <use href="#map-pin" />
-            <text x="24" y="-28" fill="#334155" fontSize="18" fontWeight="700" fontFamily="Inter, system-ui, sans-serif" opacity="0.5">Taj Mahal</text>
-            <text x="24" y="-12" fill="#94a3b8" fontSize="12" fontFamily="Inter, system-ui, sans-serif" opacity="0.4">Agra</text>
+            <text x="-130" y="-28" fill="#334155" fontSize="18" fontWeight="700" fontFamily="Inter, system-ui, sans-serif" opacity="0.5">Taj Mahal</text>
+            <text x="-85" y="-12" fill="#94a3b8" fontSize="12" fontFamily="Inter, system-ui, sans-serif" opacity="0.4">Agra</text>
           </g>
 
-          {/* Hawa Mahal — where route sweeps left behind poster */}
-          <g transform="translate(650, 450)">
+          {/* Hawa Mahal — midpoint of horizontal sweep, away from text */}
+          <g transform="translate(450, 1000)">
             <use href="#map-pin" />
             <text x="24" y="-28" fill="#334155" fontSize="18" fontWeight="700" fontFamily="Inter, system-ui, sans-serif" opacity="0.5">Hawa Mahal</text>
             <text x="24" y="-12" fill="#94a3b8" fontSize="12" fontFamily="Inter, system-ui, sans-serif" opacity="0.4">Jaipur</text>
           </g>
 
-          {/* Qutub Minar — far left where route drops down */}
-          <g transform="translate(250, 900)">
+          {/* Qutub Minar — far right wide sweep */}
+          <g transform="translate(1300, 1100)">
             <use href="#map-pin" />
-            <text x="24" y="-28" fill="#334155" fontSize="18" fontWeight="700" fontFamily="Inter, system-ui, sans-serif" opacity="0.5">Qutub Minar</text>
-            <text x="24" y="-12" fill="#94a3b8" fontSize="12" fontFamily="Inter, system-ui, sans-serif" opacity="0.4">New Delhi</text>
+            <text x="-160" y="-28" fill="#334155" fontSize="18" fontWeight="700" fontFamily="Inter, system-ui, sans-serif" opacity="0.5">Qutub Minar</text>
+            <text x="-115" y="-12" fill="#94a3b8" fontSize="12" fontFamily="Inter, system-ui, sans-serif" opacity="0.4">New Delhi</text>
           </g>
 
-          {/* Gateway of India — far right where route zigzags back */}
-          <g transform="translate(1250, 1000)">
+          {/* Gateway of India — far right before final sweep left */}
+          <g transform="translate(1350, 1500)">
             <use href="#map-pin" />
-            <text x="-190" y="-28" fill="#334155" fontSize="18" fontWeight="700" fontFamily="Inter, system-ui, sans-serif" opacity="0.5">Gateway of India</text>
+            <text x="-195" y="-28" fill="#334155" fontSize="18" fontWeight="700" fontFamily="Inter, system-ui, sans-serif" opacity="0.5">Gateway of India</text>
             <text x="-100" y="-12" fill="#94a3b8" fontSize="12" fontFamily="Inter, system-ui, sans-serif" opacity="0.4">Mumbai</text>
           </g>
 
-          {/* India Gate — far left bottom where route ends */}
-          <g transform="translate(200, 1450)">
+          {/* India Gate — far left at the bottom */}
+          <g transform="translate(200, 1550)">
             <use href="#map-pin" />
             <text x="24" y="-28" fill="#334155" fontSize="18" fontWeight="700" fontFamily="Inter, system-ui, sans-serif" opacity="0.5">India Gate</text>
             <text x="24" y="-12" fill="#94a3b8" fontSize="12" fontFamily="Inter, system-ui, sans-serif" opacity="0.4">New Delhi</text>
