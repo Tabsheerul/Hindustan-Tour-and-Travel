@@ -29,32 +29,19 @@ const OlaMapView = ({ pickupCoords, destinationCoords, defaultCenter, apiKey }) 
       const olaMaps = new OlaMaps({ apiKey });
       olaMapsRef.current = olaMaps;
 
-      // Use user's IP-detected city if available, otherwise center of India
-      const initialCenter = defaultCenter
-        ? [defaultCenter.lng, defaultCenter.lat]
-        : [78.9629, 20.5937];
-
       // await is critical — init() returns a Promise<MapInstance>
       const map = await olaMaps.init({
         style: STYLE_URL,
         container: mapContainerRef.current,
-        center: initialCenter,
-        zoom: defaultCenter ? 11 : 4,
+        center: [78.9629, 20.5937], // Default to center of India
+        zoom: 4,
       });
 
       mapRef.current = map;
 
       // Once the style is loaded, signal React the map is interactive
-      // Also fly to user's city if no booking coords are set yet
       map.on("load", () => {
         setMapReady(true);
-        if (!pickupCoords && !destinationCoords && defaultCenter) {
-          map.flyTo({
-            center: [defaultCenter.lng, defaultCenter.lat],
-            zoom: 11,
-            duration: 1500,
-          });
-        }
       });
     };
 
@@ -65,6 +52,43 @@ const OlaMapView = ({ pickupCoords, destinationCoords, defaultCenter, apiKey }) 
       olaMapsRef.current = null;
     };
   }, []);
+
+  // ── STEP 1.5: Fly to defaultCenter when it becomes available ────────────────
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!mapReady || !map || !defaultCenter) return;
+    
+    // Only fly to defaultCenter if user hasn't set custom coords yet
+    if (!pickupCoords && !destinationCoords) {
+      map.flyTo({
+        center: [defaultCenter.lng, defaultCenter.lat],
+        zoom: 11,
+        duration: 1500,
+      });
+    }
+  }, [defaultCenter, mapReady, pickupCoords, destinationCoords]);
+
+  // ── STEP 1.6: Camera control for single point selection ─────────────────────
+  // If user only selected ONE point, zoom in close (15) to that point.
+  // If both are selected, Step 4 handles it via map.fitBounds().
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!mapReady || !map) return;
+
+    if (pickupCoords && !destinationCoords) {
+      map.flyTo({
+        center: [pickupCoords.lng, pickupCoords.lat],
+        zoom: 15,
+        duration: 1200,
+      });
+    } else if (destinationCoords && !pickupCoords) {
+      map.flyTo({
+        center: [destinationCoords.lng, destinationCoords.lat],
+        zoom: 15,
+        duration: 1200,
+      });
+    }
+  }, [pickupCoords, destinationCoords, mapReady]);
 
   // ── STEP 2: Pickup marker ─────────────────────────────────────────────────
   // Only runs after mapReady is true, so the map is guaranteed to be loaded
@@ -94,12 +118,6 @@ const OlaMapView = ({ pickupCoords, destinationCoords, defaultCenter, apiKey }) 
       .addMarker({ element: el, anchor: "center" })
       .setLngLat([pickupCoords.lng, pickupCoords.lat])
       .addTo(mapRef.current);
-
-    mapRef.current.flyTo({
-      center: [pickupCoords.lng, pickupCoords.lat],
-      zoom: 11,
-      duration: 1200,
-    });
   }, [pickupCoords, mapReady]);
 
   // ── STEP 3: Destination marker ────────────────────────────────────────────
@@ -128,12 +146,6 @@ const OlaMapView = ({ pickupCoords, destinationCoords, defaultCenter, apiKey }) 
       .addMarker({ element: el, anchor: "center" })
       .setLngLat([destinationCoords.lng, destinationCoords.lat])
       .addTo(mapRef.current);
-
-    mapRef.current.flyTo({
-      center: [destinationCoords.lng, destinationCoords.lat],
-      zoom: 11,
-      duration: 1200,
-    });
   }, [destinationCoords, mapReady]);
 
   // ── STEP 4: Route polyline between both points ────────────────────────────
@@ -208,16 +220,6 @@ const OlaMapView = ({ pickupCoords, destinationCoords, defaultCenter, apiKey }) 
   return (
     <div className="relative h-full w-full overflow-hidden rounded-3xl border border-gray-200 shadow-inner">
       <div ref={mapContainerRef} className="h-full w-full" />
-
-      {!pickupCoords && !destinationCoords && (
-        <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-2 bg-white/50 backdrop-blur-sm">
-          <span className="text-4xl">🗺️</span>
-          <p className="text-sm font-semibold text-gray-500">
-            Enter pickup &amp; destination
-          </p>
-          <p className="text-xs text-gray-400">to see the live route</p>
-        </div>
-      )}
     </div>
   );
 };

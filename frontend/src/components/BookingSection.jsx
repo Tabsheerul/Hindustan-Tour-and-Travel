@@ -14,7 +14,7 @@ const BookingSection = ({ onCoordsChange }) => {
   // Holds { lat, lng } objects for the map
   const [pickupCoords, setPickupCoords] = useState(null);
   const [destinationCoords, setDestinationCoords] = useState(null);
-
+``
   // Get API key from environment variables (MUST start with VITE_ in Vite apps)
   const OLA_API_KEY = import.meta.env.VITE_OLA_MAPS_API_KEY;
 

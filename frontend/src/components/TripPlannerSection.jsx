@@ -3,9 +3,7 @@ import BookingSection from "./BookingSection";
 import OlaMapView from "./OlaMapView";
 
 // ─── TripPlannerSection ───────────────────────────────────────────────────────
-// Two-column layout:
-//   Left  → BookingSection (form)
-//   Right → OlaMapView     (live interactive map)
+
 const TripPlannerSection = () => {
   const OLA_API_KEY = import.meta.env.VITE_OLA_MAPS_API_KEY;
 
