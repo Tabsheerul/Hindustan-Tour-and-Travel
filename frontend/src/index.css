@@ -22,67 +22,7 @@ body {
   overflow-x: hidden;
 }
 
-@keyframes drive {
-  0% {
-    offset-distance: 0%;
-  }
-  100% {
-    offset-distance: 100%;
-  }
-}
-
-@keyframes drift {
-  0% {
-    transform: translateX(-20vw);
-    opacity: 0;
-  }
-  10% {
-    opacity: 0.3;
-  }
-  90% {
-    opacity: 0.3;
-  }
-  100% {
-    transform: translateX(120vw);
-    opacity: 0;
-  }
-}
-
 @layer utilities {
-  .animate-drive {
-    offset-path: path(
-      "M -100 900 C 400 900 300 500 800 450 C 1300 400 1200 100 1600 0"
-    );
-    animation: drive 12s linear infinite;
-  }
-  .animate-drift {
-    animation: drift 35s linear infinite;
-  }
-  .animate-float-up {
-    animation: float-up 45s ease-in-out infinite;
-  }
-  .animate-drift-slow {
-    animation: drift 55s linear infinite;
-  }
-  .animate-drift-slower {
-    animation: drift 80s linear infinite;
-  }
-  .animate-fly {
-    animation: fly 25s linear infinite;
-  }
-  .animation-delay-2000 {
-    animation-delay: 2s;
-  }
-  .animation-delay-4000 {
-    animation-delay: 4s;
-  }
-  .animation-delay-8000 {
-    animation-delay: 8s;
-  }
-  .animation-delay-4000 {
-    animation-delay: 4s;
-  }
-
   .glass {
     @apply border border-white/40 bg-white/60 shadow-sm backdrop-blur-xl;
   }

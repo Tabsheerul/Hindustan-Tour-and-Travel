@@ -1,7 +1,6 @@
 import React from "react";
 
 // Cartoon 3D Landmarks
-import cartoonTajMahal from "../assets/cartoon_taj_mahal.png";
 import cartoonHawaMahal from "../assets/cartoon_hawa_mahal.png";
 import cartoonQutubMinar from "../assets/cartoon_qutub_minar.png";
 import cartoonGateway from "../assets/cartoon_gateway.png";
@@ -230,23 +229,12 @@ export default function MapBackground() {
         />
 
         {/* ── Route Exit Nodes ── */}
-        {/* <use href="#route-exit" x="1300" y="450" /> */}
         <use href="#route-exit" x="450" y="950" />
         <use href="#route-exit" x="1250" y="1100" />
         <use href="#route-exit" x="1350" y="1400" />
         <use href="#route-exit" x="150" y="1750" />
 
         {/* ── Cartoon 3D Models ── */}
-
-        {/* Taj Mahal — top right, just above the route entry (Hidden for later use) */}
-        {/* 
-        <g transform="translate(1300, 390)">
-          <circle cx="0" cy="0" r="40" fill="rgba(0,0,0,0.1)" filter="blur(6px)" />
-          <image href={cartoonTajMahal} x="-75" y="-85" width="150" height="150" />
-          <text x="0" y="70" textAnchor="middle" fill="#334155" fontSize="16" fontWeight="700" fontFamily="Inter, system-ui, sans-serif" opacity="0.8">Taj Mahal</text>
-          <text x="0" y="86" textAnchor="middle" fill="#94a3b8" fontSize="12" fontFamily="Inter, system-ui, sans-serif" opacity="0.6">Agra</text>
-        </g>
-        */}
 
         {/* Hawa Mahal — left side, just left of the route dropping down */}
         <g transform="translate(390, 950)">
