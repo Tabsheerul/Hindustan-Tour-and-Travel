@@ -5,11 +5,15 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 // ─── Main Component ─────────────────────────────────────────────────────────
-const BookingSection = () => {
+// onCoordsChange: optional callback → { pickup, destination } coordinates
+const BookingSection = ({ onCoordsChange }) => {
   const [pickup, setPickup] = useState("");
   const [destination, setDestination] = useState("");
   const [date, setDate] = useState(null);
   const [isLocating, setIsLocating] = useState(false);
+  // Holds { lat, lng } objects for the map
+  const [pickupCoords, setPickupCoords] = useState(null);
+  const [destinationCoords, setDestinationCoords] = useState(null);
 
   // Get API key from environment variables (MUST start with VITE_ in Vite apps)
   const OLA_API_KEY = import.meta.env.VITE_OLA_MAPS_API_KEY;
@@ -17,6 +21,22 @@ const BookingSection = () => {
   const handleSwap = () => {
     setPickup(destination);
     setDestination(pickup);
+    // Also swap coordinates
+    setPickupCoords(destinationCoords);
+    setDestinationCoords(pickupCoords);
+    if (onCoordsChange) onCoordsChange({ pickup: destinationCoords, destination: pickupCoords });
+  };
+
+  // Called by AutocompleteInput when pickup coordinates are resolved
+  const handlePickupCoords = (coords) => {
+    setPickupCoords(coords);
+    if (onCoordsChange) onCoordsChange({ pickup: coords, destination: destinationCoords });
+  };
+
+  // Called by AutocompleteInput when destination coordinates are resolved
+  const handleDestinationCoords = (coords) => {
+    setDestinationCoords(coords);
+    if (onCoordsChange) onCoordsChange({ pickup: pickupCoords, destination: coords });
   };
 
   const handleGetCurrentLocation = () => {
@@ -66,6 +86,7 @@ const BookingSection = () => {
           placeholder="Enter pickup city or location"
           value={pickup}
           onChange={setPickup}
+          onCoordinatesChange={handlePickupCoords}
           apiKey={OLA_API_KEY}
           onGetCurrentLocation={handleGetCurrentLocation}
           isLoading={isLocating}
@@ -90,6 +111,7 @@ const BookingSection = () => {
           placeholder="Enter your destination"
           value={destination}
           onChange={setDestination}
+          onCoordinatesChange={handleDestinationCoords}
           apiKey={OLA_API_KEY}
         />
       </div>

@@ -6,6 +6,7 @@ const AutocompleteInput = ({
   placeholder,
   value,
   onChange,
+  onCoordinatesChange, // NEW: called with { lat, lng } when a place is selected
   apiKey,
   onGetCurrentLocation,
   isLoading,
@@ -15,6 +16,8 @@ const AutocompleteInput = ({
 
   const fetchPlaces = async (searchText) => {
     onChange(searchText);
+    // Clear coordinates when user starts typing again
+    if (onCoordinatesChange) onCoordinatesChange(null);
 
     if (searchText.length < 3) {
       setSuggestions([]);
@@ -32,13 +35,31 @@ const AutocompleteInput = ({
         setShowDropdown(true);
       }
     } catch (error) {
-      console.error("Error fetching Ola Maps:", error);
+      console.error("Error fetching Ola Maps autocomplete:", error);
     }
   };
 
-  const handleSelectPlace = (placeName) => {
-    onChange(placeName);
+  // Called when user clicks a suggestion from the dropdown
+  const handleSelectPlace = async (place) => {
+    onChange(place.description);
     setShowDropdown(false);
+    setSuggestions([]);
+
+    // Geocode: convert the place name → lat/lng coordinates
+    if (onCoordinatesChange && place.place_id) {
+      try {
+        const res = await fetch(
+          `https://api.olamaps.io/places/v1/details?place_id=${place.place_id}&api_key=${apiKey}`,
+        );
+        const data = await res.json();
+        const loc = data?.result?.geometry?.location;
+        if (loc) {
+          onCoordinatesChange({ lat: loc.lat, lng: loc.lng });
+        }
+      } catch (err) {
+        console.error("Error geocoding place:", err);
+      }
+    }
   };
 
   return (
@@ -91,7 +112,7 @@ const AutocompleteInput = ({
           {suggestions.map((place, index) => (
             <button
               key={index}
-              onClick={() => handleSelectPlace(place.description)}
+              onClick={() => handleSelectPlace(place)}
               className="w-full truncate border-b border-gray-100 px-4 py-3.5 text-left text-base font-medium text-gray-800 transition-colors last:border-0 hover:bg-gray-100"
               title={place.description}
             >
