@@ -5,10 +5,6 @@ const HeroCard = () => {
     <div className="relative mx-auto flex min-h-[90vh] w-full max-w-7xl items-center justify-between gap-16 px-16 py-32">
       {/* Left — Text Content with lots of breathing room */}
       <div className="z-10 flex max-w-xl flex-col gap-6 text-left">
-        {/* Tiny label */}
-        <span className="text-brand-primary text-xs font-semibold tracking-[0.25em] uppercase">
-          Explore India
-        </span>
 
         {/* Headline */}
         <h1 className="text-texture-mask py-2 text-7xl leading-tight font-bold tracking-tight md:text-8xl">

@@ -247,10 +247,10 @@ export default function MapBackground() {
           />
           <image
             href={cartoonHawaMahal}
-            x="-75"
-            y="-85"
-            width="150"
-            height="150"
+            x="-60"
+            y="-70"
+            width="120"
+            height="120"
           />
           <text
             x="0"
@@ -288,10 +288,10 @@ export default function MapBackground() {
           />
           <image
             href={cartoonQutubMinar}
-            x="-75"
-            y="-85"
-            width="150"
-            height="150"
+            x="-60"
+            y="-70"
+            width="120"
+            height="120"
           />
           <text
             x="0"
@@ -329,10 +329,10 @@ export default function MapBackground() {
           />
           <image
             href={cartoonGateway}
-            x="-75"
-            y="-85"
-            width="150"
-            height="150"
+            x="-60"
+            y="-70"
+            width="120"
+            height="120"
           />
           <text
             x="0"
@@ -370,10 +370,10 @@ export default function MapBackground() {
           />
           <image
             href={cartoonIndiaGate}
-            x="-75"
-            y="-85"
-            width="150"
-            height="150"
+            x="-60"
+            y="-70"
+            width="120"
+            height="120"
           />
           <text
             x="0"
