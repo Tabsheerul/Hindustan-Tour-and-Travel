@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar";
 import TripPlannerSection from "./components/TripPlannerSection";
 import MapBackground from "./components/MapBackground";
 import ServicesSection from "./components/ServicesSection";
+import FaqSection from "./components/FaqSection";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       </div>
       
       <ServicesSection />
+      <FaqSection />
     </div>
   );
 }

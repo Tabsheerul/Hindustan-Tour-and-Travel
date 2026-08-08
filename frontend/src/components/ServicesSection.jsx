@@ -45,7 +45,7 @@ export default function ServicesSection() {
       {/* Solid white background for the rest of the section starting right after the fade */}
       <div className="absolute inset-x-0 bottom-0 top-32 -z-10 bg-white" />
 
-      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
+      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8 pt-18">
         <h2 className="mb-10 text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
           Explore what you can do with us
         </h2>
