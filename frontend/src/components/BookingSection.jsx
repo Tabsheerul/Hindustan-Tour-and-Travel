@@ -14,7 +14,7 @@ const BookingSection = ({ onCoordsChange }) => {
   // Holds { lat, lng } objects for the map
   const [pickupCoords, setPickupCoords] = useState(null);
   const [destinationCoords, setDestinationCoords] = useState(null);
-``
+
   // Get API key from environment variables (MUST start with VITE_ in Vite apps)
   const OLA_API_KEY = import.meta.env.VITE_OLA_MAPS_API_KEY;
 
@@ -59,9 +59,12 @@ const BookingSection = ({ onCoordsChange }) => {
           } else {
             setPickup(`${latitude.toFixed(4)}, ${longitude.toFixed(4)}`);
           }
+          // Notify the map about the new coordinates!
+          handlePickupCoords({ lat: latitude, lng: longitude });
         } catch (error) {
           console.error("Error reverse geocoding:", error);
           setPickup(`${latitude.toFixed(4)}, ${longitude.toFixed(4)}`);
+          handlePickupCoords({ lat: latitude, lng: longitude });
         } finally {
           setIsLocating(false);
         }
@@ -125,6 +128,7 @@ const BookingSection = ({ onCoordsChange }) => {
           <DatePicker
             value={date}
             onChange={(newValue) => setDate(newValue)}
+            views={['year', 'month', 'day']}
             sx={{
               width: "100%",
               "& .MuiOutlinedInput-root": {

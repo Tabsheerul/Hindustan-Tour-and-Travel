@@ -70,7 +70,7 @@ const OlaMapView = ({ pickupCoords, destinationCoords, defaultCenter, apiKey }) 
 
   // ── STEP 1.6: Camera control for single point selection ─────────────────────
   // If user only selected ONE point, zoom in close (15) to that point.
-  // If both are selected, Step 4 handles it via map.fitBounds().
+  // If both are selected, frame them both instantly.
   useEffect(() => {
     const map = mapRef.current;
     if (!mapReady || !map) return;
@@ -87,6 +87,19 @@ const OlaMapView = ({ pickupCoords, destinationCoords, defaultCenter, apiKey }) 
         zoom: 15,
         duration: 1200,
       });
+    } else if (pickupCoords && destinationCoords) {
+      const minLng = Math.min(pickupCoords.lng, destinationCoords.lng);
+      const minLat = Math.min(pickupCoords.lat, destinationCoords.lat);
+      const maxLng = Math.max(pickupCoords.lng, destinationCoords.lng);
+      const maxLat = Math.max(pickupCoords.lat, destinationCoords.lat);
+      
+      map.fitBounds(
+        [
+          [minLng, minLat],
+          [maxLng, maxLat],
+        ],
+        { padding: 80, duration: 1000 },
+      );
     }
   }, [pickupCoords, destinationCoords, mapReady]);
 
@@ -170,10 +183,12 @@ const OlaMapView = ({ pickupCoords, destinationCoords, defaultCenter, apiKey }) 
       try {
         const res = await fetch(
           `https://api.olamaps.io/routing/v1/directions?origin=${pickupCoords.lat},${pickupCoords.lng}&destination=${destinationCoords.lat},${destinationCoords.lng}&api_key=${apiKey}`,
+          { method: "POST" }
         );
         const data = await res.json();
 
-        const encodedPolyline = data?.routes?.[0]?.overview_polyline?.points;
+        // OLA Maps returns the encoded string directly on overview_polyline (unlike Google Maps)
+        const encodedPolyline = data?.routes?.[0]?.overview_polyline;
         if (!encodedPolyline) return;
 
         const coordinates = decodePolyline(encodedPolyline);
@@ -201,14 +216,6 @@ const OlaMapView = ({ pickupCoords, destinationCoords, defaultCenter, apiKey }) 
         });
 
         routeLayerRef.current = true;
-
-        map.fitBounds(
-          [
-            [pickupCoords.lng, pickupCoords.lat],
-            [destinationCoords.lng, destinationCoords.lat],
-          ],
-          { padding: 80, duration: 1000 },
-        );
       } catch (err) {
         console.error("Error fetching OLA route:", err);
       }
