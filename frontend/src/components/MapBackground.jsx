@@ -236,7 +236,7 @@ export default function MapBackground() {
 
         {/* ── Cartoon 3D Models ── */}
 
-        {/* Hawa Mahal — left side, just left of the route dropping down */}
+        {/* India Gate — left side, just left of the route dropping down */}
         <g transform="translate(390, 950)">
           <circle
             cx="0"
@@ -246,7 +246,7 @@ export default function MapBackground() {
             filter="blur(6px)"
           />
           <image
-            href={cartoonHawaMahal}
+            href={cartoonIndiaGate}
             x="-60"
             y="-70"
             width="120"
@@ -262,7 +262,7 @@ export default function MapBackground() {
             fontFamily="Inter, system-ui, sans-serif"
             opacity="0.8"
           >
-            Hawa Mahal
+            India Gate
           </text>
           <text
             x="0"
@@ -273,7 +273,7 @@ export default function MapBackground() {
             fontFamily="Inter, system-ui, sans-serif"
             opacity="0.6"
           >
-            Jaipur
+            New Delhi
           </text>
         </g>
 
@@ -359,7 +359,7 @@ export default function MapBackground() {
           </text>
         </g>
 
-        {/* India Gate — bottom left, just right of the final route exit */}
+        {/* Hawa Mahal — bottom left, just right of the final route exit */}
         <g transform="translate(210, 1750)">
           <circle
             cx="0"
@@ -369,7 +369,7 @@ export default function MapBackground() {
             filter="blur(6px)"
           />
           <image
-            href={cartoonIndiaGate}
+            href={cartoonHawaMahal}
             x="-60"
             y="-70"
             width="120"
@@ -385,7 +385,7 @@ export default function MapBackground() {
             fontFamily="Inter, system-ui, sans-serif"
             opacity="0.8"
           >
-            India Gate
+            Hawa Mahal
           </text>
           <text
             x="0"
@@ -396,7 +396,7 @@ export default function MapBackground() {
             fontFamily="Inter, system-ui, sans-serif"
             opacity="0.6"
           >
-            New Delhi
+            Jaipur
           </text>
         </g>
 
