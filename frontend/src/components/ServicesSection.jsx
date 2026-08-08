@@ -1,53 +1,35 @@
 import React from "react";
 
+// Import generated 3D images
+import outstationImg from "../assets/service_outstation_cab.png";
+import weddingImg from "../assets/service_wedding_car.png";
+import rentalImg from "../assets/service_hourly_rental.png";
+import planningImg from "../assets/service_trip_planning.png";
+
 const services = [
   {
     id: "outstation",
-    title: "Outstation Bookings",
-    description:
-      "Comfortable, affordable, and reliable rides for your out-of-town journeys. Travel with peace of mind.",
-    icon: "🛣️",
-    bgClass: "bg-linear-to-br from-blue-50/80 to-blue-100/80",
-    borderClass: "border-blue-100",
-    textClass: "text-blue-900",
-    colSpan: "col-span-1 md:col-span-2 lg:col-span-2",
-    minHeight: "min-h-[250px]"
-  },
-  {
-    id: "shadi",
-    title: "Shadi & Barat",
-    description:
-      "Premium fleets and spacious vehicles to make your special days grand.",
-    icon: "🎉",
-    bgClass: "bg-linear-to-br from-rose-50/80 to-rose-100/80",
-    borderClass: "border-rose-100",
-    textClass: "text-rose-900",
-    colSpan: "col-span-1 md:col-span-1 lg:col-span-1",
-    minHeight: "min-h-[250px]"
+    title: "Outstation Cabs",
+    description: "Get convenient, affordable outstation cabs anytime at your door.",
+    image: outstationImg,
   },
   {
     id: "rentals",
     title: "Hourly Rentals",
-    description:
-      "Flexible bookings by the hour for errands, meetings, or sightseeing.",
-    icon: "⏱️",
-    bgClass: "bg-linear-to-br from-amber-50/80 to-amber-100/80",
-    borderClass: "border-amber-100",
-    textClass: "text-amber-900",
-    colSpan: "col-span-1 md:col-span-1 lg:col-span-1",
-    minHeight: "min-h-[250px]"
+    description: "Flexible bookings by the hour for errands, meetings, or sightseeing.",
+    image: rentalImg,
   },
   {
     id: "planning",
     title: "Trip Planning",
-    description:
-      "Customized itineraries and full-service travel planning for a stress-free vacation.",
-    icon: "🗺️",
-    bgClass: "bg-linear-to-br from-emerald-50/80 to-emerald-100/80",
-    borderClass: "border-emerald-100",
-    textClass: "text-emerald-900",
-    colSpan: "col-span-1 md:col-span-2 lg:col-span-2",
-    minHeight: "min-h-[250px]"
+    description: "Customized itineraries and full-service travel planning for a stress-free vacation.",
+    image: planningImg,
+  },
+  {
+    id: "shadi",
+    title: "Shadi & Barat",
+    description: "Premium fleets and spacious vehicles to make your special days grand.",
+    image: weddingImg,
   },
 ];
 
@@ -64,50 +46,39 @@ export default function ServicesSection() {
       <div className="absolute inset-x-0 bottom-0 top-32 -z-10 bg-white" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mb-14 md:text-left">
-          <h2 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl">
-            More than just a ride
-          </h2>
-          <p className="mt-4 text-xl text-gray-600 max-w-2xl">
-            Explore our premium services tailored for every journey. Whether it's a quick errand or a grand wedding, we've got you covered.
-          </p>
-        </div>
+        <h2 className="mb-10 text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
+          Explore what you can do with us
+        </h2>
 
-        {/* Bento Grid */}
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+        {/* Clean, business-standard grid */}
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2">
           {services.map((service) => (
             <div
               key={service.id}
-              className={`group relative overflow-hidden rounded-[2rem] border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${service.bgClass} ${service.borderClass} ${service.colSpan} ${service.minHeight}`}
+              className="group relative flex min-h-[240px] cursor-pointer flex-col justify-between overflow-hidden rounded-2xl bg-[#F5F5F5] p-8 transition-all hover:bg-[#EAEAEA]"
             >
-              <div className="flex h-full flex-col justify-between p-8">
-                <div className="flex items-start justify-between">
-                  <div className="text-5xl drop-shadow-md transition-transform duration-300 group-hover:scale-110">
-                    {service.icon}
-                  </div>
-                  <button className="flex h-12 w-12 items-center justify-center rounded-full bg-white text-gray-900 opacity-0 shadow-sm transition-all duration-300 group-hover:opacity-100 hover:bg-gray-50 hover:scale-105">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      className="h-6 w-6"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M12.97 3.97a.75.75 0 011.06 0l7.5 7.5a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 11-1.06-1.06l6.22-6.22H3a.75.75 0 010-1.5h16.19l-6.22-6.22a.75.75 0 010-1.06z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </button>
-                </div>
-                <div className="mt-8">
-                  <h3 className={`mb-3 text-2xl font-bold ${service.textClass}`}>
-                    {service.title}
-                  </h3>
-                  <p className="text-base font-medium leading-relaxed text-gray-700/80">
-                    {service.description}
-                  </p>
-                </div>
+              <div className="relative z-10 max-w-[65%]">
+                <h3 className="mb-3 text-2xl font-bold text-gray-900">
+                  {service.title}
+                </h3>
+                <p className="text-[15px] font-medium leading-relaxed text-gray-600">
+                  {service.description}
+                </p>
+              </div>
+
+              <div className="relative z-10 mt-8">
+                <button className="rounded-full bg-white px-6 py-2.5 text-sm font-bold text-gray-900 shadow-sm transition-transform hover:scale-105">
+                  Details
+                </button>
+              </div>
+              
+              {/* Prominent Image perfectly positioned on the right */}
+              <div className="absolute bottom-0 right-0 h-full w-[45%] pointer-events-none">
+                <img 
+                  src={service.image} 
+                  alt={service.title} 
+                  className="absolute bottom-4 right-0 h-[85%] w-full object-contain object-right-bottom mix-blend-multiply transition-transform duration-500 group-hover:scale-110" 
+                />
               </div>
             </div>
           ))}
