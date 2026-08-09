@@ -4,7 +4,7 @@ import React from "react";
 import outstationImg from "../assets/service_outstation_cab.png";
 import weddingImg from "../assets/service_wedding_car.png";
 import rentalImg from "../assets/service_hourly_rental.png";
-import planningImg from "../assets/service_trip_planning.png";
+import planningImg from "../assets/service_trip_planning_car.png";
 
 const services = [
   {

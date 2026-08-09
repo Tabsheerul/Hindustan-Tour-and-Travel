@@ -12,7 +12,7 @@ const Navbar = () => {
       </div>
 
       {/* Glass pill — links + CTA */}
-      <div className="glass-dark hidden items-center gap-7 rounded-full px-6 py-3 shadow-lg md:flex">
+      <div className="bg-gray-900 hidden items-center gap-7 rounded-full px-6 py-3 shadow-lg md:flex">
         <a
           href="#"
           className="text-sm font-medium text-white/90 drop-shadow-md transition-colors hover:text-white"
@@ -29,7 +29,7 @@ const Navbar = () => {
           href="#"
           className="text-sm font-medium text-white/60 transition-colors hover:text-white"
         >
-          Offers
+          Services
         </a>
         <a
           href="#"
