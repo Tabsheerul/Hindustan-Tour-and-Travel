@@ -35,9 +35,11 @@ const services = [
 
 export default function ServicesSection() {
   return (
-    <section className="relative w-full pb-24 pt-32 mt-10">
+    <section id="services" className="relative w-full pt-12 pb-32">
+      {/* Smooth fade from map background to solid white */}
       {/* 
-        Smooth gradient fade: transparent at the top, solid white at the bottom (128px high).
+        The top 32px has a gradient that goes from transparent (showing the map behind) 
+        to solid white. 
         This merges the map background smoothly into this section.
       */}
       <div className="pointer-events-none absolute left-0 top-0 h-32 w-full bg-linear-to-b from-transparent to-white" />

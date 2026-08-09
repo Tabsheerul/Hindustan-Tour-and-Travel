@@ -9,6 +9,10 @@
   --bg-texture: none;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: #fafcff;
   background-image:

@@ -37,7 +37,7 @@ const TripPlannerSection = () => {
   };
 
   return (
-    <section className="relative mx-auto w-full max-w-7xl px-16 py-24">
+    <section id="booking" className="relative mx-auto w-full max-w-7xl px-16 py-24">
       {/* Decorative background blurs */}
       <div className="bg-brand-primary/5 absolute top-0 right-0 -z-10 h-[500px] w-[500px] rounded-full mix-blend-multiply blur-[100px]"></div>
       <div className="bg-brand-secondary/5 absolute bottom-0 left-0 -z-10 h-[400px] w-[400px] rounded-full mix-blend-multiply blur-[80px]"></div>

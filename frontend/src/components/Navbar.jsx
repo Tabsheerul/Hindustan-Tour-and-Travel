@@ -12,37 +12,43 @@ const Navbar = () => {
       </div>
 
       {/* Glass pill — links + CTA */}
-      <div className="bg-gray-900 hidden items-center gap-7 rounded-full px-6 py-3 shadow-lg md:flex">
+      <div className="bg-gray-900 hidden items-center gap-6 rounded-full pl-7 pr-2 py-2 shadow-lg lg:flex">
         <a
-          href="#"
-          className="text-sm font-medium text-white/90 drop-shadow-md transition-colors hover:text-white"
-        >
-          Home
-        </a>
-        <a
-          href="#"
-          className="text-sm font-medium text-white/60 transition-colors hover:text-white"
-        >
-          Explore
-        </a>
-        <a
-          href="#"
-          className="text-sm font-medium text-white/60 transition-colors hover:text-white"
+          href="#services"
+          className="text-sm font-medium text-white/70 transition-colors hover:text-white"
         >
           Services
         </a>
         <a
           href="#"
-          className="text-sm font-medium text-white/60 transition-colors hover:text-white"
+          className="text-sm font-medium text-white/70 transition-colors hover:text-white"
+        >
+          Partner with Us
+        </a>
+        <a
+          href="#"
+          className="text-sm font-medium text-white/70 transition-colors hover:text-white"
         >
           About
         </a>
+        
         {/* Divider */}
-        <div className="h-4 w-px bg-white/20"></div>
+        <div className="mx-2 h-4 w-px bg-white/20"></div>
+        
+        <a
+          href="#"
+          className="flex items-center gap-2 text-sm font-medium text-white/70 transition-colors hover:text-white"
+        >
+          Log in
+        </a>
+
         {/* CTA */}
-        <button className="rounded-full bg-white/90 px-4 py-1.5 text-sm font-semibold text-gray-900 shadow-sm backdrop-blur-md transition-all hover:scale-105 hover:bg-white">
-          Book Now
-        </button>
+        <a 
+          href="#booking"
+          className="ml-2 rounded-full bg-white/95 px-5 py-2.5 text-sm font-bold text-gray-900 shadow-sm transition-all hover:scale-105 hover:bg-white"
+        >
+          Book Ride
+        </a>
       </div>
     </nav>
   );
