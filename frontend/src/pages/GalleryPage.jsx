@@ -60,6 +60,7 @@ export default function GalleryPage() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [lightbox, setLightbox] = useState(null);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [showAll, setShowAll] = useState(false);
 
   const filtered =
     activeCategory === "All"
@@ -136,7 +137,7 @@ export default function GalleryPage() {
           {CATEGORIES.map((cat) => (
             <button
               key={cat}
-              onClick={() => setActiveCategory(cat)}
+              onClick={() => { setActiveCategory(cat); setShowAll(false); }}
               className={`rounded-full px-5 py-2 text-sm font-semibold transition-all duration-200 ${
                 activeCategory === cat
                   ? "bg-gray-900 text-white shadow-md"
@@ -149,16 +150,17 @@ export default function GalleryPage() {
           ))}
         </div>
 
-        {/* ── Masonry-style Grid ── */}
-        <div className="columns-1 gap-4 sm:columns-2 lg:columns-3 xl:columns-4">
-          {filtered.map((item) => (
-            <div
-              key={item.id}
-              onClick={() => openLightbox(item)}
-              className="group mb-4 break-inside-avoid cursor-pointer overflow-hidden rounded-2xl bg-gray-100 shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5"
-            >
-              <div className="relative overflow-hidden">
-                <img
+        {/* ── Grid ── */}
+        <div className="relative pb-4">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {filtered.slice(0, showAll ? filtered.length : 12).map((item) => (
+              <div
+                key={item.id}
+                onClick={() => openLightbox(item)}
+                className="group cursor-pointer overflow-hidden rounded-2xl bg-gray-100 shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+              >
+                <div className="relative aspect-[4/3] overflow-hidden">
+                  <img
                   src={`/src/assets/jd_gallery/${item.file}`}
                   alt={item.title}
                   className="w-full object-cover transition-transform duration-500 group-hover:scale-105"
@@ -180,12 +182,25 @@ export default function GalleryPage() {
                 </div>
               </div>
               {/* Card caption */}
-              <div className="px-4 py-3">
-                <p className="text-sm font-semibold text-gray-900">{item.title}</p>
-                <p className="text-xs text-gray-400">{item.category}</p>
+              <div className="px-4 py-4">
+                <p className="text-base font-bold text-gray-900">{item.title}</p>
+                <p className="mt-1 text-sm text-gray-500 line-clamp-1">{item.desc}</p>
               </div>
             </div>
           ))}
+          </div>
+
+          {/* Blur Overlay & Show More Button */}
+          {!showAll && filtered.length > 9 && (
+            <div className="absolute bottom-0 left-0 right-0 flex h-72 flex-col items-center justify-end bg-gradient-to-t from-white via-white/95 to-transparent pb-4">
+              <button
+                onClick={() => setShowAll(true)}
+                className="rounded-full border-2 border-gray-900 bg-white px-8 py-3.5 text-sm font-bold text-gray-900 shadow-xl transition-all hover:-translate-y-1 hover:bg-gray-900 hover:text-white"
+              >
+                Load More Photos ({filtered.length - 9} Hidden) ↓
+              </button>
+            </div>
+          )}
         </div>
 
         {/* ── Bottom CTA ── */}
