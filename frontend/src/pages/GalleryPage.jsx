@@ -47,14 +47,10 @@ const GALLERY_ITEMS = [
   { id: 40, file: "jd_40.jpg", title: "White Sedan Rear",        category: "Cars",           desc: "White sedan rear view (Ciaz)" },
   { id: 41, file: "jd_41.jpg", title: "White Sedan Front",       category: "Cars",           desc: "White sedan front view (Ciaz)" },
   { id: 42, file: "jd_42.jpg", title: "Force Traveller (Side)",  category: "Tempo",          desc: "White Force Traveller side view" },
-  { id: 43, file: "jd_43.jpg", title: "AC Bus Poster",           category: "Buses",          desc: "Blue bus poster — A.C. Bus Available" },
   { id: 44, file: "jd_44.jpg", title: "Force Traveller TOURIST", category: "Tempo",          desc: "White Force Traveller TOURIST — front view" },
-  { id: 45, file: "jd_45.jpg", title: "Hindustan Taxi Ad",       category: "Posters",        desc: "Yellow poster — Hindustan Taxi 9759654651" },
-  { id: 46, file: "jd_46.jpg", title: "24/7 Call Now",           category: "Posters",        desc: "Yellow poster — 24/7 Call Now 9759654651" },
-  { id: 47, file: "jd_47.jpg", title: "Bus Advertisement",       category: "Posters",        desc: "Pink bus advertisement poster" },
 ];
 
-const CATEGORIES = ["All", "Cars", "Buses", "Tempo", "Wedding", "Interiors", "Posters"];
+const CATEGORIES = ["All", "Cars", "Buses", "Tempo", "Wedding", "Interiors"];
 
 export default function GalleryPage() {
   const [activeCategory, setActiveCategory] = useState("All");
