@@ -8,6 +8,9 @@ import { OlaMaps } from "olamaps-web-sdk";
 const STYLE_URL =
   "https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/style.json";
 
+// Firozabad coordinates: 27.1591°N, 78.3957°E
+const FIROZABAD = [78.3957, 27.1591];
+
 const OlaMapView = ({ pickupCoords, destinationCoords, defaultCenter, apiKey }) => {
   const mapContainerRef = useRef(null);
   const olaMapsRef = useRef(null);    // OlaMaps SDK instance
@@ -30,11 +33,16 @@ const OlaMapView = ({ pickupCoords, destinationCoords, defaultCenter, apiKey }) 
       olaMapsRef.current = olaMaps;
 
       // await is critical — init() returns a Promise<MapInstance>
+      // Default center is Firozabad with a closer zoom since this is a local business
+      const center = defaultCenter
+        ? [defaultCenter.lng, defaultCenter.lat]
+        : FIROZABAD;
+
       const map = await olaMaps.init({
         style: STYLE_URL,
         container: mapContainerRef.current,
-        center: [78.9629, 20.5937], // Default to center of India
-        zoom: 4,
+        center: center,
+        zoom: 11, // Zoomed into city level for Firozabad
       });
 
       mapRef.current = map;

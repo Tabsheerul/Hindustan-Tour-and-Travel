@@ -4,6 +4,7 @@ import TripPlannerSection from "./components/TripPlannerSection";
 import MapBackground from "./components/MapBackground";
 import ServicesSection from "./components/ServicesSection";
 import FaqSection from "./components/FaqSection";
+import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
       
       <ServicesSection />
       <FaqSection />
+      <ContactSection />
       <Footer />
     </div>
   );

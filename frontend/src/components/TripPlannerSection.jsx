@@ -1,8 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import BookingSection from "./BookingSection";
 import OlaMapView from "./OlaMapView";
 
 // ─── TripPlannerSection ───────────────────────────────────────────────────────
+// Firozabad coordinates: 27.1591°N, 78.3957°E
+const FIROZABAD_CENTER = { lat: 27.1591, lng: 78.3957 };
 
 const TripPlannerSection = () => {
   const OLA_API_KEY = import.meta.env.VITE_OLA_MAPS_API_KEY;
@@ -10,25 +12,6 @@ const TripPlannerSection = () => {
   // Stores the resolved { lat, lng } for pickup and destination
   const [pickupCoords, setPickupCoords] = useState(null);
   const [destinationCoords, setDestinationCoords] = useState(null);
-  // User's city fetched silently via IP geolocation (no browser permission needed)
-  const [userLocation, setUserLocation] = useState(null);
-
-  // On mount: fetch user's approximate city from their IP address
-  // ipapi.co is free (1000 req/day), no API key required
-  useEffect(() => {
-    const fetchUserCity = async () => {
-      try {
-        const res = await fetch("https://ipapi.co/json/");
-        const data = await res.json();
-        if (data.latitude && data.longitude) {
-          setUserLocation({ lat: data.latitude, lng: data.longitude });
-        }
-      } catch (err) {
-        console.warn("IP geolocation failed, using default map center.", err);
-      }
-    };
-    fetchUserCity();
-  }, []);
 
   // BookingSection calls this whenever either coordinate changes
   const handleCoordsChange = ({ pickup, destination }) => {
@@ -44,7 +27,7 @@ const TripPlannerSection = () => {
 
       {/* Section Label */}
       <span className="text-brand-primary text-xs font-semibold tracking-[0.25em] uppercase">
-        Plan Your Journey
+        Book Your Ride from Firozabad
       </span>
 
       {/* Heading */}
@@ -67,7 +50,7 @@ const TripPlannerSection = () => {
           <OlaMapView
             pickupCoords={pickupCoords}
             destinationCoords={destinationCoords}
-            defaultCenter={userLocation}
+            defaultCenter={FIROZABAD_CENTER}
             apiKey={OLA_API_KEY}
           />
         </div>

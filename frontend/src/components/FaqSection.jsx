@@ -2,9 +2,9 @@ import React, { useState } from "react";
 
 const faqs = [
   {
-    question: "Are your drivers verified and experienced for long trips?",
+    question: "Which areas do you provide pickup from?",
     answer:
-      "Yes, your safety is our absolute top priority. All our drivers undergo rigorous background checks, hold valid commercial licenses, and have years of experience driving safely on highways and hilly terrains. You can relax and travel with complete peace of mind.",
+      "We provide pickup from Firozabad city and all nearby areas within approximately 50 km — including Tundla, Shikohabad, Jasrana, Etmadpur, Bah, and surrounding villages. Your destination can be anywhere in India!",
   },
   {
     question: "Are toll taxes and parking charges included in the fare?",
@@ -12,9 +12,9 @@ const faqs = [
       "To keep our base fares as affordable as possible, toll taxes and parking fees are usually paid directly by you during the trip as per actuals. However, if you prefer a hassle-free experience, we also offer all-inclusive packages where everything is covered upfront!",
   },
   {
-    question: "Can I change my itinerary or extend my rental during the trip?",
+    question: "Are your drivers verified and experienced for long trips?",
     answer:
-      "Absolutely! We understand that travel plans can change. Whether you want to add a sudden stopover, extend your trip by a few days, or change your drop location, simply contact our 24/7 support team and we will adjust your booking instantly.",
+      "Yes, your safety is our absolute top priority. All our drivers are locally vetted professionals from Firozabad who know the roads well. They undergo rigorous background checks, hold valid commercial licenses, and have years of experience driving safely on highways. You can relax and travel with complete peace of mind.",
   },
   {
     question: "What happens if the cab breaks down during my journey?",
@@ -24,7 +24,7 @@ const faqs = [
   {
     question: "Do you provide decorated cars for weddings (Barat)?",
     answer:
-      "Yes, we do! We specialize in Shadi & Barat bookings with a premium fleet of luxury sedans and spacious SUVs. We can even arrange for professional floral decorations so your car looks absolutely stunning for your special day.",
+      "Yes, we do! We specialize in Shadi & Barat bookings in Firozabad and nearby areas with a premium fleet of luxury sedans and spacious SUVs. We can even arrange for professional floral decorations so your car looks absolutely stunning for your special day.",
   },
 ];
 
@@ -36,7 +36,7 @@ export default function FaqSection() {
   };
 
   return (
-    <section className="w-full bg-gray-50 py-24 pb-32">
+    <section id="faq" className="w-full bg-gray-50 py-24 pb-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="flex flex-col gap-16 lg:flex-row lg:gap-24">
           
@@ -50,11 +50,11 @@ export default function FaqSection() {
                 Got questions?
               </h2>
               <p className="mt-5 text-lg leading-relaxed text-gray-600">
-                Everything you need to know about our premium services. Can't find the answer you're looking for?
+                Everything you need to know about our cab services from Firozabad. Can't find the answer you're looking for?
               </p>
-              <button className="mt-8 rounded-full bg-gray-900 px-7 py-3.5 text-sm font-semibold text-white shadow-md transition-all hover:-translate-y-0.5 hover:bg-[#FF5E62] hover:shadow-lg">
+              <a href="#contact" className="mt-8 inline-block rounded-full bg-gray-900 px-7 py-3.5 text-sm font-semibold text-white shadow-md transition-all hover:-translate-y-0.5 hover:bg-[#FF5E62] hover:shadow-lg">
                 Contact Us
-              </button>
+              </a>
             </div>
           </div>
 

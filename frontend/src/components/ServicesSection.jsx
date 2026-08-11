@@ -10,25 +10,25 @@ const services = [
   {
     id: "outstation",
     title: "Outstation Cabs",
-    description: "Get convenient, affordable outstation cabs anytime at your door.",
+    description: "Book affordable outstation cabs from Firozabad to Agra, Delhi, Jaipur, Mathura & beyond.",
     image: outstationImg,
   },
   {
     id: "rentals",
     title: "Hourly Rentals",
-    description: "Flexible bookings by the hour for errands, meetings, or sightseeing.",
+    description: "Need a cab for a few hours? Hire by the hour for local errands, meetings, or sightseeing near Firozabad.",
     image: rentalImg,
   },
   {
     id: "planning",
     title: "Trip Planning",
-    description: "Customized itineraries and full-service travel planning for a stress-free vacation.",
+    description: "From Firozabad to anywhere in India — we plan your itinerary, hotels, and transport end-to-end.",
     image: planningImg,
   },
   {
     id: "shadi",
     title: "Shadi & Barat",
-    description: "Premium fleets and spacious vehicles to make your special days grand.",
+    description: "Premium decorated cars & spacious vehicles for weddings, barats, and special occasions in Firozabad.",
     image: weddingImg,
   },
 ];
@@ -49,7 +49,7 @@ export default function ServicesSection() {
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8 pt-18">
         <h2 className="mb-10 text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
-          Explore what you can do with us
+          Our Services in Firozabad
         </h2>
 
         {/* Clean, business-standard grid */}

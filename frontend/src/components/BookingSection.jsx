@@ -6,6 +6,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 // ─── Main Component ─────────────────────────────────────────────────────────
 // onCoordsChange: optional callback → { pickup, destination } coordinates
+// Pickup is restricted to Firozabad & nearby areas (within ~50km)
+// Destination can be anywhere in India
 const BookingSection = ({ onCoordsChange }) => {
   const [pickup, setPickup] = useState("");
   const [destination, setDestination] = useState("");
@@ -17,15 +19,6 @@ const BookingSection = ({ onCoordsChange }) => {
 
   // Get API key from environment variables (MUST start with VITE_ in Vite apps)
   const OLA_API_KEY = import.meta.env.VITE_OLA_MAPS_API_KEY;
-
-  const handleSwap = () => {
-    setPickup(destination);
-    setDestination(pickup);
-    // Also swap coordinates
-    setPickupCoords(destinationCoords);
-    setDestinationCoords(pickupCoords);
-    if (onCoordsChange) onCoordsChange({ pickup: destinationCoords, destination: pickupCoords });
-  };
 
   // Called by AutocompleteInput when pickup coordinates are resolved
   const handlePickupCoords = (coords) => {
@@ -81,12 +74,12 @@ const BookingSection = ({ onCoordsChange }) => {
 
   return (
     <div className="flex flex-col gap-6">
-      {/* Pickup & Destination Row */}
+      {/* Pickup & Destination */}
       <div className="flex flex-col gap-4">
         <AutocompleteInput
           label="Pickup Point"
           icon={<span className="shrink-0 text-lg text-[#FF5E62]">📍</span>}
-          placeholder="Enter pickup city or location"
+          placeholder="Firozabad, Tundla, Shikohabad..."
           value={pickup}
           onChange={setPickup}
           onCoordinatesChange={handlePickupCoords}
@@ -95,23 +88,17 @@ const BookingSection = ({ onCoordsChange }) => {
           isLoading={isLocating}
         />
 
-        {/* Swap Button */}
+        {/* Visual connector line */}
         <div className="flex items-center gap-3 py-1">
           <div className="h-[2px] flex-1 bg-gray-200" />
-          <button
-            onClick={handleSwap}
-            title="Swap pickup and destination"
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-gray-300 bg-white text-base text-gray-600 shadow-sm transition-all duration-300 hover:rotate-180 hover:border-[#FF5E62] hover:bg-[#FF5E62] hover:text-white"
-          >
-            ⇅
-          </button>
+          <span className="shrink-0 text-xs font-bold tracking-widest text-gray-400 uppercase">To</span>
           <div className="h-[2px] flex-1 bg-gray-200" />
         </div>
 
         <AutocompleteInput
           label="Destination"
           icon={<span className="shrink-0 text-lg text-[#FF9933]">🏁</span>}
-          placeholder="Enter your destination"
+          placeholder="Agra, Delhi, Jaipur, Mumbai..."
           value={destination}
           onChange={setDestination}
           onCoordinatesChange={handleDestinationCoords}

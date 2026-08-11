@@ -8,29 +8,35 @@ const HeroCard = () => {
 
         {/* Headline */}
         <h1 className="text-texture-mask py-2 text-7xl leading-tight font-bold tracking-tight md:text-8xl">
-          Travel <br />
-          <span className="text-gray-300 mix-blend-multiply">without</span>{" "}
+          Your Ride <br />
+          <span className="text-gray-300 mix-blend-multiply">from</span>{" "}
           <br />
-          limits.
+          Firozabad.
         </h1>
 
         {/* Subtext */}
         <p className="mt-4 max-w-sm text-lg leading-relaxed font-light text-gray-500 md:text-xl">
-          Discover the heart of India with handcrafted tours, personalised for
-          every traveller. Let the journey be as beautiful as the destination.
+          Book reliable outstation cabs from Firozabad & nearby cities to
+          anywhere in India. Comfortable rides, honest pricing, always on time.
         </p>
 
         {/* CTA */}
         <div className="mt-8 flex items-center gap-6">
-          <button className="glass-dark rounded-full px-8 py-4 text-sm font-semibold text-white shadow-lg transition-all hover:-translate-y-0.5 hover:bg-gray-800 hover:shadow-xl">
-            Book a Tour
-          </button>
-          <button className="group flex items-center gap-2 text-sm font-medium text-gray-500 transition-colors hover:text-gray-900">
-            View Destinations
+          <a
+            href="#booking"
+            className="glass-dark rounded-full px-8 py-4 text-sm font-semibold text-white shadow-lg transition-all hover:-translate-y-0.5 hover:bg-gray-800 hover:shadow-xl"
+          >
+            Book a Ride
+          </a>
+          <a
+            href="#contact"
+            className="group flex items-center gap-2 text-sm font-medium text-gray-500 transition-colors hover:text-gray-900"
+          >
+            Contact Us
             <span className="text-xl leading-none transition-transform group-hover:translate-x-1">
               →
             </span>
-          </button>
+          </a>
         </div>
       </div>
 
@@ -45,7 +51,7 @@ const HeroCard = () => {
           <div className="pointer-events-none absolute inset-4 z-10 rounded-4xl bg-linear-to-tr from-black/20 to-transparent mix-blend-overlay"></div>
           <img
             src={premiumTajMahal}
-            alt="Taj Mahal Premium Travel Photography"
+            alt="Taj Mahal — Just 40km from Firozabad"
             className="relative z-0 h-[520px] w-auto max-w-[480px] rounded-4xl object-cover"
           />
         </div>
@@ -53,12 +59,12 @@ const HeroCard = () => {
         {/* Small floating badge */}
         <div className="glass absolute -bottom-6 -left-12 z-20 flex items-center gap-4 rounded-3xl bg-white/90 px-6 py-4 shadow-xl transition-transform hover:-translate-y-1">
           <div className="bg-brand-primary/10 text-brand-primary flex h-10 w-10 items-center justify-center rounded-full text-lg">
-            ✨
+            🚗
           </div>
           <div>
-            <p className="text-sm font-bold text-gray-900">Luxury Tours</p>
+            <p className="text-sm font-bold text-gray-900">Firozabad's #1</p>
             <p className="mt-0.5 text-xs font-medium text-gray-500">
-              Handcrafted
+              Tour & Travels
             </p>
           </div>
         </div>

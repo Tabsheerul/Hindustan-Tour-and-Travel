@@ -20,27 +20,20 @@ const Navbar = () => {
           Services
         </a>
         <a
-          href="#"
+          href="#faq"
           className="text-sm font-medium text-white/70 transition-colors hover:text-white"
         >
-          Partner with Us
+          FAQs
         </a>
         <a
-          href="#"
+          href="#contact"
           className="text-sm font-medium text-white/70 transition-colors hover:text-white"
         >
-          About
+          Contact
         </a>
         
         {/* Divider */}
         <div className="mx-2 h-4 w-px bg-white/20"></div>
-        
-        <a
-          href="#"
-          className="flex items-center gap-2 text-sm font-medium text-white/70 transition-colors hover:text-white"
-        >
-          Log in
-        </a>
 
         {/* CTA */}
         <a 
