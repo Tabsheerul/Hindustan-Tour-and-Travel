@@ -1,15 +1,17 @@
+import { Link } from "react-router-dom";
+
 const Navbar = () => {
   return (
     <nav className="absolute top-8 left-1/2 z-50 flex w-full max-w-7xl -translate-x-1/2 items-center justify-between px-16">
       {/* Logo — full brand name */}
-      <div className="flex flex-col">
+      <Link to="/" className="flex flex-col">
         <span className="text-brand-primary text-[15px] font-black tracking-widest uppercase drop-shadow-sm">
           Hindustan
         </span>
         <span className="text-[13px] font-medium tracking-[0.18em] text-gray-500 uppercase">
           Tour &amp; Travels
         </span>
-      </div>
+      </Link>
 
       {/* Glass pill — links + CTA */}
       <div className="bg-gray-900 hidden items-center gap-6 rounded-full pl-7 pr-2 py-2 shadow-lg lg:flex">
@@ -19,12 +21,12 @@ const Navbar = () => {
         >
           Services
         </a>
-        <a
-          href="#gallery"
+        <Link
+          to="/gallery"
           className="text-sm font-medium text-white/70 transition-colors hover:text-white"
         >
           Gallery
-        </a>
+        </Link>
         <a
           href="#faq"
           className="text-sm font-medium text-white/70 transition-colors hover:text-white"

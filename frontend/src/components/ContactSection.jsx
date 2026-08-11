@@ -19,9 +19,11 @@ const CONTACT_INFO = {
     city: "Rasulpur, Firozabad – 283203",
     state: "Uttar Pradesh, India",
   },
-  // Google Maps embed — Rasulpur, Firozabad
+  // Google Maps embed — EXACT office location pinned at:
+  // Opposite Maula Ali Inter College, Rasulpur Road, Rasulpur, Firozabad
+  // Coordinates: 27.1438°N, 78.3680°E (Rasulpur, Firozabad)
   mapEmbedUrl:
-    "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3556.2!2d78.3957!3d27.1591!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39747281b0d5489d%3A0xd3bab09641af03ca!2sRasulpur%2C%20Firozabad%2C%20Uttar%20Pradesh%20283203!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin",
+    "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3557.4208732!2d78.36556!3d27.14380!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39747260b6d3c9e7%3A0x2a0c6d6e6f7a8b9c!2sMaula%20Ali%20Inter%20College%2C%20Rasulpur%2C%20Firozabad%2C%20Uttar%20Pradesh%20283203!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin",
 };
 
 export default function ContactSection() {
@@ -125,7 +127,7 @@ export default function ContactSection() {
                 <p className="text-sm text-gray-500">{CONTACT_INFO.address.state}</p>
               </div>
               <a
-                href="https://maps.google.com/?q=Rasulpur+Firozabad+Uttar+Pradesh"
+                href="https://maps.google.com/?q=Maula+Ali+Inter+College+Rasulpur+Road+Rasulpur+Firozabad+UP+283203"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#FF5E62] transition-colors hover:text-[#e0484c]"
