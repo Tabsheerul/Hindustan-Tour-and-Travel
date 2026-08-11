@@ -86,21 +86,10 @@ export default function GalleryPage() {
       {/* ── Simple Header ── */}
       <header className="sticky top-0 z-40 border-b border-gray-200 bg-white/90 backdrop-blur-md">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
-          <div className="flex items-center gap-6">
-            <Link
-              to="/"
-              className="flex items-center gap-1.5 text-sm font-semibold text-gray-500 transition-colors hover:text-gray-900"
-            >
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-              </svg>
-              Back to Home
-            </Link>
-            <Link to="/" className="flex flex-col border-l border-gray-300 pl-6 hidden sm:flex">
-              <span className="text-[15px] font-black tracking-widest uppercase text-[#FF5E62]">Hindustan</span>
-              <span className="text-[13px] font-medium tracking-[0.18em] text-gray-500 uppercase">Tour &amp; Travels</span>
-            </Link>
-          </div>
+          <Link to="/" className="flex flex-col">
+            <span className="text-[15px] font-black tracking-widest uppercase text-[#FF5E62]">Hindustan</span>
+            <span className="text-[13px] font-medium tracking-[0.18em] text-gray-500 uppercase">Tour &amp; Travels</span>
+          </Link>
           <div className="flex items-center gap-4">
             <Link
               to="/#booking"
@@ -115,6 +104,17 @@ export default function GalleryPage() {
       <main className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
         {/* ── Page Heading ── */}
         <div className="mb-12">
+          <div className="mb-6">
+            <Link
+              to="/"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-gray-500 transition-colors hover:text-gray-900"
+            >
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+              </svg>
+              Back to Home
+            </Link>
+          </div>
           <span className="text-sm font-bold uppercase tracking-widest text-[#FF5E62]">
             Fleet & Gallery
           </span>
