@@ -20,6 +20,12 @@ const Navbar = () => {
           Services
         </a>
         <a
+          href="#gallery"
+          className="text-sm font-medium text-white/70 transition-colors hover:text-white"
+        >
+          Gallery
+        </a>
+        <a
           href="#faq"
           className="text-sm font-medium text-white/70 transition-colors hover:text-white"
         >

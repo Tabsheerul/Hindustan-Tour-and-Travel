@@ -17,7 +17,7 @@ export default function Footer() {
               </span>
             </div>
             <p className="text-base leading-6 text-gray-400 max-w-xs">
-              Firozabad's trusted tour & travels agency. Outstation cabs, hourly rentals, wedding fleets & complete trip planning — from Firozabad to anywhere in India.
+              Firozabad's trusted tour & travels agency since 2010. 4.9★ rated on JustDial · MSME Certified · Open daily until 11 PM.
             </p>
             <div className="flex space-x-6">
               {/* Social Icons (SVGs) */}
@@ -62,16 +62,17 @@ export default function Footer() {
               <div>
                 <h3 className="text-sm font-semibold leading-6 text-white uppercase tracking-wider">Contact</h3>
                 <ul className="mt-6 space-y-4">
-                  <li><a href="tel:+919876543210" className="text-sm leading-6 text-gray-400 transition-colors hover:text-[#FF5E62]">+91 98765 43210</a></li>
-                  <li><a href="tel:+919876543211" className="text-sm leading-6 text-gray-400 transition-colors hover:text-[#FF5E62]">+91 98765 43211</a></li>
-                  <li><a href="mailto:info@hindustantourandtravels.com" className="text-sm leading-6 text-gray-400 transition-colors hover:text-[#FF5E62]">info@hindustantourandtravels.com</a></li>
+                  <li><a href="tel:+918401141577" className="text-sm leading-6 text-gray-400 transition-colors hover:text-[#FF5E62]">+91 84011 41577</a></li>
+                  <li><a href="tel:+919759654651" className="text-sm leading-6 text-gray-400 transition-colors hover:text-[#FF5E62]">+91 97596 54651</a></li>
+                  <li><a href="tel:+917300669318" className="text-sm leading-6 text-gray-400 transition-colors hover:text-[#FF5E62]">+91 73006 69318</a></li>
+                  <li><a href="tel:+919528841152" className="text-sm leading-6 text-gray-400 transition-colors hover:text-[#FF5E62]">+91 95288 41152</a></li>
                 </ul>
               </div>
               <div className="mt-10 md:mt-0">
                 <h3 className="text-sm font-semibold leading-6 text-white uppercase tracking-wider">Office</h3>
                 <div className="mt-6 text-sm leading-6 text-gray-400 space-y-1">
-                  <p>Hindustan Tour & Travels</p>
-                  <p>Near Bypass Road, Nagla Bhadsyam</p>
+                  <p>Opp. Maula Ali Inter College</p>
+                  <p>Rasulpur Road, Rasulpur</p>
                   <p>Firozabad, UP 283203</p>
                 </div>
               </div>

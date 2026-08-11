@@ -88,12 +88,27 @@ const BookingSection = ({ onCoordsChange }) => {
           isLoading={isLocating}
         />
 
-        {/* Visual connector line */}
+        {/* Swap Button */}
         <div className="flex items-center gap-3 py-1">
           <div className="h-[2px] flex-1 bg-gray-200" />
-          <span className="shrink-0 text-xs font-bold tracking-widest text-gray-400 uppercase">To</span>
+          <button
+            onClick={() => {
+              const tempVal = pickup;
+              const tempCoords = pickupCoords;
+              setPickup(destination);
+              setDestination(tempVal);
+              setPickupCoords(destinationCoords);
+              setDestinationCoords(tempCoords);
+              if (onCoordsChange) onCoordsChange({ pickup: destinationCoords, destination: tempCoords });
+            }}
+            title="Swap pickup and destination"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-gray-300 bg-white text-base text-gray-600 shadow-sm transition-all duration-300 hover:rotate-180 hover:border-[#FF5E62] hover:bg-[#FF5E62] hover:text-white"
+          >
+            ⇅
+          </button>
           <div className="h-[2px] flex-1 bg-gray-200" />
         </div>
+
 
         <AutocompleteInput
           label="Destination"

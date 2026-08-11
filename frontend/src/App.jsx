@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar";
 import TripPlannerSection from "./components/TripPlannerSection";
 import MapBackground from "./components/MapBackground";
 import ServicesSection from "./components/ServicesSection";
+import GallerySection from "./components/GallerySection";
 import FaqSection from "./components/FaqSection";
 import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
@@ -19,6 +20,7 @@ function App() {
       </div>
       
       <ServicesSection />
+      <GallerySection />
       <FaqSection />
       <ContactSection />
       <Footer />

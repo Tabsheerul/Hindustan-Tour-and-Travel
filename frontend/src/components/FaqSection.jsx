@@ -7,26 +7,32 @@ const faqs = [
       "We provide pickup from Firozabad city and all nearby areas within approximately 50 km — including Tundla, Shikohabad, Jasrana, Etmadpur, Bah, and surrounding villages. Your destination can be anywhere in India!",
   },
   {
+    question: "What vehicles are available and what are the rates?",
+    answer:
+      "We offer a wide fleet to suit every need and budget: ERTIGA (available in white, brown, blue, silver, mehroom colours — ideal for 6 passengers), KIA CARENS 2023 (white/black, premium family SUV), Tempo Traveller (12-seater, perfect for group trips), and Bus on Rent (NON AC 2×3, Van, AC 2×2 Bus, SUV and more). Rates depend on vehicle type, distance, and season — call us for an instant quote!",
+  },
+  {
+    question: "How is the pricing/fare decided for outstation trips?",
+    answer:
+      "Our fares are calculated based on: (1) Distance in km from pickup to destination, (2) Vehicle type selected (hatchback, sedan, SUV, Tempo, Bus), (3) One-way or round trip, (4) Night driving charges if applicable, and (5) Toll taxes & parking (paid actuals). For a round trip, the return journey fare is usually discounted. Call or WhatsApp us for a customised quote!",
+  },
+  {
     question: "Are toll taxes and parking charges included in the fare?",
     answer:
-      "To keep our base fares as affordable as possible, toll taxes and parking fees are usually paid directly by you during the trip as per actuals. However, if you prefer a hassle-free experience, we also offer all-inclusive packages where everything is covered upfront!",
+      "To keep our base fares as affordable as possible, toll taxes and parking fees are usually paid directly by you during the trip as per actuals. However, we also offer all-inclusive packages where everything is covered upfront — just ask when booking!",
   },
   {
     question: "Are your drivers verified and experienced for long trips?",
     answer:
-      "Yes, your safety is our absolute top priority. All our drivers are locally vetted professionals from Firozabad who know the roads well. They undergo rigorous background checks, hold valid commercial licenses, and have years of experience driving safely on highways. You can relax and travel with complete peace of mind.",
-  },
-  {
-    question: "What happens if the cab breaks down during my journey?",
-    answer:
-      "We maintain our fleet to the highest standards to prevent this. But in the rare event of a breakdown, we guarantee a prompt replacement vehicle. Our 24/7 roadside assistance network ensures you are never left stranded and your journey continues smoothly.",
+      "Yes, your safety is our absolute top priority. All our drivers are locally vetted professionals from Firozabad with valid commercial licenses and years of experience on highways. We have been in business for 14 years and are MSME certified by the Indian Government.",
   },
   {
     question: "Do you provide decorated cars for weddings (Barat)?",
     answer:
-      "Yes, we do! We specialize in Shadi & Barat bookings in Firozabad and nearby areas with a premium fleet of luxury sedans and spacious SUVs. We can even arrange for professional floral decorations so your car looks absolutely stunning for your special day.",
+      "Yes, we specialise in Shadi & Barat bookings! We offer premium luxury sedans and spacious SUVs with professional floral decorations. We serve Firozabad, Agra, Mathura and nearby areas. Contact us early to secure your date!",
   },
 ];
+
 
 export default function FaqSection() {
   const [openIndex, setOpenIndex] = useState(null);
