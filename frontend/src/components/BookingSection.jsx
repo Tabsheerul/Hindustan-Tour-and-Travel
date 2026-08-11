@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
 
 import AutocompleteInput from "./AutocompleteInput";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -8,14 +10,16 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 // onCoordsChange: optional callback → { pickup, destination } coordinates
 // Pickup is restricted to Firozabad & nearby areas (within ~50km)
 // Destination can be anywhere in India
-const BookingSection = ({ onCoordsChange }) => {
-  const [pickup, setPickup] = useState("");
-  const [destination, setDestination] = useState("");
-  const [date, setDate] = useState(null);
+const BookingSection = ({ onCoordsChange, initialState, isBookingPage }) => {
+  const navigate = useNavigate();
+
+  const [pickup, setPickup] = useState(initialState?.pickup || "");
+  const [destination, setDestination] = useState(initialState?.destination || "");
+  const [date, setDate] = useState(initialState?.date ? dayjs(initialState.date) : null);
   const [isLocating, setIsLocating] = useState(false);
   // Holds { lat, lng } objects for the map
-  const [pickupCoords, setPickupCoords] = useState(null);
-  const [destinationCoords, setDestinationCoords] = useState(null);
+  const [pickupCoords, setPickupCoords] = useState(initialState?.pickupCoords || null);
+  const [destinationCoords, setDestinationCoords] = useState(initialState?.destinationCoords || null);
 
   // Get API key from environment variables (MUST start with VITE_ in Vite apps)
   const OLA_API_KEY = import.meta.env.VITE_OLA_MAPS_API_KEY;
@@ -70,6 +74,22 @@ const BookingSection = ({ onCoordsChange }) => {
         setIsLocating(false);
       },
     );
+  };
+
+  const handleBookTrip = () => {
+    if (isBookingPage) {
+      alert("Booking confirmed! Our team will contact you shortly.");
+    } else {
+      navigate("/booking", {
+        state: {
+          pickup,
+          destination,
+          date: date ? date.toISOString() : null,
+          pickupCoords,
+          destinationCoords,
+        },
+      });
+    }
   };
 
   return (
@@ -161,8 +181,11 @@ const BookingSection = ({ onCoordsChange }) => {
       <div className="my-1 h-[2px] w-full bg-gray-200" />
 
       {/* Book Trip CTA */}
-      <button className="mt-2 flex w-full items-center justify-center gap-2 rounded-full bg-gray-900 px-7 py-3.5 text-sm font-semibold text-white transition-colors duration-300 hover:bg-[#FF5E62]">
-        <span>Book Trip</span>
+      <button 
+        onClick={handleBookTrip}
+        className="mt-2 flex w-full items-center justify-center gap-2 rounded-full bg-gray-900 px-7 py-3.5 text-sm font-semibold text-white transition-colors duration-300 hover:bg-[#FF5E62]"
+      >
+        <span>{isBookingPage ? "Confirm Booking" : "Continue to Book"}</span>
         <span className="text-base leading-none">→</span>
       </button>
     </div>

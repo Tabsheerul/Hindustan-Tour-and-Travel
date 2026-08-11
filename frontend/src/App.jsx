@@ -8,6 +8,7 @@ import FaqSection from "./components/FaqSection";
 import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
 import GalleryPage from "./pages/GalleryPage";
+import BookingPage from "./pages/BookingPage";
 
 // ── Home page ────────────────────────────────────────────────────────────────
 function HomePage() {
@@ -35,6 +36,7 @@ function App() {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/gallery" element={<GalleryPage />} />
+      <Route path="/booking" element={<BookingPage />} />
     </Routes>
   );
 }
