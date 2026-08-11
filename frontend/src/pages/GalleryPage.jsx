@@ -89,17 +89,7 @@ export default function GalleryPage() {
       {/* ── Simple Header ── */}
       <header className="sticky top-0 z-40 border-b border-gray-200 bg-white/90 backdrop-blur-md">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
-          <Link to="/" className="flex flex-col">
-            <span className="text-[15px] font-black tracking-widest uppercase text-[#FF5E62]">Hindustan</span>
-            <span className="text-[13px] font-medium tracking-[0.18em] text-gray-500 uppercase">Tour &amp; Travels</span>
-          </Link>
-          <div className="flex items-center gap-4">
-            <Link
-              to="/#booking"
-              className="rounded-full bg-gray-900 px-5 py-2.5 text-sm font-bold text-white shadow-sm transition-all hover:scale-105 hover:bg-[#FF5E62]"
-            >
-              Book a Ride
-            </Link>
+          <div className="flex items-center gap-6">
             <Link
               to="/"
               className="flex items-center gap-1.5 text-sm font-semibold text-gray-500 transition-colors hover:text-gray-900"
@@ -108,6 +98,18 @@ export default function GalleryPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
               </svg>
               Back to Home
+            </Link>
+            <Link to="/" className="flex flex-col border-l border-gray-300 pl-6 hidden sm:flex">
+              <span className="text-[15px] font-black tracking-widest uppercase text-[#FF5E62]">Hindustan</span>
+              <span className="text-[13px] font-medium tracking-[0.18em] text-gray-500 uppercase">Tour &amp; Travels</span>
+            </Link>
+          </div>
+          <div className="flex items-center gap-4">
+            <Link
+              to="/#booking"
+              className="rounded-full bg-gray-900 px-5 py-2.5 text-sm font-bold text-white shadow-sm transition-all hover:scale-105 hover:bg-[#FF5E62]"
+            >
+              Book a Ride
             </Link>
           </div>
         </div>
