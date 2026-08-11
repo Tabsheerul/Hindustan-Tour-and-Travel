@@ -1,56 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-// ─── All 47 original images downloaded from JustDial ─────────────────────────
-// Source: justdial.com — Hindustan Tour and Travel, Rasulpur, Firozabad
-
-const GALLERY_ITEMS = [
-  { id: 1,  file: "jd_1.jpg",  title: "Land Rover Defender",    category: "Cars",           desc: "White Land Rover Defender — premium outstation cab" },
-  { id: 2,  file: "jd_2.jpg",  title: "Luxury Wedding Cars",     category: "Wedding",        desc: "Luxury cars for wedding rental — promotional poster" },
-  { id: 3,  file: "jd_3.jpg",  title: "Premium Interior",        category: "Interiors",      desc: "Beige leather seats & black dashboard — luxury interior" },
-  { id: 4,  file: "jd_4.jpg",  title: "Jaguar XE Sedan",         category: "Cars",           desc: "White Jaguar XE sedan — premium cab for outstation" },
-  { id: 5,  file: "jd_5.jpg",  title: "Bus Interior (Orange)",   category: "Interiors",      desc: "Orange seats bus interior — CHAHAR bus" },
-  { id: 6,  file: "jd_6.jpg",  title: "KHUSHI Bus (Orange)",     category: "Buses",          desc: "Bus exterior — orange KHUSHI tourist bus" },
-  { id: 7,  file: "jd_7.jpg",  title: "Jaguar XE Rear",          category: "Cars",           desc: "White Jaguar XE rear view" },
-  { id: 8,  file: "jd_8.jpg",  title: "KHUSHI Blue Bus",         category: "Buses",          desc: "Blue bus exterior front — KHUSHI tourist bus" },
-  { id: 9,  file: "jd_9.jpg",  title: "Bus Interior (Blue)",     category: "Interiors",      desc: "Bus interior with blue seats" },
-  { id: 10, file: "jd_10.jpg", title: "Tempo Traveller",         category: "Tempo",          desc: "White Tempo Traveller exterior — perfect for group travel" },
-  { id: 11, file: "jd_11.jpg", title: "Audi (Rear)",             category: "Cars",           desc: "White Audi rear view — luxury cab" },
-  { id: 12, file: "jd_12.jpg", title: "Audi (Front)",            category: "Cars",           desc: "White Audi front view — premium outstation" },
-  { id: 13, file: "jd_13.jpg", title: "Skoda Sedan",             category: "Cars",           desc: "Dark Skoda sedan front view" },
-  { id: 14, file: "jd_14.jpg", title: "Bus Interior (White)",    category: "Interiors",      desc: "Bus interior — white seats with red carpet" },
-  { id: 15, file: "jd_15.jpg", title: "Tempo Interior",          category: "Interiors",      desc: "Tempo Traveller interior with white seats" },
-  { id: 16, file: "jd_16.jpg", title: "Tourist Bus (Front)",     category: "Buses",          desc: "White/yellow TOURIST bus — front view" },
-  { id: 17, file: "jd_17.jpg", title: "Bus Interior (Yellow)",   category: "Interiors",      desc: "Bus interior with yellow/orange seats" },
-  { id: 18, file: "jd_18.jpg", title: "White Bus (Side)",        category: "Buses",          desc: "White bus exterior side view" },
-  { id: 19, file: "jd_19.jpg", title: "Wedding Ertiga",          category: "Wedding",        desc: "White Ertiga decorated for wedding — floral decor" },
-  { id: 20, file: "jd_20.jpg", title: "Mahindra Bolero Neo",     category: "Cars",           desc: "White Mahindra Bolero Neo SUV — rugged outstation travel" },
-  { id: 21, file: "jd_21.jpg", title: "Bus Interior (Pink)",     category: "Interiors",      desc: "Bus interior with pink seats" },
-  { id: 22, file: "jd_22.jpg", title: "Tourist Bus (Front)",     category: "Buses",          desc: "White TOURIST bus — side/front view" },
-  { id: 23, file: "jd_23.jpg", title: "Hyundai i20",             category: "Cars",           desc: "White Hyundai i20 — compact outstation cab" },
-  { id: 24, file: "jd_24.jpg", title: "Hyundai Creta (White)",   category: "Cars",           desc: "White Hyundai Creta SUV — side view" },
-  { id: 25, file: "jd_25.jpg", title: "Hyundai Creta (Dark)",    category: "Cars",           desc: "Dark Hyundai Creta SUV — front view" },
-  { id: 26, file: "jd_26.jpg", title: "Leather Bus Interior",    category: "Interiors",      desc: "Bus interior — brown/black leather seats" },
-  { id: 27, file: "jd_27.jpg", title: "Bus Interior (Blue/Wh)", category: "Interiors",      desc: "Bus interior with blue and white seats" },
-  { id: 28, file: "jd_28.jpg", title: "Wedding Sedan",           category: "Wedding",        desc: "White sedan decorated for wedding — rear view" },
-  { id: 29, file: "jd_29.jpg", title: "Force Traveller (Front)", category: "Tempo",          desc: "White Force Traveller front view — group tours" },
-  { id: 30, file: "jd_30.jpg", title: "Bus Interior (Red/Wh)",  category: "Interiors",      desc: "Bus interior — red and white seats" },
-  { id: 31, file: "jd_31.jpg", title: "White Bus Side",          category: "Buses",          desc: "White bus exterior — side view" },
-  { id: 32, file: "jd_32.jpg", title: "Silver/Red Bus",          category: "Buses",          desc: "Silver and red bus exterior" },
-  { id: 33, file: "jd_33.jpg", title: "Silver Bus",              category: "Buses",          desc: "Silver bus exterior" },
-  { id: 34, file: "jd_34.jpg", title: "Ertiga / White Car",      category: "Cars",           desc: "White Ertiga / car front view" },
-  { id: 35, file: "jd_35.jpg", title: "Bus Interior (Grey)",     category: "Interiors",      desc: "Bus interior with grey and white seats" },
-  { id: 36, file: "jd_36.jpg", title: "Bus Interior (Grey 2)",   category: "Interiors",      desc: "Bus interior — another grey/white seats view" },
-  { id: 37, file: "jd_37.jpg", title: "TOURIST ANMOL Bus",       category: "Buses",          desc: "Green TOURIST ANMOL bus — front view" },
-  { id: 38, file: "jd_38.jpg", title: "TOURIST GARIMA Bus",      category: "Buses",          desc: "White TOURIST GARIMA bus — side view" },
-  { id: 39, file: "jd_39.jpg", title: "Silver Bus (Side)",       category: "Buses",          desc: "Silver bus — side view" },
-  { id: 40, file: "jd_40.jpg", title: "White Sedan Rear",        category: "Cars",           desc: "White sedan rear view (Ciaz)" },
-  { id: 41, file: "jd_41.jpg", title: "White Sedan Front",       category: "Cars",           desc: "White sedan front view (Ciaz)" },
-  { id: 42, file: "jd_42.jpg", title: "Force Traveller (Side)",  category: "Tempo",          desc: "White Force Traveller side view" },
-  { id: 44, file: "jd_44.jpg", title: "Force Traveller TOURIST", category: "Tempo",          desc: "White Force Traveller TOURIST — front view" },
-];
-
-const CATEGORIES = ["All", "Cars", "Buses", "Tempo", "Wedding", "Interiors"];
+import { GALLERY_ITEMS, CATEGORIES } from "../data/galleryData";
 
 export default function GalleryPage() {
   const [activeCategory, setActiveCategory] = useState("All");
