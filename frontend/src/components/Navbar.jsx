@@ -44,12 +44,12 @@ const Navbar = () => {
         <div className="mx-2 h-4 w-px bg-white/20"></div>
 
         {/* CTA */}
-        <a 
-          href="#booking"
+        <Link 
+          to="/booking"
           className="ml-2 rounded-full bg-white/95 px-5 py-2.5 text-sm font-bold text-gray-900 shadow-sm transition-all hover:scale-105 hover:bg-white"
         >
           Book Ride
-        </a>
+        </Link>
       </div>
     </nav>
   );

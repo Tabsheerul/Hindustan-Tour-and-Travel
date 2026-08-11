@@ -43,7 +43,7 @@ export default function GalleryPage() {
           </Link>
           <div className="flex items-center gap-4">
             <Link
-              to="/#booking"
+              to="/booking"
               className="rounded-full bg-gray-900 px-5 py-2.5 text-sm font-bold text-white shadow-sm transition-all hover:scale-105 hover:bg-[#FF5E62]"
             >
               Book a Ride
