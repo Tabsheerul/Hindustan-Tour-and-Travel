@@ -6,16 +6,19 @@ import AutocompleteInput from "./AutocompleteInput";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 // ─── Main Component ─────────────────────────────────────────────────────────
 // onCoordsChange: optional callback → { pickup, destination } coordinates
 // Pickup is restricted to Firozabad & nearby areas (within ~50km)
 // Destination can be anywhere in India
-const BookingSection = ({ onCoordsChange, initialState, isBookingPage }) => {
+const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceType }) => {
   const navigate = useNavigate();
 
   const [pickup, setPickup] = useState(initialState?.pickup || "");
   const [destination, setDestination] = useState(initialState?.destination || "");
   const [date, setDate] = useState(initialState?.date ? dayjs(initialState.date) : null);
+  const [time, setTime] = useState(initialState?.time ? dayjs(initialState.time) : null);
+  const [tripType, setTripType] = useState(initialState?.tripType || "One Way");
   const [isLocating, setIsLocating] = useState(false);
   // Holds { lat, lng } objects for the map
   const [pickupCoords, setPickupCoords] = useState(initialState?.pickupCoords || null);
@@ -85,6 +88,8 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage }) => {
           pickup,
           destination,
           date: date ? date.toISOString() : null,
+          time: time ? time.toISOString() : null,
+          tripType,
           pickupCoords,
           destinationCoords,
         },
@@ -93,9 +98,36 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage }) => {
   };
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-4">
+      {/* Trip Type Selector (Only on Booking Page) */}
+      {isBookingPage && (
+        <div className="flex flex-col gap-2">
+          <div className="flex bg-gray-100 rounded-xl p-1 shadow-inner w-full sm:w-fit mx-auto sm:mx-0">
+            {["One Way", "Round Trip"].map((type) => (
+              <button
+                key={type}
+                onClick={() => setTripType(type)}
+                className={`flex-1 sm:px-6 py-2.5 text-xs font-bold rounded-lg transition-all duration-300 ${
+                  tripType === type 
+                    ? "bg-white text-gray-900 shadow-sm border border-gray-200" 
+                    : "text-gray-500 hover:text-gray-800"
+                }`}
+              >
+                {type}
+              </button>
+            ))}
+          </div>
+          {tripType === "Round Trip" && (
+            <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 text-xs px-3 py-2 rounded-lg mt-1 flex gap-2 items-start">
+              <span className="shrink-0">⚠️</span>
+              <span>Driver retention charges will apply separately if the vehicle is held for one or more days.</span>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Pickup & Destination */}
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-2">
         <AutocompleteInput
           label="Pickup Point"
           icon={<span className="shrink-0 text-lg text-[#FF5E62]">📍</span>}
@@ -129,7 +161,6 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage }) => {
           <div className="h-[2px] flex-1 bg-gray-200" />
         </div>
 
-
         <AutocompleteInput
           label="Destination"
           icon={<span className="shrink-0 text-lg text-[#FF9933]">🏁</span>}
@@ -141,40 +172,78 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage }) => {
         />
       </div>
 
-      {/* Travel Date */}
-      <div className="flex w-full flex-col gap-1.5">
-        <label className="pb-1 pl-1 text-xs font-bold tracking-wider text-gray-600 uppercase">
-          Travel Date
-        </label>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker
-            value={date}
-            onChange={(newValue) => setDate(newValue)}
-            views={['year', 'month', 'day']}
-            sx={{
-              width: "100%",
-              "& .MuiOutlinedInput-root": {
-                borderRadius: "1rem",
-                backgroundColor: "white",
-                fontSize: "1rem",
-                fontWeight: "500",
-                color: "#111827", // gray-900
-                "& fieldset": {
-                  borderColor: "#d1d5db", // gray-300
-                  borderWidth: "1px",
+      {/* Travel Date & Time */}
+      <div className="flex w-full flex-col gap-4 sm:flex-row">
+        <div className="flex w-full flex-col gap-1.5 sm:w-1/2">
+          <label className="pb-1 pl-1 text-xs font-bold tracking-wider text-gray-600 uppercase">
+            Travel Date
+          </label>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              value={date}
+              onChange={(newValue) => setDate(newValue)}
+              views={['year', 'month', 'day']}
+              sx={{
+                width: "100%",
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "1rem",
+                  backgroundColor: "white",
+                  fontSize: "1rem",
+                  fontWeight: "500",
+                  color: "#111827", // gray-900
+                  "& fieldset": {
+                    borderColor: "#d1d5db", // gray-300
+                    borderWidth: "1px",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "#9ca3af", // gray-400
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#FF5E62",
+                    borderWidth: "1px",
+                    boxShadow: "0 0 0 3px rgba(255,94,98,0.15)",
+                  },
                 },
-                "&:hover fieldset": {
-                  borderColor: "#9ca3af", // gray-400
+              }}
+            />
+          </LocalizationProvider>
+        </div>
+
+        <div className="flex w-full flex-col gap-1.5 sm:w-1/2">
+          <label className="pb-1 pl-1 text-xs font-bold tracking-wider text-gray-600 uppercase">
+            Travel Time
+          </label>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <TimePicker
+              value={time}
+              onChange={(newValue) => setTime(newValue)}
+              views={['hours', 'minutes']}
+              ampm={false}
+              sx={{
+                width: "100%",
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "1rem",
+                  backgroundColor: "white",
+                  fontSize: "1rem",
+                  fontWeight: "500",
+                  color: "#111827",
+                  "& fieldset": {
+                    borderColor: "#d1d5db",
+                    borderWidth: "1px",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "#9ca3af",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#FF5E62",
+                    borderWidth: "1px",
+                    boxShadow: "0 0 0 3px rgba(255,94,98,0.15)",
+                  },
                 },
-                "&.Mui-focused fieldset": {
-                  borderColor: "#FF5E62",
-                  borderWidth: "1px",
-                  boxShadow: "0 0 0 3px rgba(255,94,98,0.15)",
-                },
-              },
-            }}
-          />
-        </LocalizationProvider>
+              }}
+            />
+          </LocalizationProvider>
+        </div>
       </div>
 
       {/* Divider */}
@@ -183,7 +252,7 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage }) => {
       {/* Book Trip CTA */}
       <button 
         onClick={handleBookTrip}
-        className="mt-2 flex w-full items-center justify-center gap-2 rounded-full bg-gray-900 px-7 py-3.5 text-sm font-semibold text-white transition-colors duration-300 hover:bg-[#FF5E62]"
+        className="mt-1 flex w-full items-center justify-center gap-2 rounded-full bg-gray-900 px-7 py-3 text-sm font-semibold text-white transition-colors duration-300 hover:bg-[#FF5E62]"
       >
         <span>{isBookingPage ? "Confirm Booking" : "Continue to Book"}</span>
         <span className="text-base leading-none">→</span>

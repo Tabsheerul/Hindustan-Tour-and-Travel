@@ -1,23 +1,22 @@
 import { useEffect, useRef, useState } from "react";
-import { OlaMaps } from "olamaps-web-sdk";
+import { defaultStyleJson, OlaMaps } from "olamaps-web-sdk";
 
 // ─── OlaMapView ───────────────────────────────────────────────────────────────
-// Correct style URL from OLA Maps styles catalog:
-// GET /tiles/vector/v1/styles.json → returns array of available styles
-// We use "default-light-standard" which matches the app's light theme.
-const STYLE_URL =
-  "https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/style.json";
+// Use the style revision bundled with the installed SDK. The unversioned endpoint
+// can return a 3D layer that references a source layer absent from its vector data.
+const STYLE_URL = defaultStyleJson;
 
 // Firozabad coordinates: 27.1591°N, 78.3957°E
 const FIROZABAD = [78.3957, 27.1591];
 
-const OlaMapView = ({ pickupCoords, destinationCoords, defaultCenter, apiKey }) => {
+const OlaMapView = ({ pickupCoords, destinationCoords, defaultCenter, apiKey, isSheetCollapsed = false }) => {
   const mapContainerRef = useRef(null);
   const olaMapsRef = useRef(null);    // OlaMaps SDK instance
   const mapRef = useRef(null);        // actual MapLibre map instance (after await)
   const pickupMarkerRef = useRef(null);
   const destinationMarkerRef = useRef(null);
   const routeLayerRef = useRef(false);
+  const resizeObserverRef = useRef(null);
 
   // Track when the map has fully loaded so other effects know it's safe to use
   const [mapReady, setMapReady] = useState(false);
@@ -38,24 +37,35 @@ const OlaMapView = ({ pickupCoords, destinationCoords, defaultCenter, apiKey }) 
         ? [defaultCenter.lng, defaultCenter.lat]
         : FIROZABAD;
 
-      const map = await olaMaps.init({
-        style: STYLE_URL,
-        container: mapContainerRef.current,
-        center: center,
-        zoom: 11, // Zoomed into city level for Firozabad
-      });
+      try {
+        const map = await olaMaps.init({
+          style: STYLE_URL,
+          container: mapContainerRef.current,
+          center,
+          zoom: 11,
+        });
 
-      mapRef.current = map;
+        mapRef.current = map;
 
-      // Once the style is loaded, signal React the map is interactive
-      map.on("load", () => {
-        setMapReady(true);
-      });
+        // The container changes size when the responsive layout stacks. Explicitly
+        // resizing keeps the canvas visible instead of leaving a blank map on mobile.
+        resizeObserverRef.current = new ResizeObserver(() => map.resize());
+        resizeObserverRef.current.observe(mapContainerRef.current);
+
+        map.on("load", () => {
+          map.resize();
+          setMapReady(true);
+        });
+      } catch (error) {
+        console.error("Unable to initialize OLA map:", error);
+      }
     };
 
     setup();
 
     return () => {
+      resizeObserverRef.current?.disconnect();
+      mapRef.current?.remove();
       mapRef.current = null;
       olaMapsRef.current = null;
     };
@@ -70,11 +80,11 @@ const OlaMapView = ({ pickupCoords, destinationCoords, defaultCenter, apiKey }) 
     if (!pickupCoords && !destinationCoords) {
       map.flyTo({
         center: [defaultCenter.lng, defaultCenter.lat],
-        zoom: 11,
+        zoom: isSheetCollapsed ? 12 : 11,
         duration: 1500,
       });
     }
-  }, [defaultCenter, mapReady, pickupCoords, destinationCoords]);
+  }, [defaultCenter, isSheetCollapsed, mapReady, pickupCoords, destinationCoords]);
 
   // ── STEP 1.6: Camera control for single point selection ─────────────────────
   // If user only selected ONE point, zoom in close (15) to that point.
@@ -233,7 +243,7 @@ const OlaMapView = ({ pickupCoords, destinationCoords, defaultCenter, apiKey }) 
   }, [pickupCoords, destinationCoords, mapReady]);
 
   return (
-    <div className="relative h-full w-full overflow-hidden rounded-3xl border border-gray-200 shadow-inner">
+    <div className="relative h-full min-h-[240px] w-full overflow-hidden rounded-3xl border border-gray-200 bg-gray-100 shadow-inner sm:min-h-[340px] lg:min-h-0">
       <div ref={mapContainerRef} className="h-full w-full" />
     </div>
   );
