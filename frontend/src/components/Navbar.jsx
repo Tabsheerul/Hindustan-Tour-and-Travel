@@ -1,16 +1,12 @@
 import { Link } from "react-router-dom";
+import logo from "../assets/logo.png";
 
 const Navbar = () => {
   return (
-    <nav className="absolute top-8 left-1/2 z-50 flex w-full max-w-7xl -translate-x-1/2 items-center justify-between px-16">
-      {/* Logo — full brand name */}
-      <Link to="/" className="flex flex-col">
-        <span className="text-brand-primary text-[15px] font-black tracking-widest uppercase drop-shadow-sm">
-          Hindustan
-        </span>
-        <span className="text-[13px] font-medium tracking-[0.18em] text-gray-500 uppercase">
-          Tour &amp; Travels
-        </span>
+    <nav className="absolute left-1/2 top-4 z-50 flex w-[calc(100%-2rem)] max-w-7xl -translate-x-1/2 items-center justify-between sm:top-6 sm:w-[calc(100%-3rem)] lg:top-8 lg:px-8">
+      {/* Logo */}
+      <Link to="/" className="flex items-center">
+        <img src={logo} alt="Hindustan Tour & Travels" className="h-14 w-auto object-contain drop-shadow-md transition-all hover:scale-105 sm:h-16 lg:h-20" />
       </Link>
 
       {/* Glass pill — links + CTA */}
@@ -51,6 +47,9 @@ const Navbar = () => {
           Book Ride
         </Link>
       </div>
+      <Link to="/booking" className="rounded-full bg-gray-900 px-4 py-2.5 text-xs font-bold text-white shadow-lg lg:hidden sm:px-5 sm:text-sm">
+        Book a ride
+      </Link>
     </nav>
   );
 };
