@@ -4,11 +4,11 @@ import { CONTACT_INFO } from "../data/contactData";
 
 export default function ContactSection() {
   return (
-    <section id="contact" className="w-full bg-white py-24">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+    <section id="contact" className="w-full bg-white py-16 sm:py-20 lg:py-24">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-8">
 
         {/* Section Header */}
-        <div className="mb-16 max-w-2xl">
+        <div className="mb-10 max-w-2xl sm:mb-16">
           <span className="text-sm font-bold uppercase tracking-widest text-[#FF5E62]">
             Get in Touch
           </span>
@@ -21,18 +21,18 @@ export default function ContactSection() {
         </div>
 
         {/* Trust Badges Row */}
-        <div className="mb-10 flex flex-wrap gap-4">
+        <div className="mb-8 grid grid-cols-2 gap-3 sm:mb-10 sm:flex sm:flex-wrap sm:gap-4">
           {[
             { icon: "⭐", label: "4.9 Rating", sub: "380 JustDial Reviews" },
             { icon: "🏢", label: "14 Years in Business", sub: "Est. 2010" },
             { icon: "🏅", label: "MSME Certified", sub: "Indian Government 2023" },
             { icon: "✅", label: "Claimed Business", sub: "Verified on JustDial" },
           ].map((b, i) => (
-            <div key={i} className="flex items-center gap-3 rounded-2xl border border-gray-200 bg-gray-50 px-5 py-3">
-              <span className="text-2xl">{b.icon}</span>
+            <div key={i} className="flex items-center gap-2 rounded-2xl border border-gray-200 bg-gray-50 px-3 py-3 sm:gap-3 sm:px-5">
+              <span className="text-xl sm:text-2xl">{b.icon}</span>
               <div>
-                <p className="text-sm font-bold text-gray-900">{b.label}</p>
-                <p className="text-xs text-gray-500">{b.sub}</p>
+                <p className="text-xs font-bold text-gray-900 sm:text-sm">{b.label}</p>
+                <p className="text-[10px] text-gray-500 sm:text-xs">{b.sub}</p>
               </div>
             </div>
           ))}
@@ -114,7 +114,7 @@ export default function ContactSection() {
           </div>
 
           {/* Right — Google Maps Embed */}
-          <div className="flex-1 overflow-hidden rounded-[2rem] border border-gray-200 shadow-lg">
+          <div className="h-[360px] flex-1 overflow-hidden rounded-[2rem] border border-gray-200 shadow-lg sm:h-[460px] lg:h-auto">
             <iframe
               src={CONTACT_INFO.mapEmbedUrl}
               width="100%"

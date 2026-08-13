@@ -54,7 +54,7 @@ export default function GalleryPage() {
 
       <main className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
         {/* ── Page Heading ── */}
-        <div className="mb-12">
+        <div className="mb-9 sm:mb-12">
           <div className="mb-6">
             <Link
               to="/"
@@ -80,12 +80,12 @@ export default function GalleryPage() {
         </div>
 
         {/* ── Category Filter ── */}
-        <div className="mb-10 flex flex-wrap gap-2">
+        <div className="mb-8 flex gap-2 overflow-x-auto pb-2 sm:mb-10 sm:flex-wrap sm:overflow-visible sm:pb-0">
           {CATEGORIES.map((cat) => (
             <button
               key={cat}
               onClick={() => { setActiveCategory(cat); setShowAll(false); }}
-              className={`rounded-full px-5 py-2 text-sm font-semibold transition-all duration-200 ${
+              className={`shrink-0 rounded-full px-4 py-2 text-sm font-semibold transition-all duration-200 sm:px-5 ${
                 activeCategory === cat
                   ? "bg-gray-900 text-white shadow-md"
                   : "border border-gray-200 bg-white text-gray-600 hover:border-gray-400 hover:text-gray-900"
@@ -99,7 +99,7 @@ export default function GalleryPage() {
 
         {/* ── Grid ── */}
         <div className="relative pb-4">
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-x-5 gap-y-7 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.slice(0, showAll ? filtered.length : 12).map((item) => (
               <div
                 key={item.id}
@@ -139,7 +139,7 @@ export default function GalleryPage() {
 
           {/* Blur Overlay & Show More Button */}
           {!showAll && filtered.length > 9 && (
-            <div className="absolute bottom-0 left-0 right-0 flex h-72 flex-col items-center justify-end bg-gradient-to-t from-white via-white/95 to-transparent pb-4">
+            <div className="absolute bottom-0 left-0 right-0 flex h-64 flex-col items-center justify-end bg-gradient-to-t from-white via-white/95 to-transparent pb-4">
               <button
                 onClick={() => setShowAll(true)}
                 className="rounded-full border-2 border-gray-900 bg-white px-8 py-3.5 text-sm font-bold text-gray-900 shadow-xl transition-all hover:-translate-y-1 hover:bg-gray-900 hover:text-white"

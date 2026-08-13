@@ -42,9 +42,9 @@ export default function FaqSection() {
   };
 
   return (
-    <section id="faq" className="w-full bg-gray-50 py-24 pb-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="flex flex-col gap-16 lg:flex-row lg:gap-24">
+    <section id="faq" className="w-full bg-gray-50 py-16 pb-20 sm:py-20 sm:pb-28 lg:py-24 lg:pb-32">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-8">
+        <div className="flex flex-col gap-10 sm:gap-14 lg:flex-row lg:gap-24">
           
           {/* Left Column - Sticky Heading & Contact */}
           <div className="lg:w-1/3 lg:shrink-0">
@@ -65,7 +65,7 @@ export default function FaqSection() {
           </div>
 
           {/* Right Column - Premium Accordion */}
-          <div className="flex-1 space-y-5">
+          <div className="flex-1 space-y-3 sm:space-y-5">
             {faqs.map((faq, index) => {
               const isOpen = openIndex === index;
               return (
@@ -79,9 +79,9 @@ export default function FaqSection() {
                 >
                   <button
                     onClick={() => toggleFaq(index)}
-                    className="flex w-full items-start justify-between p-7 text-left focus:outline-none"
+                    className="flex w-full items-start justify-between p-5 text-left focus:outline-none sm:p-7"
                   >
-                    <span className="text-lg font-bold text-gray-900 pr-6">{faq.question}</span>
+                    <span className="pr-4 text-base font-bold text-gray-900 sm:pr-6 sm:text-lg">{faq.question}</span>
                     <span
                       className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-all duration-300 ${
                         isOpen ? "rotate-180 bg-[#FF5E62] text-white shadow-md" : "bg-gray-100 text-gray-500 hover:bg-gray-200"
@@ -98,7 +98,7 @@ export default function FaqSection() {
                     }`}
                   >
                     <div className="overflow-hidden">
-                      <p className="px-7 pb-7 pr-16 text-base leading-relaxed text-gray-600">
+                      <p className="px-5 pb-5 pr-12 text-sm leading-relaxed text-gray-600 sm:px-7 sm:pb-7 sm:pr-16 sm:text-base">
                         {faq.answer}
                       </p>
                     </div>

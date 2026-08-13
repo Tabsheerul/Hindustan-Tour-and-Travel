@@ -20,33 +20,33 @@ const TripPlannerSection = () => {
   };
 
   return (
-    <section id="booking" className="relative mx-auto w-full max-w-7xl px-16 py-24">
+    <section id="booking" className="relative mx-auto w-full max-w-7xl px-5 py-14 sm:px-8 sm:py-18 lg:px-8 lg:py-24">
       {/* Decorative background blurs */}
-      <div className="bg-brand-primary/5 absolute top-0 right-0 -z-10 h-[500px] w-[500px] rounded-full mix-blend-multiply blur-[100px]"></div>
-      <div className="bg-brand-secondary/5 absolute bottom-0 left-0 -z-10 h-[400px] w-[400px] rounded-full mix-blend-multiply blur-[80px]"></div>
+      <div className="bg-brand-primary/5 absolute top-0 right-0 -z-10 hidden h-[500px] w-[500px] rounded-full mix-blend-multiply blur-[100px] sm:block"></div>
+      <div className="bg-brand-secondary/5 absolute bottom-0 left-0 -z-10 hidden h-[400px] w-[400px] rounded-full mix-blend-multiply blur-[80px] sm:block"></div>
 
       {/* Section Label */}
-      <span className="text-brand-primary text-xs font-semibold tracking-[0.25em] uppercase">
+      <span className="text-brand-primary hidden text-xs font-semibold tracking-[0.25em] uppercase sm:inline">
         Book Your Ride from Firozabad
       </span>
 
       {/* Heading */}
-      <h2 className="text-texture-mask mt-4 mb-16 text-5xl font-bold tracking-tight">
+      <h2 className="text-texture-mask mb-7 max-w-xl text-3xl font-bold tracking-tight sm:mt-3 sm:mb-12 sm:text-5xl">
         Where would you like to go?
       </h2>
 
       {/* Two-column card: form + map */}
-      <div className="glass flex flex-col gap-0 overflow-hidden rounded-[2.5rem] md:flex-row">
+      <div className="glass flex flex-col gap-0 overflow-hidden rounded-[1.75rem] lg:flex-row lg:rounded-[2.5rem]">
         {/* Left column — Booking form */}
-        <div className="shrink-0 p-10 md:w-[420px]">
+        <div className="order-2 shrink-0 p-5 sm:p-8 lg:order-none lg:w-[420px] lg:p-10">
           <BookingSection onCoordsChange={handleCoordsChange} />
         </div>
 
         {/* Vertical divider (desktop only) */}
-        <div className="hidden w-px self-stretch bg-gray-200/60 md:block" />
+        <div className="hidden w-px self-stretch bg-gray-200/60 lg:block" />
 
         {/* Right column — Live OLA Map */}
-        <div className="min-h-[400px] flex-1 p-4">
+        <div className="order-1 h-[264px] w-full flex-none p-3 sm:h-[360px] sm:p-4 lg:order-none lg:h-auto lg:min-h-[400px] lg:flex-1">
           <OlaMapView
             pickupCoords={pickupCoords}
             destinationCoords={destinationCoords}

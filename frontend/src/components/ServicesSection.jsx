@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 // Import generated 3D images
 import outstationImg from "../assets/service_outstation_cab.png";
@@ -27,7 +28,7 @@ const services = [
   },
   {
     id: "shadi",
-    title: "Shadi & Barat",
+    title: "Shadi Rental",
     description: "Premium decorated cars & spacious vehicles for weddings, barats, and special occasions in Firozabad.",
     image: weddingImg,
   },
@@ -47,8 +48,8 @@ export default function ServicesSection() {
       {/* Solid white background for the rest of the section starting right after the fade */}
       <div className="absolute inset-x-0 bottom-0 top-32 -z-10 bg-white" />
 
-      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8 pt-18">
-        <h2 className="mb-10 text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
+      <div className="relative z-10 mx-auto max-w-7xl px-5 pt-12 sm:px-8 sm:pt-16 lg:px-8 lg:pt-18">
+        <h2 className="mb-8 text-3xl font-bold tracking-tight text-gray-900 md:mb-10 md:text-4xl">
           Our Services in Firozabad
         </h2>
 
@@ -57,10 +58,10 @@ export default function ServicesSection() {
           {services.map((service) => (
             <div
               key={service.id}
-              className="group relative flex min-h-[240px] cursor-pointer flex-col justify-between overflow-hidden rounded-2xl bg-[#F5F5F5] p-8 transition-all hover:bg-[#EAEAEA]"
+              className="group relative flex min-h-[280px] cursor-pointer flex-col justify-between overflow-hidden rounded-[1.5rem] bg-[#F5F5F5] p-6 transition-all hover:bg-[#EAEAEA] sm:p-8 md:min-h-[240px]"
             >
-              <div className="relative z-10 max-w-[65%]">
-                <h3 className="mb-3 text-2xl font-bold text-gray-900">
+              <div className="relative z-10 max-w-[68%] sm:max-w-[65%]">
+                <h3 className="mb-3 text-xl font-bold text-gray-900 sm:text-2xl">
                   {service.title}
                 </h3>
                 <p className="text-[15px] font-medium leading-relaxed text-gray-600">
@@ -69,9 +70,13 @@ export default function ServicesSection() {
               </div>
 
               <div className="relative z-10 mt-8">
-                <button className="rounded-full bg-white px-6 py-2.5 text-sm font-bold text-gray-900 shadow-sm transition-transform hover:scale-105">
-                  Details
-                </button>
+                <Link 
+                  to="/booking" 
+                  state={{ serviceType: 'Cars' }}
+                  className="inline-block rounded-full bg-white px-6 py-2.5 text-sm font-bold text-gray-900 shadow-sm transition-transform hover:scale-105"
+                >
+                  Book Now
+                </Link>
               </div>
               
               {/* Prominent Image perfectly positioned on the right */}

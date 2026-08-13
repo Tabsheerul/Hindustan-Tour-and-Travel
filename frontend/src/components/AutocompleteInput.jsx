@@ -136,7 +136,7 @@ const AutocompleteInput = ({
 
       {/* Dropdown UI */}
       {showDropdown && suggestions.length > 0 && (
-        <div className="absolute top-[85px] left-0 z-50 max-h-60 w-full overflow-hidden overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg">
+        <div className="absolute top-85px left-0 z-50 max-h-60 w-full overflow-hidden overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg">
           {suggestions.map((place, index) => (
             <button
               key={index}
