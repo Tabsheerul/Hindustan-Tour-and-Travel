@@ -370,19 +370,29 @@ export default function BookingPage() {
 
         /* ── DESKTOP LAYOUT (lg+) ── */
         @media (min-width: 1024px) {
-          .bp-sheet-wrapper { display: none; }
-          .bp-desktop-sidebar {
-            display: flex !important;
-          }
-          .booking-page-root {
-            flex-direction: row; /* override below */
-          }
+          /* Hide mobile-only bottom sheet on desktop */
+          .bp-sheet-wrapper { display: none !important; }
+          /* Map viewport has no sheet offset on desktop */
+          .bp-map-viewport { padding-bottom: 0 !important; transition: none !important; }
+          /* Show sidebar */
+          .bp-desktop-sidebar { display: flex !important; }
+          /* Switch body row (sidebar | map) */
+          .bp-body-row { flex-direction: row !important; }
+        }
+
+        /* Body row — column on mobile, row on desktop */
+        .bp-body-row {
+          display: flex;
+          flex-direction: column;
+          flex: 1;
+          min-height: 0;
+          overflow: hidden;
         }
 
         /* Desktop sidebar (hidden on mobile) */
         .bp-desktop-sidebar {
           display: none;
-          width: 380px;
+          width: 360px;
           flex-shrink: 0;
           flex-direction: column;
           overflow-y: auto;
@@ -390,18 +400,25 @@ export default function BookingPage() {
           border-right: 1px solid #e5e7eb;
           padding: 24px 20px 32px;
           gap: 16px;
+          height: 100%;
         }
         .bp-desktop-sidebar::-webkit-scrollbar { display: none; }
         @media (min-width: 1280px) {
-          .bp-desktop-sidebar { width: 440px; }
+          .bp-desktop-sidebar { width: 420px; }
+        }
+        @media (min-width: 1536px) {
+          .bp-desktop-sidebar { width: 480px; }
         }
 
-        /* Desktop main area */
+        /* Desktop map area wrapper */
         .bp-desktop-main {
           flex: 1;
           min-width: 0;
+          min-height: 0;
           display: flex;
           flex-direction: column;
+          position: relative;
+          overflow: hidden;
         }
       `}</style>
 
@@ -419,8 +436,8 @@ export default function BookingPage() {
         </Link>
       </header>
 
-      {/* ── DESKTOP SIDEBAR (hidden on mobile) ─────────────────────────────── */}
-      <div style={{ display: "flex", flex: 1, minHeight: 0 }}>
+      {/* ── BODY: sidebar left + map right ──────────────────────────────── */}
+      <div className="bp-body-row">
         <aside className="bp-desktop-sidebar">
           <div>
             <h1 style={{ fontSize: 26, fontWeight: 900, color: "#111827", margin: "0 0 4px", letterSpacing: -0.5 }}>Book Your Ride</h1>
@@ -599,6 +616,9 @@ export default function BookingPage() {
                         Consult Now
                       </a>
                     </div>
+                    
+                    {/* Spacer to allow scrolling past the translateY hidden area */}
+                    <div style={{ height: `${SNAP.expanded}dvh`, flexShrink: 0 }} />
                   </div>
                 )}
               </div>

@@ -15,7 +15,7 @@ export default function MapBackground() {
 
       {/* GPS Map Interface Layer */}
       <svg
-        className="pointer-events-none absolute top-0 left-0 h-full w-full mix-blend-multiply"
+        className="hidden md:block pointer-events-none absolute top-0 left-0 h-full w-full mix-blend-multiply"
         viewBox="0 0 1500 2000"
         preserveAspectRatio="xMidYMid slice"
       >

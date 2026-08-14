@@ -46,13 +46,13 @@ export default function GallerySection() {
               key={idx}
               className="group relative overflow-hidden rounded-2xl bg-gray-100 shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
             >
-              <div className="relative aspect-[4/3] overflow-hidden">
+              <div className="relative aspect-4/3 overflow-hidden">
                 <img
                   src={`/src/assets/jd_gallery/${item.file}`}
                   alt={item.title}
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/50 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                 <span className="absolute top-3 left-3 rounded-full bg-white/90 px-2.5 py-0.5 text-xs font-bold text-gray-700 shadow">
                   {item.category}
                 </span>
@@ -65,7 +65,7 @@ export default function GallerySection() {
         </div>
 
         {/* CTA Banner */}
-        <div className="mt-10 flex flex-col items-center justify-between gap-4 rounded-[1.5rem] bg-gray-50 px-8 py-6 sm:flex-row">
+        <div className="mt-10 flex flex-col items-center justify-between gap-4 rounded-3xl bg-gray-50 px-8 py-6 sm:flex-row">
           <div>
             <p className="font-bold text-gray-900">190+ Photos & Videos on our JustDial listing</p>
             <p className="text-sm text-gray-500">Rated ⭐ 4.9 by 380+ customers · 14 Years in Business</p>

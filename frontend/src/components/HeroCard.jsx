@@ -2,7 +2,7 @@ import premiumTajMahal from "../assets/premium_taj_mahal.png";
 
 const HeroCard = () => {
   return (
-    <div className="relative mx-auto flex min-h-[760px] w-full max-w-7xl flex-col justify-center gap-10 px-5 pb-16 pt-32 sm:px-10 md:min-h-[860px] md:flex-row md:items-center md:gap-12 md:px-8 md:py-32 lg:gap-16">
+    <div className="relative mx-auto flex min-h-[760px] w-full max-w-7xl flex-col justify-center gap-10 px-5 pb-16 pt-48 sm:px-10 md:min-h-[860px] md:flex-row md:items-center md:gap-12 md:px-8 md:pt-56 md:pb-32 lg:gap-16">
       {/* Left — Text Content with lots of breathing room */}
       <div className="z-10 flex max-w-xl flex-col gap-5 text-left sm:gap-6 md:flex-1">
 
