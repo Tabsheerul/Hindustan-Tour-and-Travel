@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // Import generated 3D images
 import outstationImg from "../assets/service_outstation_cab.png";
@@ -35,6 +35,8 @@ const services = [
 ];
 
 export default function ServicesSection() {
+  const navigate = useNavigate();
+
   return (
     <section id="services" className="relative w-full pt-12 pb-32">
       {/* Smooth fade from map background to solid white */}
@@ -58,7 +60,8 @@ export default function ServicesSection() {
           {services.map((service) => (
             <div
               key={service.id}
-              className="group relative flex min-h-[280px] cursor-pointer flex-col justify-between overflow-hidden rounded-[1.5rem] bg-[#F5F5F5] p-6 transition-all hover:bg-[#EAEAEA] sm:p-8 md:min-h-[240px]"
+              onClick={() => navigate('/booking', { state: { serviceType: 'Cars' } })}
+              className="group relative flex min-h-[280px] flex-col justify-between overflow-hidden rounded-[1.5rem] bg-[#F5F5F5] p-6 transition-all hover:bg-[#EAEAEA] sm:p-8 md:min-h-[240px]"
             >
               <div className="relative z-10 max-w-[68%] sm:max-w-[65%]">
                 <h3 className="mb-3 text-xl font-bold text-gray-900 sm:text-2xl">
@@ -69,15 +72,7 @@ export default function ServicesSection() {
                 </p>
               </div>
 
-              <div className="relative z-10 mt-8">
-                <Link 
-                  to="/booking" 
-                  state={{ serviceType: 'Cars' }}
-                  className="inline-block rounded-full bg-white px-6 py-2.5 text-sm font-bold text-gray-900 shadow-sm transition-transform hover:scale-105"
-                >
-                  Book Now
-                </Link>
-              </div>
+
               
               {/* Prominent Image perfectly positioned on the right */}
               <div className="absolute bottom-0 right-0 h-full w-[45%] pointer-events-none">
