@@ -28,8 +28,8 @@ const services = [
   },
   {
     id: "shadi",
-    title: "Shadi Rental",
-    description: "Premium decorated cars & spacious vehicles for weddings, barats, and special occasions in Firozabad.",
+    title: "Wedding Rental",
+    description: "Premium decorated cars & spacious vehicles for weddings, barats, and special occasions in or near Firozabad.",
     image: weddingImg,
   },
 ];
