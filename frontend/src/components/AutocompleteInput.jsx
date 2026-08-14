@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const AutocompleteInput = ({
   label,
@@ -13,6 +13,21 @@ const AutocompleteInput = ({
 }) => {
   const [suggestions, setSuggestions] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
+  const wrapperRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    }
+    // Bind the event listener
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      // Unbind the event listener on clean up
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const fetchPlaces = async (searchText) => {
     onChange(searchText);
@@ -70,7 +85,7 @@ const AutocompleteInput = ({
   };
 
   return (
-    <div className="relative flex flex-col gap-1.5">
+    <div ref={wrapperRef} className="relative flex flex-col gap-1.5">
       <div className="flex items-center justify-between pr-1 pb-1">
         <label className="pl-1 text-xs font-bold tracking-wider text-gray-600 uppercase">
           {label}
@@ -136,7 +151,7 @@ const AutocompleteInput = ({
 
       {/* Dropdown UI */}
       {showDropdown && suggestions.length > 0 && (
-        <div className="absolute top-85px left-0 z-50 max-h-60 w-full overflow-hidden overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg">
+        <div className="absolute top-full mt-1 left-0 z-50 max-h-60 w-full overflow-hidden overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg">
           {suggestions.map((place, index) => (
             <button
               key={index}

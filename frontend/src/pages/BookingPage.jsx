@@ -3,7 +3,7 @@ import { useLocation, Link } from "react-router-dom";
 import BookingSection from "../components/BookingSection";
 import OlaMapView from "../components/OlaMapView";
 import { CONTACT_INFO } from "../data/contactData";
-
+import logo from "../assets/logo.png";
 const FIROZABAD_CENTER = { lat: 27.1591, lng: 78.3957 };
 const OLA_API_KEY = import.meta.env.VITE_OLA_MAPS_API_KEY;
 
@@ -424,9 +424,12 @@ export default function BookingPage() {
 
       {/* ── HEADER ─────────────────────────────────────────────────────────── */}
       <header className="bp-header">
-        <Link to="/" className="bp-logo-text">
-          <div className="brand">Hindustan</div>
-          <div className="sub">Tour &amp; Travels</div>
+        <Link to="/" className="flex items-center group">
+          <img
+            src={logo}
+            alt="Hindustan Tour & Travels"
+            className="h-[46px] w-auto object-contain drop-shadow-sm transition-transform duration-500 group-hover:scale-105 sm:h-[52px]"
+          />
         </Link>
         <Link to="/" className="bp-back-btn">
           <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
@@ -481,7 +484,7 @@ export default function BookingPage() {
 
           {/* Booking Form */}
           <div className="bp-form-card">
-            <BookingSection initialState={initialState} onCoordsChange={handleCoordsChange} isBookingPage={true} serviceType={serviceType} />
+            <BookingSection initialState={initialState} onCoordsChange={handleCoordsChange} isBookingPage={true} serviceType={serviceType} vehicleVariant={vehicleVariant} />
           </div>
 
           {/* Consult */}
@@ -604,7 +607,7 @@ export default function BookingPage() {
 
                     {/* Booking Form */}
                     <div className="bp-form-card">
-                      <BookingSection initialState={initialState} onCoordsChange={handleCoordsChange} isBookingPage={true} serviceType={serviceType} />
+                      <BookingSection initialState={initialState} onCoordsChange={handleCoordsChange} isBookingPage={true} serviceType={serviceType} vehicleVariant={vehicleVariant} />
                     </div>
 
                     {/* Consult */}

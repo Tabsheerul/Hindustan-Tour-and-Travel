@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
+import emailjs from "@emailjs/browser";
 
 import AutocompleteInput from "./AutocompleteInput";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -11,7 +12,8 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 // onCoordsChange: optional callback → { pickup, destination } coordinates
 // Pickup is restricted to Firozabad & nearby areas (within ~50km)
 // Destination can be anywhere in India
-const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceType }) => {
+
+const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceType, vehicleVariant }) => {
   const navigate = useNavigate();
 
   const [pickup, setPickup] = useState(initialState?.pickup || "");
@@ -20,6 +22,13 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceTy
   const [time, setTime] = useState(initialState?.time ? dayjs(initialState.time) : null);
   const [tripType, setTripType] = useState(initialState?.tripType || "One Way");
   const [isLocating, setIsLocating] = useState(false);
+  const [isBooking, setIsBooking] = useState(false); // New state for email submission loading
+  
+  // Contact Info
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+
   // Holds { lat, lng } objects for the map
   const [pickupCoords, setPickupCoords] = useState(initialState?.pickupCoords || null);
   const [destinationCoords, setDestinationCoords] = useState(initialState?.destinationCoords || null);
@@ -81,7 +90,45 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceTy
 
   const handleBookTrip = () => {
     if (isBookingPage) {
-      alert("Booking confirmed! Our team will contact you shortly.");
+      // Validate required fields
+      if (!pickup || !destination || !name || !phone) {
+        alert("Please fill in all required fields (Name, Phone, Pickup, Destination).");
+        return;
+      }
+
+      setIsBooking(true);
+
+      const templateParams = {
+        title: `Booking Request - ${name}`,
+        name: name,
+        phone: phone,
+        email: email || "Not provided",
+        pickup: pickup,
+        destination: destination,
+        trip_type: tripType,
+        date: date ? date.format("DD MMMM YYYY") : "Not specified",
+        time: time ? time.format("HH:mm") : "Not specified",
+        service: `${serviceType || "Cars"}${vehicleVariant ? ` — ${vehicleVariant}` : ""}`
+      };
+
+      // These credentials should be added to your .env file
+      // Check the chat for instructions on how to set this up!
+      const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID || "YOUR_SERVICE_ID";
+      const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || "YOUR_TEMPLATE_ID";
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || "YOUR_PUBLIC_KEY";
+
+      emailjs.send(serviceID, templateID, templateParams, publicKey)
+        .then((response) => {
+          setIsBooking(false);
+          alert("Booking Confirmed! We have successfully received your request and will contact you shortly.");
+          // Optional: clear the form here if you want
+        })
+        .catch((error) => {
+          setIsBooking(false);
+          console.error("EmailJS Error:", error);
+          alert("Something went wrong while sending your request. Please try again or contact us directly.");
+        });
+
     } else {
       navigate("/booking", {
         state: {
@@ -246,16 +293,55 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceTy
         </div>
       </div>
 
+      {/* Contact Details (Only on Booking Page) */}
+      {isBookingPage && (
+        <>
+          <div className="mt-2 flex w-full flex-col gap-2">
+            <label className="pl-1 text-xs font-bold tracking-wider text-gray-600 uppercase">
+              Contact Details
+            </label>
+            <input 
+              type="text" 
+              placeholder="Full Name *" 
+              value={name} 
+              onChange={e => setName(e.target.value)} 
+              className="w-full rounded-[1rem] border border-gray-300 bg-white px-4 py-3.5 text-base font-medium text-gray-900 outline-none transition-all focus:border-[#FF5E62] focus:shadow-[0_0_0_3px_rgba(255,94,98,0.15)]"
+            />
+            <div className="flex flex-col sm:flex-row gap-3">
+              <input 
+                type="tel" 
+                placeholder="Phone Number *" 
+                value={phone} 
+                onChange={e => setPhone(e.target.value)} 
+                className="w-full sm:w-1/2 rounded-[1rem] border border-gray-300 bg-white px-4 py-3.5 text-base font-medium text-gray-900 outline-none transition-all focus:border-[#FF5E62] focus:shadow-[0_0_0_3px_rgba(255,94,98,0.15)]"
+              />
+              <input 
+                type="email" 
+                placeholder="Email Address (Optional)" 
+                value={email} 
+                onChange={e => setEmail(e.target.value)} 
+                className="w-full sm:w-1/2 rounded-[1rem] border border-gray-300 bg-white px-4 py-3.5 text-base font-medium text-gray-900 outline-none transition-all focus:border-[#FF5E62] focus:shadow-[0_0_0_3px_rgba(255,94,98,0.15)]"
+              />
+            </div>
+          </div>
+        </>
+      )}
+
       {/* Divider */}
       <div className="my-1 h-[2px] w-full bg-gray-200" />
 
       {/* Book Trip CTA */}
       <button 
         onClick={handleBookTrip}
-        className="mt-1 flex w-full items-center justify-center gap-2 rounded-full bg-gray-900 px-7 py-3 text-sm font-semibold text-white transition-colors duration-300 hover:bg-[#FF5E62]"
+        disabled={isBooking}
+        className={`mt-1 flex w-full items-center justify-center gap-2 rounded-full px-7 py-3 text-sm font-semibold text-white transition-colors duration-300 ${
+          isBooking ? "bg-gray-400 cursor-not-allowed" : "bg-gray-900 hover:bg-[#FF5E62]"
+        }`}
       >
-        <span>{isBookingPage ? "Confirm Booking" : "Continue to Book"}</span>
-        <span className="text-base leading-none">→</span>
+        <span>
+          {isBooking ? "Sending..." : isBookingPage ? "Confirm Booking" : "Continue to Book"}
+        </span>
+        {!isBooking && <span className="text-base leading-none">→</span>}
       </button>
     </div>
   );
