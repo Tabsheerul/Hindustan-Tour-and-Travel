@@ -8,122 +8,100 @@ export default function ContactSection() {
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-8">
 
         {/* Section Header */}
-        <div className="mb-10 max-w-2xl sm:mb-16">
-          <span className="text-sm font-bold uppercase tracking-widest text-[#FF5E62]">
+        <div className="mb-12 max-w-2xl">
+          <span className="text-sm font-bold uppercase tracking-widest text-brand-primary">
             Get in Touch
           </span>
-          <h2 className="mt-3 text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl">
+          <h2 className="mt-3 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
             Visit Us in Firozabad
           </h2>
-          <p className="mt-5 text-lg leading-relaxed text-gray-600">
-            Call us directly, send a WhatsApp message, or visit our office in Rasulpur, Firozabad. We're available until 11 PM every day!
+          <p className="mt-4 text-lg leading-relaxed text-gray-600">
+            Call us directly, send a WhatsApp message, or visit our office in Rasulpur, Firozabad. We're available 24/7 to serve you!
           </p>
         </div>
 
-        {/* Trust Badges Row */}
-        <div className="mb-8 grid grid-cols-2 gap-3 sm:mb-10 sm:flex sm:flex-wrap sm:gap-4">
-          {[
-            { icon: "⭐", label: "4.9 Rating", sub: "380 JustDial Reviews" },
-            { icon: "🏢", label: "14 Years in Business", sub: "Est. 2010" },
-            { icon: "🏅", label: "MSME Certified", sub: "Indian Government 2023" },
-            { icon: "✅", label: "Claimed Business", sub: "Verified on JustDial" },
-          ].map((b, i) => (
-            <div key={i} className="flex items-center gap-2 rounded-2xl border border-gray-200 bg-gray-50 px-3 py-3 sm:gap-3 sm:px-5">
-              <span className="text-xl sm:text-2xl">{b.icon}</span>
-              <div>
-                <p className="text-xs font-bold text-gray-900 sm:text-sm">{b.label}</p>
-                <p className="text-[10px] text-gray-500 sm:text-xs">{b.sub}</p>
-              </div>
-            </div>
-          ))}
-        </div>
+        {/* Content Grid: Info + Map */}
+        <div className="flex flex-col gap-12 lg:flex-row lg:items-center">
 
-        {/* Content Grid: Info Cards + Map */}
-        <div className="flex flex-col gap-10 lg:flex-row lg:gap-12">
-
-          {/* Left — Contact Cards */}
-          <div className="flex flex-col gap-6 lg:w-[420px] lg:shrink-0">
-
-            {/* Phone Numbers Card */}
-            <div className="rounded-[1.5rem] border border-gray-200 bg-gray-50 p-8">
-              <div className="mb-6 flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#FF5E62]/10 text-lg">📞</div>
-                <h3 className="text-lg font-bold text-gray-900">Call / WhatsApp</h3>
+          {/* Left — Contact Details (Clean List) */}
+          <div className="flex flex-col gap-8 lg:w-[420px] lg:shrink-0">
+            
+            {/* Address */}
+            <div className="flex gap-5">
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-brand-primary/10 text-2xl shadow-sm">
+                📍
               </div>
-              <div className="space-y-4">
-                {CONTACT_INFO.phones.map((phone, i) => (
-                  <div key={i} className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-500">{phone.label}</span>
-                    <a
-                      href={`tel:${phone.number.replace(/\s/g, "")}`}
-                      className="text-sm font-bold text-gray-900 transition-colors hover:text-[#FF5E62]"
-                    >
-                      {phone.number}
-                    </a>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Hours + Email */}
-            <div className="rounded-[1.5rem] border border-gray-200 bg-gray-50 p-8 space-y-5">
-              <div>
-                <div className="mb-2 flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100 text-lg">🕙</div>
-                  <h3 className="text-lg font-bold text-gray-900">Business Hours</h3>
-                </div>
-                <p className="text-base font-semibold text-green-600">{CONTACT_INFO.hours}</p>
-                <p className="text-sm text-gray-500 mt-1">Monday to Sunday</p>
-              </div>
-              <div className="h-px bg-gray-200" />
-              <div>
-                <div className="mb-2 flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#FF9933]/10 text-lg">✉️</div>
-                  <h3 className="text-lg font-bold text-gray-900">Email</h3>
+              <div className="pt-1">
+                <h3 className="mb-2 text-xl font-bold text-gray-900">Our Office</h3>
+                <div className="text-[15px] leading-relaxed text-gray-600">
+                  <p className="font-semibold text-gray-800">{CONTACT_INFO.address.line1}</p>
+                  <p>{CONTACT_INFO.address.line2}</p>
+                  <p>{CONTACT_INFO.address.city}, {CONTACT_INFO.address.state}</p>
                 </div>
                 <a
+                  href="https://maps.google.com/?q=27.142121,78.407983"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 inline-flex items-center gap-1.5 text-sm font-bold text-brand-primary transition-colors hover:text-[#e0484c]"
+                >
+                  Get Directions <span className="text-lg leading-none">→</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Phones */}
+            <div className="flex gap-5">
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-brand-primary/10 text-2xl shadow-sm">
+                📞
+              </div>
+              <div className="pt-1 w-full">
+                <h3 className="mb-3 text-xl font-bold text-gray-900">Call / WhatsApp</h3>
+                <div className="flex flex-col gap-3">
+                  {CONTACT_INFO.phones.map((phone, i) => (
+                    <div key={i} className="flex items-center justify-between border-b border-gray-100 pb-2 last:border-0 last:pb-0">
+                      <span className="text-sm font-medium text-gray-500">{phone.label}</span>
+                      <a
+                        href={`tel:${phone.number.replace(/\s/g, "")}`}
+                        className="font-bold text-gray-900 transition-colors hover:text-brand-primary"
+                      >
+                        {phone.number}
+                      </a>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Email & Hours */}
+            <div className="flex gap-5">
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-brand-primary/10 text-2xl shadow-sm">
+                ✉️
+              </div>
+              <div className="pt-1">
+                <h3 className="mb-2 text-xl font-bold text-gray-900">Business Hours & Email</h3>
+                <p className="mb-1 text-[15px] font-semibold text-gray-800">{CONTACT_INFO.hours}</p>
+                <a
                   href={`mailto:${CONTACT_INFO.email}`}
-                  className="text-base font-semibold text-gray-900 transition-colors hover:text-[#FF5E62] break-all"
+                  className="inline-block text-[15px] font-bold text-brand-primary transition-colors hover:text-[#e0484c]"
                 >
                   {CONTACT_INFO.email}
                 </a>
               </div>
             </div>
 
-            {/* Address Card */}
-            <div className="rounded-[1.5rem] border border-gray-200 bg-gray-50 p-8">
-              <div className="mb-4 flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-lg">📍</div>
-                <h3 className="text-lg font-bold text-gray-900">Our Office</h3>
-              </div>
-              <div className="text-base leading-relaxed text-gray-700 space-y-1">
-                <p className="font-bold text-gray-900">{CONTACT_INFO.address.line1}</p>
-                <p>{CONTACT_INFO.address.line2}</p>
-                <p>{CONTACT_INFO.address.city}</p>
-                <p className="text-sm text-gray-500">{CONTACT_INFO.address.state}</p>
-              </div>
-              <a
-                href="https://maps.google.com/?q=27.142121,78.407983"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#FF5E62] transition-colors hover:text-[#e0484c]"
-              >
-                Get Directions <span className="text-base">→</span>
-              </a>
-            </div>
           </div>
 
           {/* Right — Google Maps Embed */}
-          <div className="h-[360px] flex-1 overflow-hidden rounded-[2rem] border border-gray-200 shadow-lg sm:h-[460px] lg:h-auto">
+          <div className="h-[400px] w-full overflow-hidden rounded-3xl shadow-xl lg:h-[500px]">
             <iframe
               src={CONTACT_INFO.mapEmbedUrl}
               width="100%"
               height="100%"
-              style={{ border: 0, minHeight: "520px" }}
+              style={{ border: 0 }}
               allowFullScreen=""
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              title="Hindustan Tour and Travel — Rasulpur, Firozabad Office Location"
+              title="Hindustan Tour and Travel Office Location"
             ></iframe>
           </div>
 

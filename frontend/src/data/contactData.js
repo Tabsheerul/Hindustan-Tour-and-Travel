@@ -9,7 +9,7 @@ export const CONTACT_INFO = {
     { label: "Emergency (24/7)", number: "+91 95288 41152" },
   ],
   email: "info@hindustantourandtravels.com",
-  hours: "Open daily · Closes at 11:00 PM",
+  hours: "Available 24/7",
   established: "14 Years in Business",
   rating: "4.9★ (380 Ratings)",
   address: {
