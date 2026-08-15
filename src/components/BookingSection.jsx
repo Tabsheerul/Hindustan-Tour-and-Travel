@@ -11,7 +11,22 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 // ─── Main Component ─────────────────────────────────────────────────────────
 // onCoordsChange: optional callback → { pickup, destination } coordinates
+// Helper to calculate distance between two coordinates in km
+const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
+  const R = 6371; // Radius of the earth in km
+  const dLat = (lat2 - lat1) * (Math.PI / 180);
+  const dLon = (lon2 - lon1) * (Math.PI / 180);
+  const a = 
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) * 
+    Math.sin(dLon / 2) * Math.sin(dLon / 2); 
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)); 
+  return R * c;
+};
+
 // Pickup is restricted to Firozabad & nearby areas (within ~50km)
+const FIROZABAD_LAT = 27.1591;
+const FIROZABAD_LNG = 78.3957;
 // Destination can be anywhere in India
 
 const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceType, vehicleVariant, onPickFromMap, pickMode, mapPickedPickup, mapPickedDestination }) => {
@@ -117,6 +132,23 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceTy
         return;
       }
 
+      if (!date || !time) {
+        alert("Please select both a Travel Date and Travel Time.");
+        return;
+      }
+
+      // Validate 50km Pickup Boundary
+      if (pickupCoords) {
+        const distance = getDistanceFromLatLonInKm(FIROZABAD_LAT, FIROZABAD_LNG, pickupCoords.lat, pickupCoords.lng);
+        if (distance > 50) {
+          alert(`Your pickup location is approximately ${Math.round(distance)}km away from Firozabad. We only accept pickups within a 50km radius.`);
+          return;
+        }
+      } else {
+        alert("Please select a valid pickup location from the map or suggestions.");
+        return;
+      }
+
       if (!captchaToken) {
         alert("Please complete the 'I am not a robot' CAPTCHA check.");
         return;
@@ -160,6 +192,15 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceTy
         });
 
     } else {
+      // Validate 50km Pickup Boundary on Home Page as well
+      if (pickupCoords) {
+        const distance = getDistanceFromLatLonInKm(FIROZABAD_LAT, FIROZABAD_LNG, pickupCoords.lat, pickupCoords.lng);
+        if (distance > 50) {
+          alert(`Your pickup location is approximately ${Math.round(distance)}km away from Firozabad. We only accept pickups within a 50km radius.`);
+          return;
+        }
+      }
+
       navigate("/booking", {
         state: {
           pickup,
@@ -292,6 +333,7 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceTy
               value={date}
               onChange={(newValue) => setDate(newValue)}
               views={['year', 'month', 'day']}
+              disablePast
               sx={{
                 width: "100%",
                 "& .MuiOutlinedInput-root": {
@@ -328,6 +370,7 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceTy
               onChange={(newValue) => setTime(newValue)}
               views={['hours', 'minutes']}
               ampm={false}
+              disablePast={dayjs().isSame(date, 'day')} // Only disable past times if the selected date is today
               sx={{
                 width: "100%",
                 "& .MuiOutlinedInput-root": {
@@ -362,43 +405,52 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceTy
             <label className="pl-1 text-xs font-bold tracking-wider text-gray-600 uppercase">
               Full Name *
             </label>
-            <input 
-              type="text" 
-              value={name} 
-              onChange={e => setName(e.target.value)} 
-              required
-              minLength={3}
-              maxLength={50}
-              className="w-full rounded-[1rem] border border-gray-300 bg-white px-4 py-3.5 text-base font-medium text-gray-900 outline-none transition-all focus:border-[#FF5E62] focus:shadow-[0_0_0_3px_rgba(255,94,98,0.15)]"
-            />
+            <div className="group flex items-center gap-3 rounded-[1rem] border border-gray-300 bg-white px-4 py-3.5 shadow-sm transition-all focus-within:border-[#FF5E62] focus-within:shadow-[0_0_0_3px_rgba(255,94,98,0.15)] hover:border-gray-400">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-gray-400 group-focus-within:text-[#FF5E62] transition-colors"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <input 
+                type="text" 
+                value={name} 
+                onChange={e => setName(e.target.value)} 
+                required
+                minLength={3}
+                maxLength={50}
+                className="w-full bg-transparent text-base font-medium text-gray-900 placeholder-gray-500 outline-none"
+              />
+            </div>
           </div>
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex w-full sm:w-1/2 flex-col gap-1.5 justify-end">
               <label className="pl-1 text-xs font-bold tracking-wider text-gray-600 uppercase">
                 Phone Number *
               </label>
-              <input 
-                type="tel" 
-                value={phone} 
-                onChange={e => setPhone(e.target.value)} 
-                required
-                minLength={10}
-                maxLength={15}
-                pattern="[0-9\+\-\s]*"
-                className="w-full rounded-[1rem] border border-gray-300 bg-white px-4 py-3.5 text-base font-medium text-gray-900 outline-none transition-all focus:border-[#FF5E62] focus:shadow-[0_0_0_3px_rgba(255,94,98,0.15)]"
-              />
+              <div className="group flex items-center gap-3 rounded-[1rem] border border-gray-300 bg-white px-4 py-3.5 shadow-sm transition-all focus-within:border-[#FF5E62] focus-within:shadow-[0_0_0_3px_rgba(255,94,98,0.15)] hover:border-gray-400">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-gray-400 group-focus-within:text-[#FF5E62] transition-colors"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <input 
+                  type="tel" 
+                  value={phone} 
+                  onChange={e => setPhone(e.target.value)} 
+                  required
+                  minLength={10}
+                  maxLength={15}
+                  pattern="[0-9\+\-\s]*"
+                  className="w-full bg-transparent text-base font-medium text-gray-900 placeholder-gray-500 outline-none"
+                />
+              </div>
             </div>
             <div className="flex w-full sm:w-1/2 flex-col gap-1.5 justify-end">
               <label className="pl-1 text-xs font-bold tracking-wider text-gray-600 uppercase">
                 Email (Optional)
               </label>
-              <input 
-                type="email" 
-                value={email} 
-                onChange={e => setEmail(e.target.value)} 
-                maxLength={100}
-                className="w-full rounded-[1rem] border border-gray-300 bg-white px-4 py-3.5 text-base font-medium text-gray-900 outline-none transition-all focus:border-[#FF5E62] focus:shadow-[0_0_0_3px_rgba(255,94,98,0.15)]"
-              />
+              <div className="group flex items-center gap-3 rounded-[1rem] border border-gray-300 bg-white px-4 py-3.5 shadow-sm transition-all focus-within:border-[#FF5E62] focus-within:shadow-[0_0_0_3px_rgba(255,94,98,0.15)] hover:border-gray-400">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-gray-400 group-focus-within:text-[#FF5E62] transition-colors"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                <input 
+                  type="email" 
+                  value={email} 
+                  onChange={e => setEmail(e.target.value)} 
+                  maxLength={100}
+                  className="w-full bg-transparent text-base font-medium text-gray-900 placeholder-gray-500 outline-none"
+                />
+              </div>
             </div>
           </div>
         </div>
