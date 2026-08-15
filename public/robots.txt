@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://hindustantourandtravels.com/sitemap.xml
+Sitemap: https://hindustan-tour-and-travel.vercel.app/sitemap.xml
