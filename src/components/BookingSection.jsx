@@ -3,6 +3,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import emailjs from "@emailjs/browser";
+import { CONTACT_INFO } from "../data/contactData";
 
 import AutocompleteInput from "./AutocompleteInput";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -194,6 +195,10 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceTy
           alert("Booking Confirmed! We have successfully received your request and will contact you shortly.");
           if (recaptchaRef.current) recaptchaRef.current.reset();
           setCaptchaToken(null);
+          
+          // Trigger the phone dialer to call the travel agency
+          const bookingPhone = CONTACT_INFO.phones[0].number.replace(/[\s\-]/g, "");
+          window.location.href = `tel:+918102623810`;
         })
         .catch((error) => {
           setIsBooking(false);
