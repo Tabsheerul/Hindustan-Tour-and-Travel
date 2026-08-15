@@ -47,8 +47,10 @@ const OlaMapView = ({
 
         mapRef.current = map;
 
-        resizeObserverRef.current = new ResizeObserver(() => map.resize());
-        resizeObserverRef.current.observe(mapContainerRef.current);
+        if (mapContainerRef.current) {
+          resizeObserverRef.current = new ResizeObserver(() => map.resize());
+          resizeObserverRef.current.observe(mapContainerRef.current);
+        }
 
         map.on("load", () => {
           map.resize();
