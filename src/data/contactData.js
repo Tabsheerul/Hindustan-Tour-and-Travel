@@ -3,7 +3,8 @@
 
 export const CONTACT_INFO = {
   phones: [
-    { label: "Booking Line", number: "+91 84011 41577" },
+    {label:"Booking Line", number:"+91 81026 23810"},
+    // { label: "Booking Line", number: "+91 84011 41577" },
     { label: "WhatsApp", number: "+91 97596 54651" },
     { label: "Office", number: "+91 73006 69318" },
     { label: "Emergency (24/7)", number: "+91 95288 41152" },

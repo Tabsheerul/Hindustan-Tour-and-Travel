@@ -198,7 +198,7 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceTy
           
           // Trigger the phone dialer to call the travel agency
           const bookingPhone = CONTACT_INFO.phones[0].number.replace(/[\s\-]/g, "");
-          window.location.href = `tel:+918102623810`;
+          window.location.href = `tel:${bookingPhone}`;
         })
         .catch((error) => {
           setIsBooking(false);
