@@ -10,6 +10,8 @@ const AutocompleteInput = ({
   apiKey,
   onGetCurrentLocation,
   isLoading,
+  required,
+  maxLength,
 }) => {
   const [suggestions, setSuggestions] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -103,6 +105,8 @@ const AutocompleteInput = ({
           placeholder={placeholder}
           value={value}
           onChange={(e) => fetchPlaces(e.target.value)}
+          required={required}
+          maxLength={maxLength}
           className="w-full bg-transparent text-base font-medium text-gray-900 placeholder-gray-500 outline-none"
         />
         {value && (

@@ -2,28 +2,30 @@ import { useEffect, useRef, useState } from "react";
 import { defaultStyleJson, OlaMaps } from "olamaps-web-sdk";
 
 // ─── OlaMapView ───────────────────────────────────────────────────────────────
-// Use the style revision bundled with the installed SDK. The unversioned endpoint
-// can return a 3D layer that references a source layer absent from its vector data.
 const STYLE_URL = defaultStyleJson;
-
-// Firozabad coordinates: 27.1591°N, 78.3957°E
 const FIROZABAD = [78.3957, 27.1591];
 
-const OlaMapView = ({ pickupCoords, destinationCoords, defaultCenter, apiKey, isSheetCollapsed = false }) => {
+const OlaMapView = ({
+  pickupCoords,
+  destinationCoords,
+  defaultCenter,
+  apiKey,
+  isSheetCollapsed = false,
+  pickMode = null,      // "pickup" | "destination" | null
+  onMapClick,           // (lat, lng) => void  — fired when user clicks map in pick mode
+}) => {
   const mapContainerRef = useRef(null);
-  const olaMapsRef = useRef(null);    // OlaMaps SDK instance
-  const mapRef = useRef(null);        // actual MapLibre map instance (after await)
+  const olaMapsRef = useRef(null);
+  const mapRef = useRef(null);
   const pickupMarkerRef = useRef(null);
   const destinationMarkerRef = useRef(null);
   const routeLayerRef = useRef(false);
   const resizeObserverRef = useRef(null);
+  const pickModeClickHandler = useRef(null);
 
-  // Track when the map has fully loaded so other effects know it's safe to use
   const [mapReady, setMapReady] = useState(false);
 
   // ── STEP 1: Initialize the map ────────────────────────────────────────────
-  // olaMaps.init() is ASYNC — must be awaited to get the real map instance.
-  // Without await, mapRef.current would be a Promise, not a map.
   useEffect(() => {
     if (!mapContainerRef.current) return;
 
@@ -31,8 +33,6 @@ const OlaMapView = ({ pickupCoords, destinationCoords, defaultCenter, apiKey, is
       const olaMaps = new OlaMaps({ apiKey });
       olaMapsRef.current = olaMaps;
 
-      // await is critical — init() returns a Promise<MapInstance>
-      // Default center is Firozabad with a closer zoom since this is a local business
       const center = defaultCenter
         ? [defaultCenter.lng, defaultCenter.lat]
         : FIROZABAD;
@@ -47,8 +47,6 @@ const OlaMapView = ({ pickupCoords, destinationCoords, defaultCenter, apiKey, is
 
         mapRef.current = map;
 
-        // The container changes size when the responsive layout stacks. Explicitly
-        // resizing keeps the canvas visible instead of leaving a blank map on mobile.
         resizeObserverRef.current = new ResizeObserver(() => map.resize());
         resizeObserverRef.current.observe(mapContainerRef.current);
 
@@ -71,12 +69,10 @@ const OlaMapView = ({ pickupCoords, destinationCoords, defaultCenter, apiKey, is
     };
   }, []);
 
-  // ── STEP 1.5: Fly to defaultCenter when it becomes available ────────────────
+  // ── STEP 1.5: Fly to defaultCenter ──────────────────────────────────────
   useEffect(() => {
     const map = mapRef.current;
     if (!mapReady || !map || !defaultCenter) return;
-    
-    // Only fly to defaultCenter if user hasn't set custom coords yet
     if (!pickupCoords && !destinationCoords) {
       map.flyTo({
         center: [defaultCenter.lng, defaultCenter.lat],
@@ -86,65 +82,64 @@ const OlaMapView = ({ pickupCoords, destinationCoords, defaultCenter, apiKey, is
     }
   }, [defaultCenter, isSheetCollapsed, mapReady, pickupCoords, destinationCoords]);
 
-  // ── STEP 1.6: Camera control for single point selection ─────────────────────
-  // If user only selected ONE point, zoom in close (15) to that point.
-  // If both are selected, frame them both instantly.
+  // ── STEP 1.6: Camera control ─────────────────────────────────────────────
   useEffect(() => {
     const map = mapRef.current;
     if (!mapReady || !map) return;
 
     if (pickupCoords && !destinationCoords) {
-      map.flyTo({
-        center: [pickupCoords.lng, pickupCoords.lat],
-        zoom: 15,
-        duration: 1200,
-      });
+      map.flyTo({ center: [pickupCoords.lng, pickupCoords.lat], zoom: 15, duration: 1200 });
     } else if (destinationCoords && !pickupCoords) {
-      map.flyTo({
-        center: [destinationCoords.lng, destinationCoords.lat],
-        zoom: 15,
-        duration: 1200,
-      });
+      map.flyTo({ center: [destinationCoords.lng, destinationCoords.lat], zoom: 15, duration: 1200 });
     } else if (pickupCoords && destinationCoords) {
       const minLng = Math.min(pickupCoords.lng, destinationCoords.lng);
       const minLat = Math.min(pickupCoords.lat, destinationCoords.lat);
       const maxLng = Math.max(pickupCoords.lng, destinationCoords.lng);
       const maxLat = Math.max(pickupCoords.lat, destinationCoords.lat);
-      
-      map.fitBounds(
-        [
-          [minLng, minLat],
-          [maxLng, maxLat],
-        ],
-        { padding: 80, duration: 1000 },
-      );
+      map.fitBounds([[minLng, minLat], [maxLng, maxLat]], { padding: 80, duration: 1000 });
     }
   }, [pickupCoords, destinationCoords, mapReady]);
 
-  // ── STEP 2: Pickup marker ─────────────────────────────────────────────────
-  // Only runs after mapReady is true, so the map is guaranteed to be loaded
+  // ── STEP 1.7: Pick-from-map mode ─────────────────────────────────────────
   useEffect(() => {
-    if (!mapReady || !olaMapsRef.current || !mapRef.current) return;
+    const map = mapRef.current;
+    if (!mapReady || !map) return;
 
-    // Remove old pickup marker
-    if (pickupMarkerRef.current) {
-      pickupMarkerRef.current.remove();
-      pickupMarkerRef.current = null;
+    // Remove previous click handler
+    if (pickModeClickHandler.current) {
+      map.off("click", pickModeClickHandler.current);
+      pickModeClickHandler.current = null;
     }
 
+    if (pickMode && onMapClick) {
+      map.getCanvas().style.cursor = "crosshair";
+      const handler = (e) => {
+        const { lat, lng } = e.lngLat;
+        onMapClick(lat, lng);
+      };
+      map.on("click", handler);
+      pickModeClickHandler.current = handler;
+    } else {
+      map.getCanvas().style.cursor = "";
+    }
+
+    return () => {
+      if (pickModeClickHandler.current && map) {
+        map.off("click", pickModeClickHandler.current);
+        pickModeClickHandler.current = null;
+        if (map.getCanvas()) map.getCanvas().style.cursor = "";
+      }
+    };
+  }, [pickMode, mapReady, onMapClick]);
+
+  // ── STEP 2: Pickup marker ─────────────────────────────────────────────────
+  useEffect(() => {
+    if (!mapReady || !olaMapsRef.current || !mapRef.current) return;
+    if (pickupMarkerRef.current) { pickupMarkerRef.current.remove(); pickupMarkerRef.current = null; }
     if (!pickupCoords) return;
 
-    // Green circle = pickup point
     const el = document.createElement("div");
-    el.style.cssText = `
-      width: 16px; height: 16px;
-      background: #22c55e;
-      border: 3px solid white;
-      border-radius: 50%;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.35);
-      cursor: pointer;
-    `;
-
+    el.style.cssText = `width:16px;height:16px;background:#22c55e;border:3px solid white;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.35);cursor:pointer;`;
     pickupMarkerRef.current = olaMapsRef.current
       .addMarker({ element: el, anchor: "center" })
       .setLngLat([pickupCoords.lng, pickupCoords.lat])
@@ -154,32 +149,18 @@ const OlaMapView = ({ pickupCoords, destinationCoords, defaultCenter, apiKey, is
   // ── STEP 3: Destination marker ────────────────────────────────────────────
   useEffect(() => {
     if (!mapReady || !olaMapsRef.current || !mapRef.current) return;
-
-    if (destinationMarkerRef.current) {
-      destinationMarkerRef.current.remove();
-      destinationMarkerRef.current = null;
-    }
-
+    if (destinationMarkerRef.current) { destinationMarkerRef.current.remove(); destinationMarkerRef.current = null; }
     if (!destinationCoords) return;
 
-    // Red circle = destination point
     const el = document.createElement("div");
-    el.style.cssText = `
-      width: 16px; height: 16px;
-      background: #ef4444;
-      border: 3px solid white;
-      border-radius: 50%;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.35);
-      cursor: pointer;
-    `;
-
+    el.style.cssText = `width:16px;height:16px;background:#ef4444;border:3px solid white;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.35);cursor:pointer;`;
     destinationMarkerRef.current = olaMapsRef.current
       .addMarker({ element: el, anchor: "center" })
       .setLngLat([destinationCoords.lng, destinationCoords.lat])
       .addTo(mapRef.current);
   }, [destinationCoords, mapReady]);
 
-  // ── STEP 4: Route polyline between both points ────────────────────────────
+  // ── STEP 4: Route polyline ────────────────────────────────────────────────
   useEffect(() => {
     const map = mapRef.current;
     if (!mapReady || !map) return;
@@ -192,10 +173,7 @@ const OlaMapView = ({ pickupCoords, destinationCoords, defaultCenter, apiKey, is
       }
     };
 
-    if (!pickupCoords || !destinationCoords) {
-      clearRoute();
-      return;
-    }
+    if (!pickupCoords || !destinationCoords) { clearRoute(); return; }
 
     const fetchAndDrawRoute = async () => {
       try {
@@ -204,35 +182,23 @@ const OlaMapView = ({ pickupCoords, destinationCoords, defaultCenter, apiKey, is
           { method: "POST" }
         );
         const data = await res.json();
-
-        // OLA Maps returns the encoded string directly on overview_polyline (unlike Google Maps)
         const encodedPolyline = data?.routes?.[0]?.overview_polyline;
         if (!encodedPolyline) return;
 
         const coordinates = decodePolyline(encodedPolyline);
-
         clearRoute();
 
         map.addSource("ola-route", {
           type: "geojson",
-          data: {
-            type: "Feature",
-            geometry: { type: "LineString", coordinates },
-          },
+          data: { type: "Feature", geometry: { type: "LineString", coordinates } },
         });
-
         map.addLayer({
           id: "ola-route",
           type: "line",
           source: "ola-route",
           layout: { "line-join": "round", "line-cap": "round" },
-          paint: {
-            "line-color": "#FF5E62",
-            "line-width": 4,
-            "line-opacity": 0.85,
-          },
+          paint: { "line-color": "#FF5E62", "line-width": 4, "line-opacity": 0.85 },
         });
-
         routeLayerRef.current = true;
       } catch (err) {
         console.error("Error fetching OLA route:", err);
@@ -245,6 +211,34 @@ const OlaMapView = ({ pickupCoords, destinationCoords, defaultCenter, apiKey, is
   return (
     <div className="relative h-full min-h-[240px] w-full overflow-hidden rounded-3xl border border-gray-200 bg-gray-100 shadow-inner sm:min-h-[340px] lg:min-h-0">
       <div ref={mapContainerRef} className="h-full w-full" />
+
+      {/* Pick-mode banner overlay */}
+      {pickMode && (
+        <div
+          style={{
+            position: "absolute",
+            top: 12,
+            left: "50%",
+            transform: "translateX(-50%)",
+            background: pickMode === "pickup" ? "#22c55e" : "#ef4444",
+            color: "white",
+            padding: "8px 18px",
+            borderRadius: "999px",
+            fontSize: 13,
+            fontWeight: 700,
+            boxShadow: "0 4px 16px rgba(0,0,0,0.25)",
+            pointerEvents: "none",
+            whiteSpace: "nowrap",
+            zIndex: 10,
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+          }}
+        >
+          <span>{pickMode === "pickup" ? "📍" : "🏁"}</span>
+          <span>Click on map to set {pickMode === "pickup" ? "Pickup" : "Destination"} point</span>
+        </div>
+      )}
     </div>
   );
 };

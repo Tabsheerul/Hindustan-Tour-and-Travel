@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import emailjs from "@emailjs/browser";
@@ -13,7 +14,7 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 // Pickup is restricted to Firozabad & nearby areas (within ~50km)
 // Destination can be anywhere in India
 
-const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceType, vehicleVariant }) => {
+const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceType, vehicleVariant, onPickFromMap, pickMode, mapPickedPickup, mapPickedDestination }) => {
   const navigate = useNavigate();
 
   const [pickup, setPickup] = useState(initialState?.pickup || "");
@@ -22,8 +23,10 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceTy
   const [time, setTime] = useState(initialState?.time ? dayjs(initialState.time) : null);
   const [tripType, setTripType] = useState(initialState?.tripType || "One Way");
   const [isLocating, setIsLocating] = useState(false);
-  const [isBooking, setIsBooking] = useState(false); // New state for email submission loading
-  
+  const [isBooking, setIsBooking] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState(null);
+  const recaptchaRef = useRef(null);
+
   // Contact Info
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -32,6 +35,22 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceTy
   // Holds { lat, lng } objects for the map
   const [pickupCoords, setPickupCoords] = useState(initialState?.pickupCoords || null);
   const [destinationCoords, setDestinationCoords] = useState(initialState?.destinationCoords || null);
+
+  // When BookingPage signals a map-picked pickup → fill our input
+  useEffect(() => {
+    if (!mapPickedPickup) return;
+    setPickup(mapPickedPickup.address);
+    setPickupCoords(mapPickedPickup.coords);
+    if (onCoordsChange) onCoordsChange({ pickup: mapPickedPickup.coords, destination: destinationCoords });
+  }, [mapPickedPickup]);
+
+  // When BookingPage signals a map-picked destination → fill our input
+  useEffect(() => {
+    if (!mapPickedDestination) return;
+    setDestination(mapPickedDestination.address);
+    setDestinationCoords(mapPickedDestination.coords);
+    if (onCoordsChange) onCoordsChange({ pickup: pickupCoords, destination: mapPickedDestination.coords });
+  }, [mapPickedDestination]);
 
   // Get API key from environment variables (MUST start with VITE_ in Vite apps)
   const OLA_API_KEY = import.meta.env.VITE_OLA_MAPS_API_KEY;
@@ -88,11 +107,18 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceTy
     );
   };
 
-  const handleBookTrip = () => {
+  const handleBookTrip = (e) => {
+    e.preventDefault(); // Prevent page reload
+
     if (isBookingPage) {
       // Validate required fields
       if (!pickup || !destination || !name || !phone) {
         alert("Please fill in all required fields (Name, Phone, Pickup, Destination).");
+        return;
+      }
+
+      if (!captchaToken) {
+        alert("Please complete the 'I am not a robot' CAPTCHA check.");
         return;
       }
 
@@ -108,7 +134,8 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceTy
         trip_type: tripType,
         date: date ? date.format("DD MMMM YYYY") : "Not specified",
         time: time ? time.format("HH:mm") : "Not specified",
-        service: `${serviceType || "Cars"}${vehicleVariant ? ` — ${vehicleVariant}` : ""}`
+        service: `${serviceType || "Cars"}${vehicleVariant ? ` — ${vehicleVariant}` : ""}`,
+        "g-recaptcha-response": captchaToken // Required for EmailJS reCAPTCHA integration
       };
 
       // These credentials should be added to your .env file
@@ -121,12 +148,15 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceTy
         .then((response) => {
           setIsBooking(false);
           alert("Booking Confirmed! We have successfully received your request and will contact you shortly.");
-          // Optional: clear the form here if you want
+          if (recaptchaRef.current) recaptchaRef.current.reset();
+          setCaptchaToken(null);
         })
         .catch((error) => {
           setIsBooking(false);
           console.error("EmailJS Error:", error);
           alert("Something went wrong while sending your request. Please try again or contact us directly.");
+          if (recaptchaRef.current) recaptchaRef.current.reset();
+          setCaptchaToken(null);
         });
 
     } else {
@@ -145,7 +175,7 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceTy
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <form onSubmit={handleBookTrip} className="flex flex-col gap-4">
       {/* Trip Type Selector (Only on Booking Page) */}
       {isBookingPage && (
         <div className="flex flex-col gap-2">
@@ -177,7 +207,7 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceTy
       <div className="flex flex-col gap-2">
         <AutocompleteInput
           label="Pickup Point"
-          icon={<span className="shrink-0 text-lg text-[#FF5E62]">📍</span>}
+          icon={<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-[#FF5E62]"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>}
           placeholder="Firozabad, Tundla, Shikohabad..."
           value={pickup}
           onChange={setPickup}
@@ -185,7 +215,23 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceTy
           apiKey={OLA_API_KEY}
           onGetCurrentLocation={handleGetCurrentLocation}
           isLoading={isLocating}
+          required={true}
+          maxLength={150}
         />
+        {onPickFromMap && (
+          <button
+            type="button"
+            onClick={() => onPickFromMap(pickMode === "pickup" ? null : "pickup")}
+            className={`flex items-center gap-1.5 self-start rounded-full border px-3 py-1.5 text-xs font-semibold transition-all duration-200 ${
+              pickMode === "pickup"
+                ? "border-green-500 bg-green-500 text-white shadow"
+                : "border-gray-300 bg-white text-gray-600 hover:border-green-500 hover:text-green-600"
+            }`}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>{pickMode === "pickup" ? "Cancel Map Pick" : "Select on Map"}</span>
+          </button>
+        )}
 
         {/* Swap Button */}
         <div className="flex items-center gap-3 py-1">
@@ -210,13 +256,29 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceTy
 
         <AutocompleteInput
           label="Destination"
-          icon={<span className="shrink-0 text-lg text-[#FF9933]">🏁</span>}
+          icon={<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-[#FF9933]"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></svg>}
           placeholder="Agra, Delhi, Jaipur, Mumbai..."
           value={destination}
           onChange={setDestination}
           onCoordinatesChange={handleDestinationCoords}
           apiKey={OLA_API_KEY}
+          required={true}
+          maxLength={150}
         />
+        {onPickFromMap && (
+          <button
+            type="button"
+            onClick={() => onPickFromMap(pickMode === "destination" ? null : "destination")}
+            className={`flex items-center gap-1.5 self-start rounded-full border px-3 py-1.5 text-xs font-semibold transition-all duration-200 ${
+              pickMode === "destination"
+                ? "border-red-500 bg-red-500 text-white shadow"
+                : "border-gray-300 bg-white text-gray-600 hover:border-red-400 hover:text-red-500"
+            }`}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>{pickMode === "destination" ? "Cancel Map Pick" : "Select on Map"}</span>
+          </button>
+        )}
       </div>
 
       {/* Travel Date & Time */}
@@ -295,47 +357,74 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceTy
 
       {/* Contact Details (Only on Booking Page) */}
       {isBookingPage && (
-        <>
-          <div className="mt-2 flex w-full flex-col gap-2">
+        <div className="flex w-full flex-col gap-4 mt-2">
+          <div className="flex w-full flex-col gap-1.5">
             <label className="pl-1 text-xs font-bold tracking-wider text-gray-600 uppercase">
-              Contact Details
+              Full Name *
             </label>
             <input 
               type="text" 
-              placeholder="Full Name *" 
               value={name} 
               onChange={e => setName(e.target.value)} 
+              required
+              minLength={3}
+              maxLength={50}
               className="w-full rounded-[1rem] border border-gray-300 bg-white px-4 py-3.5 text-base font-medium text-gray-900 outline-none transition-all focus:border-[#FF5E62] focus:shadow-[0_0_0_3px_rgba(255,94,98,0.15)]"
             />
-            <div className="flex flex-col sm:flex-row gap-3">
+          </div>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex w-full sm:w-1/2 flex-col gap-1.5 justify-end">
+              <label className="pl-1 text-xs font-bold tracking-wider text-gray-600 uppercase">
+                Phone Number *
+              </label>
               <input 
                 type="tel" 
-                placeholder="Phone Number *" 
                 value={phone} 
                 onChange={e => setPhone(e.target.value)} 
-                className="w-full sm:w-1/2 rounded-[1rem] border border-gray-300 bg-white px-4 py-3.5 text-base font-medium text-gray-900 outline-none transition-all focus:border-[#FF5E62] focus:shadow-[0_0_0_3px_rgba(255,94,98,0.15)]"
+                required
+                minLength={10}
+                maxLength={15}
+                pattern="[0-9\+\-\s]*"
+                className="w-full rounded-[1rem] border border-gray-300 bg-white px-4 py-3.5 text-base font-medium text-gray-900 outline-none transition-all focus:border-[#FF5E62] focus:shadow-[0_0_0_3px_rgba(255,94,98,0.15)]"
               />
+            </div>
+            <div className="flex w-full sm:w-1/2 flex-col gap-1.5 justify-end">
+              <label className="pl-1 text-xs font-bold tracking-wider text-gray-600 uppercase">
+                Email (Optional)
+              </label>
               <input 
                 type="email" 
-                placeholder="Email Address (Optional)" 
                 value={email} 
                 onChange={e => setEmail(e.target.value)} 
-                className="w-full sm:w-1/2 rounded-[1rem] border border-gray-300 bg-white px-4 py-3.5 text-base font-medium text-gray-900 outline-none transition-all focus:border-[#FF5E62] focus:shadow-[0_0_0_3px_rgba(255,94,98,0.15)]"
+                maxLength={100}
+                className="w-full rounded-[1rem] border border-gray-300 bg-white px-4 py-3.5 text-base font-medium text-gray-900 outline-none transition-all focus:border-[#FF5E62] focus:shadow-[0_0_0_3px_rgba(255,94,98,0.15)]"
               />
             </div>
           </div>
-        </>
+        </div>
       )}
 
       {/* Divider */}
       <div className="my-1 h-[2px] w-full bg-gray-200" />
 
-      {/* Book Trip CTA */}
-      <button 
-        onClick={handleBookTrip}
+      {/* CAPTCHA Widget */}
+      {isBookingPage && (
+        <div className="flex justify-center mt-2 mb-2">
+          <ReCAPTCHA
+            ref={recaptchaRef}
+            sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY || "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"} // Uses a default Google test key if env variable is missing
+            onChange={(token) => setCaptchaToken(token)}
+            onExpired={() => setCaptchaToken(null)}
+          />
+        </div>
+      )}
+
+      {/* Action Button */}
+      <button
+        type="submit"
         disabled={isBooking}
-        className={`mt-1 flex w-full items-center justify-center gap-2 rounded-full px-7 py-3 text-sm font-semibold text-white transition-colors duration-300 ${
-          isBooking ? "bg-gray-400 cursor-not-allowed" : "bg-gray-900 hover:bg-[#FF5E62]"
+        className={`group mt-3 flex w-full items-center justify-center gap-3 rounded-full bg-gradient-to-r from-[#FF5E62] to-[#FF9933] px-6 py-4 text-base font-bold tracking-wide text-white shadow-lg transition-all duration-300 ${
+          isBooking ? "cursor-not-allowed opacity-75" : "hover:scale-[1.02] hover:shadow-xl active:scale-95"
         }`}
       >
         <span>
@@ -343,7 +432,7 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceTy
         </span>
         {!isBooking && <span className="text-base leading-none">→</span>}
       </button>
-    </div>
+    </form>
   );
 };
 

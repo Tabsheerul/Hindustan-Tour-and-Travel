@@ -24,6 +24,12 @@ export default function BookingPage() {
   const [serviceType, setServiceType] = useState(initialState.serviceType || "Cars");
   const [vehicleVariant, setVehicleVariant] = useState("5 Seater");
 
+  // Pick-from-map state
+  const [pickMode, setPickMode] = useState(null); // "pickup" | "destination" | null
+  // These hold the result of a map click so BookingSection can sync into its inputs
+  const [mapPickedPickup, setMapPickedPickup] = useState(null);       // { address, coords }
+  const [mapPickedDestination, setMapPickedDestination] = useState(null); // { address, coords }
+
   // Sheet state: "expanded" | "collapsed"
   const [sheetSnap, setSheetSnap] = useState("expanded");
 
@@ -45,6 +51,29 @@ export default function BookingPage() {
     else if (type === "Buses") setVehicleVariant("Non AC");
     else setVehicleVariant("");
   };
+
+  // Called when user clicks the map in pick mode — reverse-geocodes & fills the field
+  const handleMapClick = useCallback(async (lat, lng) => {
+    if (!pickMode) return;
+    try {
+      const res = await fetch(
+        `https://api.olamaps.io/places/v1/reverse-geocode?latlng=${lat},${lng}&api_key=${OLA_API_KEY}`
+      );
+      const data = await res.json();
+      const address = data?.results?.[0]?.formatted_address || `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+
+      if (pickMode === "pickup") {
+        setMapPickedPickup({ address, coords: { lat, lng } });
+        setPickupCoords({ lat, lng });
+      } else {
+        setMapPickedDestination({ address, coords: { lat, lng } });
+        setDestinationCoords({ lat, lng });
+      }
+    } catch (err) {
+      console.error("Reverse geocode error:", err);
+    }
+    setPickMode(null); // exit pick mode after selection
+  }, [pickMode]);
 
   // ── Touch / Drag handlers ────────────────────────────────────────────────
   const onTouchStart = useCallback((e) => {
@@ -126,7 +155,7 @@ export default function BookingPage() {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 10px 16px;
+          padding: 10px 26px;
           background: rgba(255,255,255,0.95);
           backdrop-filter: blur(12px);
           border-bottom: 1px solid rgba(0,0,0,0.06);
@@ -484,7 +513,17 @@ export default function BookingPage() {
 
           {/* Booking Form */}
           <div className="bp-form-card">
-            <BookingSection initialState={initialState} onCoordsChange={handleCoordsChange} isBookingPage={true} serviceType={serviceType} vehicleVariant={vehicleVariant} />
+            <BookingSection
+              initialState={initialState}
+              onCoordsChange={handleCoordsChange}
+              isBookingPage={true}
+              serviceType={serviceType}
+              vehicleVariant={vehicleVariant}
+              onPickFromMap={(mode) => setPickMode(mode)}
+              pickMode={pickMode}
+              mapPickedPickup={mapPickedPickup}
+              mapPickedDestination={mapPickedDestination}
+            />
           </div>
 
           {/* Consult */}
@@ -522,6 +561,8 @@ export default function BookingPage() {
                 defaultCenter={FIROZABAD_CENTER}
                 apiKey={OLA_API_KEY}
                 isSheetCollapsed={!isExpanded}
+                pickMode={pickMode}
+                onMapClick={handleMapClick}
               />
             </div>
 
@@ -607,7 +648,17 @@ export default function BookingPage() {
 
                     {/* Booking Form */}
                     <div className="bp-form-card">
-                      <BookingSection initialState={initialState} onCoordsChange={handleCoordsChange} isBookingPage={true} serviceType={serviceType} vehicleVariant={vehicleVariant} />
+                      <BookingSection
+                        initialState={initialState}
+                        onCoordsChange={handleCoordsChange}
+                        isBookingPage={true}
+                        serviceType={serviceType}
+                        vehicleVariant={vehicleVariant}
+                        onPickFromMap={(mode) => { setPickMode(mode); setSheetSnap("collapsed"); }}
+                        pickMode={pickMode}
+                        mapPickedPickup={mapPickedPickup}
+                        mapPickedDestination={mapPickedDestination}
+                      />
                     </div>
 
                     {/* Consult */}
