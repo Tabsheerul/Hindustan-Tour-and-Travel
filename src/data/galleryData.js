@@ -41,7 +41,11 @@ export const GALLERY_ITEMS = [
   { id: 40, file: "jd_40.jpg", title: "White Sedan Rear",        category: "Cars",           desc: "White sedan rear view (Ciaz)" },
   { id: 41, file: "jd_41.jpg", title: "White Sedan Front",       category: "Cars",           desc: "White sedan front view (Ciaz)" },
   { id: 42, file: "jd_42.jpg", title: "Force Traveller (Side)",  category: "Tempo",          desc: "White Force Traveller side view" },
+  { id: 43, file: "jd_43.jpg", title: "Luxury Sedan",            category: "Cars",           desc: "Luxury sedan — outstation cab" },
   { id: 44, file: "jd_44.jpg", title: "Force Traveller TOURIST", category: "Tempo",          desc: "White Force Traveller TOURIST — front view" },
+  { id: 45, file: "jd_45.jpg", title: "Premium Bus",             category: "Buses",          desc: "Premium tourist bus — exterior" },
+  { id: 46, file: "jd_46.jpg", title: "Bus Exterior",            category: "Buses",          desc: "Tourist bus exterior view" },
+  { id: 47, file: "jd_47.jpg", title: "Vehicle Exterior",        category: "Cars",           desc: "Vehicle exterior — outstation fleet" },
 ];
 
 export const CATEGORIES = ["All", "Cars", "Buses", "Tempo", "Wedding", "Interiors"];

@@ -290,6 +290,7 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceTy
         <div className="flex items-center gap-3 py-1">
           <div className="h-[2px] flex-1 bg-gray-200" />
           <button
+            type="button"
             onClick={() => {
               const tempVal = pickup;
               const tempCoords = pickupCoords;
