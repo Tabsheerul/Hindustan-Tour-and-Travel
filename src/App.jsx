@@ -9,6 +9,7 @@ import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
 import GalleryPage from "./pages/GalleryPage";
 import BookingPage from "./pages/BookingPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 // ── Home page ────────────────────────────────────────────────────────────────
 function HomePage() {
@@ -37,6 +38,7 @@ function App() {
       <Route path="/" element={<HomePage />} />
       <Route path="/gallery" element={<GalleryPage />} />
       <Route path="/booking" element={<BookingPage />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }

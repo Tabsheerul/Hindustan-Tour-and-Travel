@@ -108,7 +108,7 @@ export default function GalleryPage() {
               >
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <img
-                  src={`/src/assets/jd_gallery/${item.file}`}
+                  src={`/jd_gallery/${item.file}`}
                   alt={item.title}
                   className="w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   loading="lazy"
@@ -188,7 +188,7 @@ export default function GalleryPage() {
             {/* Image */}
             <div className="relative flex-1 overflow-hidden">
               <img
-                src={`/src/assets/jd_gallery/${lightbox.file}`}
+                src={`/jd_gallery/${lightbox.file}`}
                 alt={lightbox.title}
                 className="max-h-[65vh] w-full object-contain"
               />

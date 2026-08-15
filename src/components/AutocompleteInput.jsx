@@ -16,6 +16,7 @@ const AutocompleteInput = ({
   const [suggestions, setSuggestions] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const wrapperRef = useRef(null);
+  const debounceTimerRef = useRef(null);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -28,32 +29,40 @@ const AutocompleteInput = ({
     return () => {
       // Unbind the event listener on clean up
       document.removeEventListener("mousedown", handleClickOutside);
+      // Clear any pending debounce timer on unmount
+      if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
     };
   }, []);
 
-  const fetchPlaces = async (searchText) => {
+  const fetchPlaces = (searchText) => {
     onChange(searchText);
     // Clear coordinates when user starts typing again
     if (onCoordinatesChange) onCoordinatesChange(null);
+
+    // Clear any pending debounce timer
+    if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
 
     if (searchText.length < 3) {
       setSuggestions([]);
       return;
     }
 
-    try {
-      const response = await fetch(
-        `https://api.olamaps.io/places/v1/autocomplete?input=${searchText}&api_key=${apiKey}`,
-      );
-      const data = await response.json();
+    // Debounce API call by 300ms to avoid firing on every keystroke
+    debounceTimerRef.current = setTimeout(async () => {
+      try {
+        const response = await fetch(
+          `https://api.olamaps.io/places/v1/autocomplete?input=${encodeURIComponent(searchText)}&api_key=${apiKey}`,
+        );
+        const data = await response.json();
 
-      if (data.predictions) {
-        setSuggestions(data.predictions);
-        setShowDropdown(true);
+        if (data.predictions) {
+          setSuggestions(data.predictions);
+          setShowDropdown(true);
+        }
+      } catch (error) {
+        console.error("Error fetching Ola Maps autocomplete:", error);
       }
-    } catch (error) {
-      console.error("Error fetching Ola Maps autocomplete:", error);
-    }
+    }, 300);
   };
 
   // Called when user clicks a suggestion from the dropdown

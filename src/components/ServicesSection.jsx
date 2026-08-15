@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // Import generated 3D images
 import outstationImg from "../assets/service_outstation_cab.png";

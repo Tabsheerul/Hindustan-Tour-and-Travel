@@ -132,6 +132,14 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceTy
         return;
       }
 
+      // Validate phone number (Indian format)
+      const cleanPhone = phone.replace(/[\s\-]/g, "");
+      const phoneRegex = /^(\+91)?[6-9]\d{9}$/;
+      if (!phoneRegex.test(cleanPhone)) {
+        alert("Please enter a valid Indian phone number (e.g. 9876543210 or +919876543210).");
+        return;
+      }
+
       if (!date || !time) {
         alert("Please select both a Travel Date and Travel Time.");
         return;
@@ -170,11 +178,15 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceTy
         "g-recaptcha-response": captchaToken // Required for EmailJS reCAPTCHA integration
       };
 
-      // These credentials should be added to your .env file
-      // Check the chat for instructions on how to set this up!
-      const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID || "YOUR_SERVICE_ID";
-      const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || "YOUR_TEMPLATE_ID";
-      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || "YOUR_PUBLIC_KEY";
+      const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+      const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+      if (!serviceID || !templateID || !publicKey) {
+        setIsBooking(false);
+        alert("Booking service is temporarily unavailable. Please call us directly to book your ride.");
+        return;
+      }
 
       emailjs.send(serviceID, templateID, templateParams, publicKey)
         .then((response) => {
@@ -464,7 +476,7 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceTy
         <div className="flex justify-center mt-2 mb-2">
           <ReCAPTCHA
             ref={recaptchaRef}
-            sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY || "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"} // Uses a default Google test key if env variable is missing
+            sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
             onChange={(token) => setCaptchaToken(token)}
             onExpired={() => setCaptchaToken(null)}
           />
