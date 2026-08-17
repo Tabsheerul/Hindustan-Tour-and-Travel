@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import logo from "../assets/logo.png";
 
 import { GALLERY_ITEMS, CATEGORIES } from "../data/galleryData";
 
@@ -37,9 +38,12 @@ export default function GalleryPage() {
       {/* ── Simple Header ── */}
       <header className="sticky top-0 z-40 border-b border-gray-200 bg-white/90 backdrop-blur-md">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
-          <Link to="/" className="flex flex-col">
-            <span className="text-[15px] font-black tracking-widest uppercase text-[#FF5E62]">Hindustan</span>
-            <span className="text-[13px] font-medium tracking-[0.18em] text-gray-500 uppercase">Tour &amp; Travels</span>
+          <Link to="/" className="flex items-center group">
+            <img
+              src={logo}
+              alt="Hindustan Tour & Travels"
+              className="h-[50px] w-auto object-contain drop-shadow-sm transition-transform duration-500 group-hover:scale-105 sm:h-[60px]"
+            />
           </Link>
           <div className="flex items-center gap-4">
             <Link
