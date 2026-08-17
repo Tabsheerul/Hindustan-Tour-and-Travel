@@ -48,6 +48,7 @@ export default function GallerySection() {
             >
               <div className="relative aspect-4/3 overflow-hidden">
                 <img
+                  loading="lazy"
                   src={`/jd_gallery/${item.file}`}
                   alt={item.title}
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"

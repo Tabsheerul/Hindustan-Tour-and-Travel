@@ -6,10 +6,57 @@ import emailjs from "@emailjs/browser";
 import { CONTACT_INFO } from "../data/contactData";
 
 import AutocompleteInput from "./AutocompleteInput";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { DesktopTimePicker } from '@mui/x-date-pickers/DesktopTimePicker';
+import { renderMultiSectionDigitalClockTimeView } from '@mui/x-date-pickers/timeViewRenderers';
+
+const muiTheme = createTheme({
+  palette: {
+    primary: {
+      main: '#FF5E62',
+    },
+  },
+  typography: {
+    fontFamily: '"Inter", system-ui, sans-serif',
+  },
+  components: {
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          borderRadius: '1rem',
+          height: '54px',
+          backgroundColor: '#fff',
+          boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+          '& fieldset': {
+            borderColor: '#D1D5DB', // gray-300
+            transition: 'all 0.2s',
+          },
+          '&:hover fieldset': {
+            borderColor: '#9CA3AF', // gray-400
+          },
+          '&.Mui-focused fieldset': {
+            borderColor: '#FF5E62',
+            borderWidth: '1px',
+            boxShadow: '0 0 0 3px rgba(255,94,98,0.15)',
+          },
+        },
+      },
+    },
+    MuiInputBase: {
+      styleOverrides: {
+        input: {
+          fontWeight: 500,
+          color: '#111827',
+          padding: '14px 16px',
+        },
+      },
+    },
+  },
+});
+
 // ─── Main Component ─────────────────────────────────────────────────────────
 // onCoordsChange: optional callback → { pickup, destination } coordinates
 // Helper to calculate distance between two coordinates in km
@@ -37,6 +84,8 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceTy
   const [destination, setDestination] = useState(initialState?.destination || "");
   const [date, setDate] = useState(initialState?.date ? dayjs(initialState.date) : null);
   const [time, setTime] = useState(initialState?.time ? dayjs(initialState.time) : null);
+  const [openDate, setOpenDate] = useState(false);
+  const [openTime, setOpenTime] = useState(false);
   const [tripType, setTripType] = useState(initialState?.tripType || "One Way");
   const [isLocating, setIsLocating] = useState(false);
   const [isBooking, setIsBooking] = useState(false);
@@ -174,7 +223,7 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceTy
         destination: destination,
         trip_type: tripType,
         date: date ? date.format("DD MMMM YYYY") : "Not specified",
-        time: time ? time.format("HH:mm") : "Not specified",
+        time: time ? time.format("hh:mm A") : "Not specified",
         service: `${serviceType || "Cars"}${vehicleVariant ? ` — ${vehicleVariant}` : ""}`,
         "g-recaptcha-response": captchaToken // Required for EmailJS reCAPTCHA integration
       };
@@ -341,80 +390,64 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceTy
       </div>
 
       {/* Travel Date & Time */}
-      <div className="flex w-full flex-col gap-4 sm:flex-row">
-        <div className="flex w-full flex-col gap-1.5 sm:w-1/2">
-          <label className="pb-1 pl-1 text-xs font-bold tracking-wider text-gray-600 uppercase">
-            Travel Date
-          </label>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              value={date}
-              onChange={(newValue) => setDate(newValue)}
-              views={['year', 'month', 'day']}
-              disablePast
-              sx={{
-                width: "100%",
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: "1rem",
-                  backgroundColor: "white",
-                  fontSize: "1rem",
-                  fontWeight: "500",
-                  color: "#111827", // gray-900
-                  "& fieldset": {
-                    borderColor: "#d1d5db", // gray-300
-                    borderWidth: "1px",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "#9ca3af", // gray-400
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#FF5E62",
-                    borderWidth: "1px",
-                    boxShadow: "0 0 0 3px rgba(255,94,98,0.15)",
-                  },
-                },
-              }}
-            />
-          </LocalizationProvider>
-        </div>
+      <ThemeProvider theme={muiTheme}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <div className="flex w-full flex-col gap-4 sm:flex-row">
+            <div className="flex w-full flex-col gap-1.5 sm:w-1/2">
+              <label className="pb-1 pl-1 text-xs font-bold tracking-wider text-gray-600 uppercase">
+                Travel Date
+              </label>
+              <DesktopDatePicker
+                value={date}
+                onChange={(newValue) => { setDate(newValue); setOpenDate(false); }}
+                format="DD MMMM"
+                views={['day']}
+                disablePast
+                showDaysOutsideCurrentMonth
+                open={openDate}
+                onOpen={() => setOpenDate(true)}
+                onClose={() => setOpenDate(false)}
+                slotProps={{ 
+                  textField: { 
+                    fullWidth: true, 
+                    placeholder: "Select Date",
+                    onClick: () => setOpenDate(true),
+                    InputProps: { readOnly: true }
+                  } 
+                }}
+              />
+            </div>
 
-        <div className="flex w-full flex-col gap-1.5 sm:w-1/2">
-          <label className="pb-1 pl-1 text-xs font-bold tracking-wider text-gray-600 uppercase">
-            Travel Time
-          </label>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <TimePicker
-              value={time}
-              onChange={(newValue) => setTime(newValue)}
-              views={['hours', 'minutes']}
-              ampm={false}
-              disablePast={dayjs().isSame(date, 'day')} // Only disable past times if the selected date is today
-              sx={{
-                width: "100%",
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: "1rem",
-                  backgroundColor: "white",
-                  fontSize: "1rem",
-                  fontWeight: "500",
-                  color: "#111827",
-                  "& fieldset": {
-                    borderColor: "#d1d5db",
-                    borderWidth: "1px",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "#9ca3af",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#FF5E62",
-                    borderWidth: "1px",
-                    boxShadow: "0 0 0 3px rgba(255,94,98,0.15)",
-                  },
-                },
-              }}
-            />
-          </LocalizationProvider>
-        </div>
-      </div>
+            <div className="flex w-full flex-col gap-1.5 sm:w-1/2">
+              <label className="pb-1 pl-1 text-xs font-bold tracking-wider text-gray-600 uppercase">
+                Travel Time
+              </label>
+              <DesktopTimePicker
+                value={time}
+                onChange={(newValue) => setTime(newValue)}
+                format="hh:mm A"
+                timeSteps={{ minutes: 15 }}
+                viewRenderers={{
+                  hours: renderMultiSectionDigitalClockTimeView,
+                  minutes: renderMultiSectionDigitalClockTimeView,
+                  seconds: renderMultiSectionDigitalClockTimeView,
+                }}
+                open={openTime}
+                onOpen={() => setOpenTime(true)}
+                onClose={() => setOpenTime(false)}
+                slotProps={{ 
+                  textField: { 
+                    fullWidth: true, 
+                    placeholder: "HH:MM AM/PM",
+                    onClick: () => setOpenTime(true),
+                    InputProps: { readOnly: true }
+                  } 
+                }}
+              />
+            </div>
+          </div>
+        </LocalizationProvider>
+      </ThemeProvider>
 
       {/* Contact Details (Only on Booking Page) */}
       {isBookingPage && (

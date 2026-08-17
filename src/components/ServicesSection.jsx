@@ -77,6 +77,7 @@ export default function ServicesSection() {
               {/* Prominent Image perfectly positioned on the right */}
               <div className="absolute bottom-0 right-0 h-full w-[45%] pointer-events-none">
                 <img 
+                  loading="lazy"
                   src={service.image} 
                   alt={service.title} 
                   className="absolute bottom-4 right-0 h-[85%] w-full object-contain object-right-bottom mix-blend-multiply transition-transform duration-500 group-hover:scale-110" 
