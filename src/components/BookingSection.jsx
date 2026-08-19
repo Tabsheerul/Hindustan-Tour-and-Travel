@@ -342,7 +342,7 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceTy
 
         {/* Swap Button */}
         <div className="flex items-center gap-3 py-1">
-          <div className="h-[2px] flex-1 bg-gray-200" />
+          <div className="h-0.5 flex-1 bg-gray-200" />
           <button
             type="button"
             onClick={() => {
@@ -359,7 +359,7 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceTy
           >
             ⇅
           </button>
-          <div className="h-[2px] flex-1 bg-gray-200" />
+          <div className="h-0.5 flex-1 bg-gray-200" />
         </div>
 
         <AutocompleteInput
@@ -456,7 +456,7 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceTy
             <label className="pl-1 text-xs font-bold tracking-wider text-gray-600 uppercase">
               Full Name *
             </label>
-            <div className="group flex items-center gap-3 rounded-[1rem] border border-gray-300 bg-white px-4 py-3.5 shadow-sm transition-all focus-within:border-[#FF5E62] focus-within:shadow-[0_0_0_3px_rgba(255,94,98,0.15)] hover:border-gray-400">
+            <div className="group flex items-center gap-3 rounded-2xl border border-gray-300 bg-white px-4 py-3.5 shadow-sm transition-all focus-within:border-[#FF5E62] focus-within:shadow-[0_0_0_3px_rgba(255,94,98,0.15)] hover:border-gray-400">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-gray-400 group-focus-within:text-[#FF5E62] transition-colors"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
               <input 
                 type="text" 
@@ -474,7 +474,7 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceTy
               <label className="pl-1 text-xs font-bold tracking-wider text-gray-600 uppercase">
                 Phone Number *
               </label>
-              <div className="group flex items-center gap-3 rounded-[1rem] border border-gray-300 bg-white px-4 py-3.5 shadow-sm transition-all focus-within:border-[#FF5E62] focus-within:shadow-[0_0_0_3px_rgba(255,94,98,0.15)] hover:border-gray-400">
+              <div className="group flex items-center gap-3 rounded-2xl border border-gray-300 bg-white px-4 py-3.5 shadow-sm transition-all focus-within:border-[#FF5E62] focus-within:shadow-[0_0_0_3px_rgba(255,94,98,0.15)] hover:border-gray-400">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-gray-400 group-focus-within:text-[#FF5E62] transition-colors"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                 <input 
                   type="tel" 
@@ -492,7 +492,7 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceTy
               <label className="pl-1 text-xs font-bold tracking-wider text-gray-600 uppercase">
                 Email (Optional)
               </label>
-              <div className="group flex items-center gap-3 rounded-[1rem] border border-gray-300 bg-white px-4 py-3.5 shadow-sm transition-all focus-within:border-[#FF5E62] focus-within:shadow-[0_0_0_3px_rgba(255,94,98,0.15)] hover:border-gray-400">
+              <div className="group flex items-center gap-3 rounded-2xl border border-gray-300 bg-white px-4 py-3.5 shadow-sm transition-all focus-within:border-[#FF5E62] focus-within:shadow-[0_0_0_3px_rgba(255,94,98,0.15)] hover:border-gray-400">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-gray-400 group-focus-within:text-[#FF5E62] transition-colors"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
                 <input 
                   type="email" 
@@ -508,7 +508,7 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceTy
       )}
 
       {/* Divider */}
-      <div className="my-1 h-[2px] w-full bg-gray-200" />
+      <div className="my-1 h-0.5 w-full bg-gray-200" />
 
       {/* CAPTCHA Widget */}
       {isBookingPage && (
@@ -526,7 +526,7 @@ const BookingSection = ({ onCoordsChange, initialState, isBookingPage, serviceTy
       <button
         type="submit"
         disabled={isBooking}
-        className={`group mt-3 flex w-full items-center justify-center gap-3 rounded-full bg-gradient-to-r from-[#FF5E62] to-[#FF9933] px-6 py-4 text-base font-bold tracking-wide text-white shadow-lg transition-all duration-300 ${
+        className={`group mt-3 flex w-full items-center justify-center gap-3 rounded-full bg-linear-to-r from-[#FF5E62] to-[#FF9933] px-6 py-4 text-base font-bold tracking-wide text-white shadow-lg transition-all duration-300 ${
           isBooking ? "cursor-not-allowed opacity-75" : "hover:scale-[1.02] hover:shadow-xl active:scale-95"
         }`}
       >
